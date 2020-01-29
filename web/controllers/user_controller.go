@@ -3,8 +3,8 @@
 package controllers
 
 import (
-	"github.com/kataras/iris/v12/_examples/mvc/login/datamodels"
-	"github.com/kataras/iris/v12/_examples/mvc/login/services"
+	"shop/datamodels"
+	"shop/services"
 
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"

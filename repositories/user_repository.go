@@ -4,7 +4,7 @@ import (
 	"errors"
 	"sync"
 
-	"github.com/kataras/iris/v12/_examples/mvc/login/datamodels"
+	"shop/datamodels"
 )
 
 // Query represents the visitor and action queries.
