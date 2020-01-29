@@ -72,6 +72,9 @@ func main() {
 	home := mvc.New(app.Party("/index1"))
 	home.Handle(new(controllers.HomeController))
 
+	self := mvc.New(app.Party("/self"))
+	self.Handle(new(controllers.SelfController))
+
 	// http://localhost:8080/noexist
 	// and all controller's methods like
 	// http://localhost:8080/users/1
