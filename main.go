@@ -68,6 +68,10 @@ func main() {
 	)
 	user.Handle(new(controllers.UserController))
 
+
+	home := mvc.New(app.Party("/index1"))
+	home.Handle(new(controllers.HomeController))
+
 	// http://localhost:8080/noexist
 	// and all controller's methods like
 	// http://localhost:8080/users/1
