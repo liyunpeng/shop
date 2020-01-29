@@ -75,6 +75,12 @@ func main() {
 	self := mvc.New(app.Party("/self"))
 	self.Handle(new(controllers.SelfController))
 
+	shopCar := mvc.New(app.Party("/shopcar"))
+	shopCar.Handle(new(controllers.ShopCarController))
+
+	assort := mvc.New(app.Party("/assort"))
+	assort.Handle(new(controllers.AssortController))
+
 	// http://localhost:8080/noexist
 	// and all controller's methods like
 	// http://localhost:8080/users/1
