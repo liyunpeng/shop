@@ -69,7 +69,7 @@ func main() {
 	user.Handle(new(controllers.UserController))
 
 
-	home := mvc.New(app.Party("/index1"))
+	home := mvc.New(app.Party("/index"))
 	home.Handle(new(controllers.HomeController))
 
 	self := mvc.New(app.Party("/self"))
