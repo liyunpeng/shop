@@ -84,6 +84,21 @@ func main() {
 	order := mvc.New(app.Party("/order"))
 	order.Handle(new(controllers.OrderController))
 
+	login := mvc.New(app.Party("/userg"))
+	// Prepare our repositories and services.
+	//db1, err := datasource.GetDb(datasource.MySQL)
+	//if err != nil {
+	//	app.Logger().Fatalf("error while loading the users: %v", err)
+	//	return
+	//}
+	//repo1 := repositories.NewUserRepository(db1)
+	//userService1 := services.NewUserService(repo1)
+	//
+	//login.Router.Use(middleware.BasicAuth)
+	//login.Register(userService1)
+	login.Handle(new(controllers.UserGController))
+
+
 	// http://localhost:8080/noexist
 	// and all controller's methods like
 	// http://localhost:8080/users/1

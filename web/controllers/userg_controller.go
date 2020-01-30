@@ -11,17 +11,17 @@ import (
 	"github.com/kataras/iris/v12/sessions"
 )
 
-// LoginController is our /user controller.
-// LoginController is responsible to handle the following requests:
+// UserGController is our /user controller.
+// UserGController is responsible to handle the following requests:
 // GET  			/user/register
 // POST 			/user/register
 // GET 				/user/login
 // POST 			/user/login
 // GET 				/user/me
 // All HTTP Methods /user/logout
-type LoginController struct {
+type UserGController struct {
 	// context is auto-binded by Iris on each request,
-	// remember that on each incoming request iris creates a new LoginController each time,
+	// remember that on each incoming request iris creates a new UserGController each time,
 	// so all fields are request-scoped by-default, only dependency injection is able to set
 	// custom fields like the Service which is the same for all requests (static binding)
 	// and the Session which depends on the current context (dynamic binding).
@@ -37,16 +37,16 @@ type LoginController struct {
 
 const userIDKey1 = "UserID"
 
-func (c *LoginController) getCurrentUserID() int64 {
+func (c *UserGController) getCurrentUserID() int64 {
 	userID := c.Session.GetInt64Default(userIDKey1, 0)
 	return userID
 }
 
-func (c *LoginController) isLoggedIn() bool {
+func (c *UserGController) isLoggedIn() bool {
 	return c.getCurrentUserID() > 0
 }
 
-func (c *LoginController) logout() {
+func (c *UserGController) logout() {
 	c.Session.Destroy()
 }
 
@@ -56,7 +56,7 @@ var registerStaticView1 = mvc.View{
 }
 
 // GetRegister handles GET: http://localhost:8080/user/register.
-func (c *LoginController) GetRegister() mvc.Result {
+func (c *UserGController) GetRegister() mvc.Result {
 	if c.isLoggedIn() {
 		c.logout()
 	}
@@ -65,7 +65,7 @@ func (c *LoginController) GetRegister() mvc.Result {
 }
 
 // PostRegister handles POST: http://localhost:8080/user/register.
-func (c *LoginController) PostRegister() mvc.Result {
+func (c *UserGController) PostRegister() mvc.Result {
 	// get firstname, username and password from the form.
 	var (
 		firstname = c.Ctx.FormValue("firstname")
@@ -104,17 +104,17 @@ var loginStaticView1 = mvc.View{
 }
 
 // GetLogin handles GET: http://localhost:8080/user/login.
-func (c *LoginController) Get() mvc.Result {
-	if c.isLoggedIn() {
-		// if it's already logged in then destroy the previous session.
-		c.logout()
-	}
+func (c *UserGController) GetLogin() mvc.Result {
+	//if c.isLoggedIn() {
+	//	// if it's already logged in then destroy the previous session.
+	//	c.logout()
+	//}
 
 	return loginStaticView1
 }
 
 // PostLogin handles POST: http://localhost:8080/user/register.
-func (c *LoginController) PostLogin() mvc.Result {
+func (c *UserGController) PostLogin() mvc.Result {
 	var (
 		username = c.Ctx.FormValue("username")
 		password = c.Ctx.FormValue("password")
@@ -122,6 +122,7 @@ func (c *LoginController) PostLogin() mvc.Result {
 
 	u, found := c.Service.GetByUsernameAndPassword(username, password)
 
+	
 	if !found {
 		return mvc.Response{
 			Path: "/user/register",
@@ -136,7 +137,7 @@ func (c *LoginController) PostLogin() mvc.Result {
 }
 
 // GetMe handles GET: http://localhost:8080/user/me.
-func (c *LoginController) GetMe() mvc.Result {
+func (c *UserGController) GetMe() mvc.Result {
 	if !c.isLoggedIn() {
 		// if it's not logged in then redirect user to the login page.
 		return mvc.Response{Path: "/user/login"}
@@ -161,7 +162,7 @@ func (c *LoginController) GetMe() mvc.Result {
 }
 
 // AnyLogout handles All/Any HTTP Methods for: http://localhost:8080/user/logout.
-func (c *LoginController) AnyLogout() {
+func (c *UserGController) AnyLogout() {
 	if c.isLoggedIn() {
 		c.logout()
 	}

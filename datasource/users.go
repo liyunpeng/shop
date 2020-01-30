@@ -4,8 +4,10 @@ package datasource
 
 import (
 	"errors"
+	"fmt"
 
 	"shop/datamodels"
+	"github.com/jinzhu/gorm"
 )
 
 // Engine is from where to fetch the data, in this case the users.
@@ -27,5 +29,25 @@ func LoadUsers(engine Engine) (map[int64]datamodels.User, error) {
 		return nil, errors.New("for the shake of simplicity we're using a simple map as the data source")
 	}
 
+
+
 	return make(map[int64]datamodels.User), nil
+}
+
+func GetDb(engine Engine) (db *gorm.DB, err error) {
+
+	if engine == MySQL {
+		db, err := gorm.Open(
+			"mysql", "root:root@/gotest?charset=utf8&parseTime=True&loc=Local")
+		if err == nil {
+			fmt.Println("open db sucess", db)
+		} else {
+			fmt.Println("open db error ", err)
+			return nil, err
+		}
+	}
+
+
+
+	return db, nil
 }
