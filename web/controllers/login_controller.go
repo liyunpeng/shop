@@ -104,7 +104,7 @@ var loginStaticView1 = mvc.View{
 }
 
 // GetLogin handles GET: http://localhost:8080/user/login.
-func (c *LoginController) GetLogin() mvc.Result {
+func (c *LoginController) Get() mvc.Result {
 	if c.isLoggedIn() {
 		// if it's already logged in then destroy the previous session.
 		c.logout()
