@@ -1,6 +1,7 @@
 package datamodels
 
 import (
+	"bytes"
 	//"database/sql"
 	"fmt"
 	"github.com/jinzhu/gorm"
@@ -44,6 +45,92 @@ func (u UserG) TableName() string {
 	return "gorm_user"
 }
 
+
+func (post *UserG)  CreateTable() (s string) {
+	db := getDb()
+	defer func() { db.Close() }()
+
+	var buffer bytes.Buffer
+	/*
+		gorm创建的表名默认为小写开头, 出现大写字符， 则会_分割， 以复数结尾， 可能加s,也可能加es
+	*/
+	// 分割， 名为credit_cards
+	if !db.HasTable("usergs") {
+		db.CreateTable(&UserG{})
+		buffer.WriteString("Post表创建成功\n")
+	} else {
+		buffer.WriteString("Post表已存在，不再次创建\n")
+	}
+
+	return buffer.String()
+}
+
+
+
+func (u *UserG) Update() (err error){
+	db := getDb()
+	defer func() { db.Close() }()
+	db.Update(u)
+	return nil
+}
+
+func (u *UserG) Delete() (err error){
+	db := getDb()
+	defer func() { db.Close() }()
+	db.Delete(u)
+	return nil
+}
+
+func (u *UserG) FindById(id int) ( err error){
+	db := getDb()
+	defer func() { db.Close() }()
+	db.Where("id =?", id).First(u)
+	return  nil
+}
+
+func (u *UserG) FindAll(id int) ( err error){
+	db := getDb()
+	defer func() { db.Close() }()
+	/*
+		获取所有记录
+		以下等价于： SELECT * FROM users;
+	*/
+	db.Find(u)
+	return  nil
+}
+
+func (u *UserG) FindCommentByAuthor(author string)([]Comment){
+	db := getDb()
+	defer func() { db.Close() }()
+
+	comments := make([]Comment, 0)
+	/*
+		必须有过append 评论(comment)的帖子(post)才能在related得到评论（comment)。
+		posts和comments表并没有相互关联的列， 如下：
+		mysql> select * from posts;
+		posts表：
+		+----+---------------+---------------+---------------------+
+		| id | content       | author        | createed_at         |
+		+----+---------------+---------------+---------------------+
+		|  1 | content value | author value1 | 0000-00-00 00:00:00 |
+		comments表：
+		mysql> select * from comments;
+		+----+---------------+---------------+---------+---------------------+
+		| id | content       | author        | post_id | createed_at         |
+		+----+---------------+---------------+---------+---------------------+
+		|  1 | content value | author value1 |       2 | 0000-00-00 00:00:00 |
+		gorm维护了这种关联关系。
+	*/
+	db.Where("author =?", author).Last(&u)
+	fmt.Println("post:", u)
+
+	db.Model(&u).Related(&comments)
+	fmt.Println("comments:", comments)
+	return  comments
+}
+
+
+//////////////////////////////////////////
 func (u *UserG) Insert() (err error){
 	db := getDb()
 	defer func() { db.Close() }()
