@@ -77,7 +77,9 @@ func (c *UserGController) PostRegister() mvc.Result {
 	)
 
 	// create the new user, the password will be hashed by the service.
-	c.Service.InsertUserg(datamodels.UserG{
+	//u, err := c.Service.InsertUserg(datamodels.UserG{
+	//TODO : InsertUserg 返回值， 新增记录的id如何获取
+	 c.Service.InsertUserg(datamodels.UserG{
 		Username:  username,
 		Password: password,
 	})
@@ -90,7 +92,6 @@ func (c *UserGController) PostRegister() mvc.Result {
 	return mvc.Response{
 		// if not nil then this error will be shown instead.
 		//Err: err,
-		// redirect to /user/me.
 		Path: "/self",
 		// When redirecting from POST to GET request you -should- use this HTTP status code,
 		// however there're some (complicated) alternatives if you
@@ -125,7 +126,7 @@ func (c *UserGController) PostLogin() mvc.Result {
 
 	u, found := c.Service.GetByUsernameAndPassword(username, password)
 
-	
+
 	if !found {
 		//c.Service.CreateUsergTable()
 		fmt.Println("进入注册页面")
@@ -133,11 +134,11 @@ func (c *UserGController) PostLogin() mvc.Result {
 			Path: "/userg/register",
 		}
 	}
-
-	c.Session.Set(userIDKey1, u.ID)
+	fmt.Println("u.Username=", u.Username)
+	//c.Session.Set(userIDKey1, u.Username)
 
 	return mvc.Response{
-		Path: "/user/me",
+		Path: "/index",
 	}
 }
 

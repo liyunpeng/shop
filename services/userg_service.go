@@ -1,6 +1,7 @@
 package services
 
 import (
+	"fmt"
 	//"errors"
 	//"fmt"
 	"shop/datamodels"
@@ -61,11 +62,16 @@ func (u *userGService) InsertUserg(userg datamodels.UserG){
 }
 
 func (u *userGService) GetByUsernameAndPassword(username, userPassword string) (datamodels.UserG, bool){
-	userg := datamodels.UserG{}
+	userg := &datamodels.UserG{}
 
 	//userg.FindByName(u.db, username)
 
-	userg.FindById(u.db, 1)
-
-	return  userg, false
+	userg.FindByName(u.db, username)
+	if len(userg.Username) > 0 {
+		fmt.Println("找到用户名=", userg.Username)
+		return  *userg, true
+	}else{
+		fmt.Println("没找到用户名=", username)
+		return  *userg, false
+	}
 }

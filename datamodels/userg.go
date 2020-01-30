@@ -9,8 +9,6 @@ import (
 	//"time"
 )
 
-
-
 type UserG struct {
 	gorm.Model
 	Salt      string `gorm:"type:varchar(255)" json:"salt"`
@@ -61,13 +59,13 @@ func (u *UserG) FindById(db *gorm.DB, id int) ( err error){
 	//db := getDb()
 	//defer func() { db.Close() }()
 	db.Where("id =?", id).First(u)
+
+	//u.Username != ''
 	return  nil
 }
 
 func (u *UserG) FindByName(db *gorm.DB, name string) ( err error){
-	//db := getDb()
-	//defer func() { db.Close() }()
-	db.Where("name =?", name).First(u)
+	db.Where("username =?", name).First(u)
 	return  nil
 }
 
@@ -115,19 +113,9 @@ func (u *UserG) FindAll(db *gorm.DB, id int) ( err error){
 
 //////////////////////////////////////////
 func (u *UserG) Insert(db *gorm.DB) (err error){
-	//db := getDb()
-	//defer func() { db.Close() }()
 
-	/*
-		这里插入的post记录， 没有append comment记录， 所有post的related方法不会得到comment记录
-	*/
 	db.Create(u)
 
-	/*
-			等同于，
-		    INSERT INTO products (name, code) VALUES ("name", "code") ON CONFLICT;
-	*/
-	//db.Set("gorm:insert_option", "ON CONFLICT").Create(u)
 
 	return nil
 }

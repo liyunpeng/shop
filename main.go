@@ -120,7 +120,7 @@ func main() {
 	//repo1 := repositories.NewUserRepository(db1)
 	userGService := services.NewUserGService(getDb())
 	//
-	//login.Router.Use(middleware.BasicAuth)
+	//userg.Router.Use(middleware.BasicAuth)
 	userg.Register(userGService)
 	userg.Handle(new(controllers.UserGController))
 
