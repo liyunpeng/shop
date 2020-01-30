@@ -81,6 +81,9 @@ func main() {
 	assort := mvc.New(app.Party("/assort"))
 	assort.Handle(new(controllers.AssortController))
 
+	order := mvc.New(app.Party("/order"))
+	order.Handle(new(controllers.OrderController))
+
 	// http://localhost:8080/noexist
 	// and all controller's methods like
 	// http://localhost:8080/users/1
