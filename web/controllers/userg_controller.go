@@ -57,9 +57,9 @@ var registerStaticView1 = mvc.View{
 
 // GetRegister handles GET: http://localhost:8080/user/register.
 func (c *UserGController) GetRegister() mvc.Result {
-	if c.isLoggedIn() {
-		c.logout()
-	}
+	//if c.isLoggedIn() {
+	//	c.logout()
+	//}
 
 	return registerStaticView1
 }

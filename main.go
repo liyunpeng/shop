@@ -84,7 +84,7 @@ func main() {
 	order := mvc.New(app.Party("/order"))
 	order.Handle(new(controllers.OrderController))
 
-	login := mvc.New(app.Party("/userg"))
+	userg := mvc.New(app.Party("/userg"))
 	// Prepare our repositories and services.
 	//db1, err := datasource.GetDb(datasource.MySQL)
 	//if err != nil {
@@ -96,7 +96,7 @@ func main() {
 	//
 	//login.Router.Use(middleware.BasicAuth)
 	//login.Register(userService1)
-	login.Handle(new(controllers.UserGController))
+	userg.Handle(new(controllers.UserGController))
 
 
 	// http://localhost:8080/noexist
