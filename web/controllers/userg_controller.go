@@ -3,6 +3,7 @@
 package controllers
 
 import (
+	"fmt"
 	//"shop/datamodels"
 	"shop/services"
 
@@ -113,7 +114,7 @@ func (c *UserGController) GetLogin() mvc.Result {
 	return loginStaticView1
 }
 
-// PostLogin handles POST: http://localhost:8080/user/register.
+// PostLogin handles POST: http://localhost:8080/user/login.
 func (c *UserGController) PostLogin() mvc.Result {
 	var (
 		username = c.Ctx.FormValue("username")
@@ -125,6 +126,7 @@ func (c *UserGController) PostLogin() mvc.Result {
 	
 	if !found {
 		c.Service.CreateUsergTable()
+		fmt.Println("创建数据库表")
 		return mvc.Response{
 			Path: "/user/register",
 		}
