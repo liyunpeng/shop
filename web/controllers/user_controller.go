@@ -113,7 +113,7 @@ func (c *UserController) GetLogin() mvc.Result {
 	return loginStaticView
 }
 
-// PostLogin handles POST: http://localhost:8080/user/register.
+// PostLogin handles POST: http://localhost:8080/user/login
 func (c *UserController) PostLogin() mvc.Result {
 	var (
 		username = c.Ctx.FormValue("username")
@@ -123,8 +123,10 @@ func (c *UserController) PostLogin() mvc.Result {
 	u, found := c.Service.GetByUsernameAndPassword(username, password)
 
 	if !found {
+
+
 		return mvc.Response{
-			Path: "/user/register",
+			Path: "/userg/register",
 		}
 	}
 

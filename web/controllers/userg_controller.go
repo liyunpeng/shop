@@ -3,7 +3,7 @@
 package controllers
 
 import (
-	"shop/datamodels"
+	//"shop/datamodels"
 	"shop/services"
 
 	"github.com/kataras/iris/v12"
@@ -29,7 +29,7 @@ type UserGController struct {
 
 	// Our UserService, it's an interface which
 	// is binded from the main application.
-	Service services.UserService
+	Service services.UserGService
 
 	// Session, binded using dependency injection from the main.go.
 	Session *sessions.Session
@@ -67,26 +67,26 @@ func (c *UserGController) GetRegister() mvc.Result {
 // PostRegister handles POST: http://localhost:8080/user/register.
 func (c *UserGController) PostRegister() mvc.Result {
 	// get firstname, username and password from the form.
-	var (
-		firstname = c.Ctx.FormValue("firstname")
-		username  = c.Ctx.FormValue("username")
-		password  = c.Ctx.FormValue("password")
-	)
-
-	// create the new user, the password will be hashed by the service.
-	u, err := c.Service.Create(password, datamodels.User{
-		Username:  username,
-		Firstname: firstname,
-	})
+	//var (
+	//	firstname = c.Ctx.FormValue("firstname")
+	//	username  = c.Ctx.FormValue("username")
+	//	password  = c.Ctx.FormValue("password")
+	//)
+	//
+	//// create the new user, the password will be hashed by the service.
+	//u, err := c.Service.Create(password, datamodels.User{
+	//	Username:  username,
+	//	Firstname: firstname,
+	//})
 
 	// set the user's id to this session even if err != nil,
 	// the zero id doesn't matters because .getCurrentUserID() checks for that.
 	// If err != nil then it will be shown, see below on mvc.Response.Err: err.
-	c.Session.Set(userIDKey1, u.ID)
+	//c.Session.Set(userIDKey1, u.ID)
 
 	return mvc.Response{
 		// if not nil then this error will be shown instead.
-		Err: err,
+		//Err: err,
 		// redirect to /user/me.
 		Path: "/user/me",
 		// When redirecting from POST to GET request you -should- use this HTTP status code,
@@ -124,6 +124,7 @@ func (c *UserGController) PostLogin() mvc.Result {
 
 	
 	if !found {
+		c.Service.CreateUsergTable()
 		return mvc.Response{
 			Path: "/user/register",
 		}
@@ -138,25 +139,25 @@ func (c *UserGController) PostLogin() mvc.Result {
 
 // GetMe handles GET: http://localhost:8080/user/me.
 func (c *UserGController) GetMe() mvc.Result {
-	if !c.isLoggedIn() {
-		// if it's not logged in then redirect user to the login page.
-		return mvc.Response{Path: "/user/login"}
-	}
-
-	u, found := c.Service.GetByID(c.getCurrentUserID())
-	if !found {
-		// if the  session exists but for some reason the user doesn't exist in the "database"
-		// then logout and re-execute the function, it will redirect the client to the
-		// /user/login page.
-		c.logout()
-		return c.GetMe()
-	}
+	//if !c.isLoggedIn() {
+	//	// if it's not logged in then redirect user to the login page.
+	//	return mvc.Response{Path: "/user/login"}
+	//}
+	//
+	//u, found := c.Service.GetByID(c.getCurrentUserID())
+	//if !found {
+	//	// if the  session exists but for some reason the user doesn't exist in the "database"
+	//	// then logout and re-execute the function, it will redirect the client to the
+	//	// /user/login page.
+	//	c.logout()
+	//	return c.GetMe()
+	//}
 
 	return mvc.View{
 		Name: "user/me.html",
 		Data: iris.Map{
-			"Title": "Profile of " + u.Username,
-			"User":  u,
+			"Title": "Profile of ",
+			"User":  "u",
 		},
 	}
 }

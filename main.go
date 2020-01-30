@@ -3,6 +3,7 @@
 package main
 
 import (
+	"fmt"
 	"time"
 
 	"shop/datasource"
@@ -14,7 +15,32 @@ import (
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
 	"github.com/kataras/iris/v12/sessions"
+	"github.com/jinzhu/gorm"
 )
+
+func getDb()(db *gorm.DB){
+	defer func(){
+		if err := recover(); err != nil {
+			fmt.Println(err) // 这里的err其实就是panic传入的内容
+		}
+	}()
+
+	//TODO？ 全局db没用
+	/*
+		链接localhost数据库， 用户名root, 密码root
+	*/
+	db, err := gorm.Open(
+		"mysql", "root:root@/gotest?charset=utf8&parseTime=True&loc=Local")
+	if err == nil {
+		fmt.Println("open db sucess", db)
+
+	} else {
+		fmt.Println("open db error ", err)
+		panic("数据库错误")
+	}
+
+	return db
+}
 
 func main() {
 	app := iris.New()
@@ -92,10 +118,10 @@ func main() {
 	//	return
 	//}
 	//repo1 := repositories.NewUserRepository(db1)
-	//userService1 := services.NewUserService(repo1)
+	userGService := services.NewUserGService(getDb())
 	//
 	//login.Router.Use(middleware.BasicAuth)
-	//login.Register(userService1)
+	userg.Register(userGService)
 	userg.Handle(new(controllers.UserGController))
 
 

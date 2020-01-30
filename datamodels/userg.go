@@ -64,6 +64,13 @@ func (u *UserG) FindById(db *gorm.DB, id int) ( err error){
 	return  nil
 }
 
+func (u *UserG) FindByName(db *gorm.DB, name string) ( err error){
+	//db := getDb()
+	//defer func() { db.Close() }()
+	db.Where("name =?", name).First(u)
+	return  nil
+}
+
 func (u *UserG) FindAll(db *gorm.DB, id int) ( err error){
 	//db := getDb()
 	//defer func() { db.Close() }()

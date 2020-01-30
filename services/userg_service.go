@@ -2,7 +2,7 @@ package services
 
 import (
 	//"errors"
-	"fmt"
+	//"fmt"
 	"shop/datamodels"
 	"github.com/jinzhu/gorm"
 	//"shop/repositories"
@@ -17,7 +17,7 @@ import (
 type UserGService interface {
 	//GetAll() []datamodels.UserG
 	//GetByID(id int64) (datamodels.UserG, bool)
-	//GetByUsernameAndPassword(username, userPassword string) (datamodels.UserG, bool)
+	GetByUsernameAndPassword(username, userPassword string) (datamodels.UserG, bool)
 	//DeleteByID(id int64) bool
 	//
 	//Update(id int64, user datamodels.UserG) (datamodels.UserG, error)
@@ -38,36 +38,14 @@ type userGService struct {
 }
 
 // NewUserGService returns the default user service.
-func NewUserGService() UserGService {
+func NewUserGService(db1 *gorm.DB) UserGService {
 
 	return &userGService{
-		db: getDb(),
+		db: db1,
 	}
 }
 
-func getDb()(db *gorm.DB){
-	defer func(){
-		if err := recover(); err != nil {
-			fmt.Println(err) // 这里的err其实就是panic传入的内容
-		}
-	}()
 
-	//TODO？ 全局db没用
-	/*
-		链接localhost数据库， 用户名root, 密码root
-	*/
-	db, err := gorm.Open(
-		"mysql", "root:root@/gotest?charset=utf8&parseTime=True&loc=Local")
-	if err == nil {
-		fmt.Println("open db sucess", db)
-
-	} else {
-		fmt.Println("open db error ", err)
-		panic("数据库错误")
-	}
-
-	return db
-}
 
 func (u *userGService) CreateUsergTable(){
 	userg := datamodels.UserG{}
@@ -80,5 +58,14 @@ func (u *userGService) InsertUserg(userg datamodels.UserG){
 	//userg := datamodels.UserG{}
 
 	userg.Insert(u.db)
+}
 
+func (u *userGService) GetByUsernameAndPassword(username, userPassword string) (datamodels.UserG, bool){
+	userg := datamodels.UserG{}
+
+	//userg.FindByName(u.db, username)
+
+	userg.FindById(u.db, 1)
+
+	return  userg, false
 }
