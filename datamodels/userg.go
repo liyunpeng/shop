@@ -121,13 +121,13 @@ func (u *UserG) Insert(db *gorm.DB) (err error){
 	/*
 		这里插入的post记录， 没有append comment记录， 所有post的related方法不会得到comment记录
 	*/
-	//db.Create(post)
+	db.Create(u)
 
 	/*
 			等同于，
 		    INSERT INTO products (name, code) VALUES ("name", "code") ON CONFLICT;
 	*/
-	db.Set("gorm:insert_option", "ON CONFLICT").Create(u)
+	//db.Set("gorm:insert_option", "ON CONFLICT").Create(u)
 
 	return nil
 }

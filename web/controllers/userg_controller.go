@@ -3,8 +3,9 @@
 package controllers
 
 import (
+	//"datamodels"
 	"fmt"
-	//"shop/datamodels"
+	"shop/datamodels"
 	"shop/services"
 
 	"github.com/kataras/iris/v12"
@@ -67,18 +68,19 @@ func (c *UserGController) GetRegister() mvc.Result {
 
 // PostRegister handles POST: http://localhost:8080/user/register.
 func (c *UserGController) PostRegister() mvc.Result {
+	fmt.Println("响应注册提交")
 	// get firstname, username and password from the form.
-	//var (
-	//	firstname = c.Ctx.FormValue("firstname")
-	//	username  = c.Ctx.FormValue("username")
-	//	password  = c.Ctx.FormValue("password")
-	//)
-	//
-	//// create the new user, the password will be hashed by the service.
-	//u, err := c.Service.Create(password, datamodels.User{
-	//	Username:  username,
-	//	Firstname: firstname,
-	//})
+	var (
+		//firstname = c.Ctx.FormValue("firstname")
+		username  = c.Ctx.FormValue("username")
+		password  = c.Ctx.FormValue("password")
+	)
+
+	// create the new user, the password will be hashed by the service.
+	c.Service.InsertUserg(datamodels.UserG{
+		Username:  username,
+		Password: password,
+	})
 
 	// set the user's id to this session even if err != nil,
 	// the zero id doesn't matters because .getCurrentUserID() checks for that.
@@ -89,7 +91,7 @@ func (c *UserGController) PostRegister() mvc.Result {
 		// if not nil then this error will be shown instead.
 		//Err: err,
 		// redirect to /user/me.
-		Path: "/user/me",
+		Path: "/self",
 		// When redirecting from POST to GET request you -should- use this HTTP status code,
 		// however there're some (complicated) alternatives if you
 		// search online or even the HTTP RFC.
@@ -125,10 +127,10 @@ func (c *UserGController) PostLogin() mvc.Result {
 
 	
 	if !found {
-		c.Service.CreateUsergTable()
-		fmt.Println("创建数据库表")
+		//c.Service.CreateUsergTable()
+		fmt.Println("进入注册页面")
 		return mvc.Response{
-			Path: "/user/register",
+			Path: "/userg/register",
 		}
 	}
 

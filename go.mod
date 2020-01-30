@@ -8,7 +8,6 @@ require (
 	github.com/fasthttp-contrib/websocket v0.0.0-20160511215533-1f3b11f56072 // indirect
 	github.com/google/go-querystring v1.0.0 // indirect
 	github.com/imkira/go-interpol v1.1.0 // indirect
-	github.com/jinzhu/gorm v1.9.12 // indirect
 	github.com/k0kubun/colorstring v0.0.0-20150214042306-9440f1994b88 // indirect
 	github.com/kataras/iris/v12 v12.1.4
 	github.com/mattn/go-colorable v0.1.4 // indirect
@@ -27,7 +26,6 @@ require (
 	github.com/yudai/gojsondiff v1.0.0 // indirect
 	github.com/yudai/golcs v0.0.0-20170316035057-ecda9a501e82 // indirect
 	github.com/yudai/pp v2.0.1+incompatible // indirect
-	golang.org/x/crypto v0.0.0-20200128174031-69ecbb4d6d5d // indirect
 	shop/datamodels v0.0.0-00010101000000-000000000000 // indirect
 	shop/datasource v0.0.0-00010101000000-000000000000
 	shop/repositories v0.0.0-00010101000000-000000000000
