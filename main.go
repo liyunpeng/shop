@@ -30,7 +30,8 @@ func getDb()(db *gorm.DB){
 		链接localhost数据库， 用户名root, 密码root
 	*/
 	db, err := gorm.Open(
-		"mysql", "root:root@/gotest?charset=utf8&parseTime=True&loc=Local")
+		"mysql", "root:password@tcp(192.168.0.220:31111)/gotest?charset=utf8&parseTime=True&loc=Local")
+		//"mysql", "root:password@/gotest?charset=utf8&parseTime=True&loc=Local")
 	if err == nil {
 		fmt.Println("open db sucess", db)
 

@@ -128,7 +128,7 @@ func (c *UserGController) PostLogin() mvc.Result {
 
 
 	if !found {
-		//c.Service.CreateUsergTable()
+		c.Service.CreateUsergTable()
 		fmt.Println("进入注册页面")
 		return mvc.Response{
 			Path: "/userg/register",
