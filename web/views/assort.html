@@ -2,6 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
+	<script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
     <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>分类</title>
     <link rel="stylesheet" type="text/css" href="/public/css/loaders.min.css"/>
@@ -37,16 +38,16 @@
 		</span>
 	</header>
 	
-	<div class="contaniner fixed-cont">
+	<div id="app" class="contaniner fixed-cont">
 		<aside class="assort">
 			<ul>
 				<li class="active">
 					<img src="/public/images/classify01.png"/>
-					<span>母婴用品</span>
+					<span v-html="leftitem1"></span>
 				</li>
 				<li>
 					<img src="/public/images/classify02.png"/>
-					<span>女装正品</span>
+					<span v-html="leftitem2"></span>
 				</li>
 				<li>
 					<img src="/public/images/classify03.png"/>
@@ -170,7 +171,15 @@
 			</li>
 		</ul>
 	</footer>
-	
-	
+
+	<script>
+		new Vue({
+			el: '#app',
+			data: {
+				leftitem1: '母婴用品',
+				leftitem2: '女装正品'
+			}
+		})
+	</script>
 </body>
 </html>
