@@ -55,13 +55,11 @@ type SelfController struct {
 
 var selfStaticView = mvc.View{
 	Name: "self.html",
-	Data: iris.Map{"Title": "User Registration"},
+	// TODO 不理解为什么要去掉这句 Get方法里通过viewdata设置的Title才能有效
+	//Data: iris.Map{"Title": "User Registration"},
 }
 
 func (c *SelfController) Get() mvc.Result {
-	//session := sessions.Get(c.Ctx) // same as sess.Start(ctx, cookieOptions...)
-	//c.Session.GetString()
-	//if session != nil {
 	if len(c.Session.GetString("UserID")) > 0 {
 		fmt.Println("session.GetString=",c.Session.GetString("UserID"))
 		c.Ctx.ViewData("Title", c.Session.GetString("UserID"))
@@ -69,9 +67,7 @@ func (c *SelfController) Get() mvc.Result {
 	} else {
 		fmt.Println("session is nil")
 		c.Ctx.ViewData("Title", "oo")
-
 	}
-	c.Ctx.ViewData("Title", "dddddddddddd")
 	return selfStaticView
 }
 
