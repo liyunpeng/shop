@@ -35,7 +35,7 @@ type SelfController struct {
 	//Service services.UserService
 	//
 	//// Session, binded using dependency injection from the main.go.
-	//Session *sessions.Session
+	Session *sessions.Session
 }
 
 //const userIDKey = "UserID"
@@ -59,21 +59,19 @@ var selfStaticView = mvc.View{
 }
 
 func (c *SelfController) Get() mvc.Result {
-	session := sessions.Get(c.Ctx) // same as sess.Start(ctx, cookieOptions...)
+	//session := sessions.Get(c.Ctx) // same as sess.Start(ctx, cookieOptions...)
+	//c.Session.GetString()
+	//if session != nil {
+	if len(c.Session.GetString("UserID")) > 0 {
+		fmt.Println("session.GetString=",c.Session.GetString("UserID"))
+		c.Ctx.ViewData("Title", c.Session.GetString("UserID"))
 
-	if session != nil {
-		if len(session.GetString("UserID")) > 0{
-			fmt.Println("session.GetString=", session.GetString("UserID"))
-			c.Ctx.ViewData("Title", session.GetString("UserID"))
-
-		}
-
-	}else{
+	} else {
 		fmt.Println("session is nil")
 		c.Ctx.ViewData("Title", "oo")
 
 	}
-	//v1 := c.Ctx.FormValue("a")
+	c.Ctx.ViewData("Title", "dddddddddddd")
 	return selfStaticView
 }
 

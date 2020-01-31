@@ -33,8 +33,6 @@ type UserGService interface {
 }
 
 type userGService struct {
-	//repo repositories.UserRepository,
-	//userg datamodels.UserG
 	db *gorm.DB
 }
 

@@ -102,6 +102,10 @@ func main() {
 
 
 	self := mvc.New(app.Party("/self"))
+	self.Register(
+		sessManager.Start,
+		)
+
 	self.Handle(new(controllers.SelfController))
 
 	shopCar := mvc.New(app.Party("/shopcar"))
