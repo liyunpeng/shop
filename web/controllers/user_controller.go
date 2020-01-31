@@ -3,8 +3,8 @@
 package controllers
 
 import (
-	"shop/datamodels"
-	"shop/services"
+	"github.com/liyunpeng/shop/datamodels"
+	"github.com/liyunpeng/shop/services"
 
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"

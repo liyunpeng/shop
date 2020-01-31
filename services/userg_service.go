@@ -2,10 +2,10 @@ package services
 
 import (
 	"fmt"
+	"github.com/jinzhu/gorm"
 	//"errors"
 	//"fmt"
-	"shop/datamodels"
-	"github.com/jinzhu/gorm"
+	"github.com/liyunpeng/shop/datamodels"
 	//"shop/repositories"
 )
 
@@ -64,7 +64,7 @@ func (u *userGService) InsertUserg(userg datamodels.UserG){
 func (u *userGService) GetByUsernameAndPassword(username, userPassword string) (datamodels.UserG, bool){
 	userg := &datamodels.UserG{}
 
-	//userg.FindByName(u.db, username)
+
 
 	userg.FindByName(u.db, username)
 	if len(userg.Username) > 0 {

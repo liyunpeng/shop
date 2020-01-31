@@ -5,8 +5,8 @@ package controllers
 import (
 	//"datamodels"
 	"fmt"
-	"shop/datamodels"
-	"shop/services"
+	"github.com/liyunpeng/shop/datamodels"
+	"github.com/liyunpeng/shop/services"
 
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
@@ -138,7 +138,7 @@ func (c *UserGController) PostLogin() mvc.Result {
 	//c.Session.Set(userIDKey1, u.Username)
 
 	return mvc.Response{
-		Path: "/self",
+		Path: "/self"+"?a=123",
 	}
 }
 

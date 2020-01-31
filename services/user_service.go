@@ -3,8 +3,8 @@ package services
 import (
 	"errors"
 
-	"shop/datamodels"
-	"shop/repositories"
+	"github.com/liyunpeng/shop/datamodels"
+	"github.com/liyunpeng/shop/repositories"
 )
 
 // UserService handles CRUID operations of a user datamodel,

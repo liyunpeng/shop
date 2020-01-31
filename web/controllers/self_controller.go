@@ -8,7 +8,7 @@ import (
 
 
 	"github.com/kataras/iris/v12"
-	"github.com/kataras/iris/v12/context"
+	//"github.com/kataras/iris/v12/context"
 
 	"github.com/kataras/iris/v12/mvc"
 
@@ -61,7 +61,8 @@ var selfStaticView = mvc.View{
 }
 
 func (c *SelfController) Get() mvc.Result {
-	c.Ctx.ViewData("Title", "Hello world!")
+	v1 := c.Ctx.FormValue("a")
+	c.Ctx.ViewData("Title", v1)
 	return selfStaticView
 }
 

@@ -6,11 +6,11 @@ import (
 	"fmt"
 	"time"
 
-	"shop/datasource"
-	"shop/repositories"
-	"shop/services"
-	"shop/web/controllers"
-	"shop/web/middleware"
+	"github.com/liyunpeng/shop/datasource"
+	"github.com/liyunpeng/shop/repositories"
+	"github.com/liyunpeng/shop/services"
+	"github.com/liyunpeng/shop/web/controllers"
+	"github.com/liyunpeng/shop/web/middleware"
 
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
@@ -30,8 +30,8 @@ func getDb()(db *gorm.DB){
 		链接localhost数据库， 用户名root, 密码root
 	*/
 	db, err := gorm.Open(
-		"mysql", "root:password@tcp(192.168.0.220:31111)/gotest?charset=utf8&parseTime=True&loc=Local")
-		//"mysql", "root:password@/gotest?charset=utf8&parseTime=True&loc=Local")
+		"mysql", "root:root@/gotest?charset=utf8&parseTime=True&loc=Local")
+		//"mysql", "root:password@tcp(192.168.0.220:31111)/gotest?charset=utf8&parseTime=True&loc=Local")
 	if err == nil {
 		fmt.Println("open db sucess", db)
 

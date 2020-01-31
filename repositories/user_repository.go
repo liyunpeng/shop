@@ -3,8 +3,7 @@ package repositories
 import (
 	"errors"
 	"sync"
-
-	"shop/datamodels"
+	"github.com/liyunpeng/shop/datamodels"
 )
 
 // Query represents the visitor and action queries.

@@ -6,7 +6,8 @@ import (
 	"errors"
 	"fmt"
 
-	"shop/datamodels"
+
+	"github.com/liyunpeng/shop/datamodels"
 	"github.com/jinzhu/gorm"
 )
 
