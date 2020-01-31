@@ -6,8 +6,13 @@ import (
 	//"shop/datamodels"
 	//"shop/services"
 
+
 	"github.com/kataras/iris/v12"
+	"github.com/kataras/iris/v12/context"
+
 	"github.com/kataras/iris/v12/mvc"
+
+
 	//"github.com/kataras/iris/v12/sessions"
 )
 
@@ -56,6 +61,7 @@ var selfStaticView = mvc.View{
 }
 
 func (c *SelfController) Get() mvc.Result {
+	c.Ctx.ViewData("Title", "Hello world!")
 	return selfStaticView
 }
 

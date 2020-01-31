@@ -138,7 +138,7 @@ func (c *UserGController) PostLogin() mvc.Result {
 	//c.Session.Set(userIDKey1, u.Username)
 
 	return mvc.Response{
-		Path: "/index",
+		Path: "/self",
 	}
 }
 
