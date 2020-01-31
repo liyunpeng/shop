@@ -128,7 +128,7 @@ func main() {
 
 	app.Run(
 		// Starts the web server at localhost:8080
-		iris.Addr("localhost:8080"),
+		iris.Addr(":8080"),
 		// Ignores err server closed log when CTRL/CMD+C pressed.
 		iris.WithoutServerError(iris.ErrServerClosed),
 		// Enables faster json serialization and more.
