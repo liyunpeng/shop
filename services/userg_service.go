@@ -38,7 +38,6 @@ type userGService struct {
 	db *gorm.DB
 }
 
-// NewUserGService returns the default user service.
 func NewUserGService(db1 *gorm.DB) UserGService {
 
 	return &userGService{
@@ -46,26 +45,18 @@ func NewUserGService(db1 *gorm.DB) UserGService {
 	}
 }
 
-
-
 func (u *userGService) CreateUsergTable(){
 	userg := datamodels.UserG{}
 
 	userg.CreateTable(u.db)
-
 }
 
 func (u *userGService) InsertUserg(userg datamodels.UserG){
-	//userg := datamodels.UserG{}
-
 	userg.Insert(u.db)
 }
 
 func (u *userGService) GetByUsernameAndPassword(username, userPassword string) (datamodels.UserG, bool){
 	userg := &datamodels.UserG{}
-
-
-
 	userg.FindByName(u.db, username)
 	if len(userg.Username) > 0 {
 		fmt.Println("找到用户名=", userg.Username)

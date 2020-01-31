@@ -3,15 +3,13 @@
 package controllers
 
 import (
-	//"shop/datamodels"
-	//"shop/services"
-
-
+	"fmt"
 	"github.com/kataras/iris/v12"
+	"github.com/kataras/iris/v12/sessions"
+
 	//"github.com/kataras/iris/v12/context"
 
 	"github.com/kataras/iris/v12/mvc"
-
 
 	//"github.com/kataras/iris/v12/sessions"
 )
@@ -61,8 +59,21 @@ var selfStaticView = mvc.View{
 }
 
 func (c *SelfController) Get() mvc.Result {
-	v1 := c.Ctx.FormValue("a")
-	c.Ctx.ViewData("Title", v1)
+	session := sessions.Get(c.Ctx) // same as sess.Start(ctx, cookieOptions...)
+
+	if session != nil {
+		if len(session.GetString("UserID")) > 0{
+			fmt.Println("session.GetString=", session.GetString("UserID"))
+			c.Ctx.ViewData("Title", session.GetString("UserID"))
+
+		}
+
+	}else{
+		fmt.Println("session is nil")
+		c.Ctx.ViewData("Title", "oo")
+
+	}
+	//v1 := c.Ctx.FormValue("a")
 	return selfStaticView
 }
 

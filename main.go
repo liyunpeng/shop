@@ -91,13 +91,15 @@ func main() {
 	user := mvc.New(app.Party("/user"))
 	user.Register(
 		userService,
-		sessManager.Start,
+		//sessManager.Start,
 	)
 	user.Handle(new(controllers.UserController))
 
 
 	home := mvc.New(app.Party("/index"))
 	home.Handle(new(controllers.HomeController))
+
+
 
 	self := mvc.New(app.Party("/self"))
 	self.Handle(new(controllers.SelfController))
@@ -112,28 +114,14 @@ func main() {
 	order.Handle(new(controllers.OrderController))
 
 	userg := mvc.New(app.Party("/userg"))
-	// Prepare our repositories and services.
-	//db1, err := datasource.GetDb(datasource.MySQL)
-	//if err != nil {
-	//	app.Logger().Fatalf("error while loading the users: %v", err)
-	//	return
-	//}
-	//repo1 := repositories.NewUserRepository(db1)
 	userGService := services.NewUserGService(getDb())
-	//
-	//userg.Router.Use(middleware.BasicAuth)
-	userg.Register(userGService)
+	userg.Register(
+		userGService,
+		sessManager.Start,
+	)
 	userg.Handle(new(controllers.UserGController))
 
 
-	// http://localhost:8080/noexist
-	// and all controller's methods like
-	// http://localhost:8080/users/1
-	// http://localhost:8080/user/register
-	// http://localhost:8080/user/login
-	// http://localhost:8080/user/me
-	// http://localhost:8080/user/logout
-	// basic auth: "admin", "password", see "./middleware/basicauth.go" source file.
 	app.Run(
 		// Starts the web server at localhost:8080
 		iris.Addr("localhost:8080"),

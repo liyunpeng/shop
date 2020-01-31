@@ -23,9 +23,6 @@ func (u UserG) TableName() string {
 
 
 func (u *UserG)  CreateTable(db *gorm.DB) (s string) {
-	//db := getDb()
-	//defer func() { db.Close() }()
-
 	var buffer bytes.Buffer
 	/*
 		gorm创建的表名默认为小写开头, 出现大写字符， 则会_分割， 以复数结尾， 可能加s,也可能加es
@@ -33,34 +30,26 @@ func (u *UserG)  CreateTable(db *gorm.DB) (s string) {
 	// 分割， 名为credit_cards
 	if !db.HasTable("usergs") {
 		db.CreateTable(&UserG{})
-		buffer.WriteString("Post表创建成功\n")
+		buffer.WriteString("gorm_user表创建成功\n")
 	} else {
-		buffer.WriteString("Post表已存在，不再次创建\n")
+		buffer.WriteString("gorm_user表已存在，不再次创建\n")
 	}
 
 	return buffer.String()
 }
 
 func (u *UserG) Update(db *gorm.DB) (err error){
-	//db := getDb()
-	//defer func() { db.Close() }()
 	db.Update(u)
 	return nil
 }
 
 func (u *UserG) Delete(db *gorm.DB) (err error){
-	//db := getDb()
-	//defer func() { db.Close() }()
 	db.Delete(u)
 	return nil
 }
 
 func (u *UserG) FindById(db *gorm.DB, id int) ( err error){
-	//db := getDb()
-	//defer func() { db.Close() }()
 	db.Where("id =?", id).First(u)
-
-	//u.Username != ''
 	return  nil
 }
 
@@ -70,12 +59,6 @@ func (u *UserG) FindByName(db *gorm.DB, name string) ( err error){
 }
 
 func (u *UserG) FindAll(db *gorm.DB, id int) ( err error){
-	//db := getDb()
-	//defer func() { db.Close() }()
-	/*
-		获取所有记录
-		以下等价于： SELECT * FROM users;
-	*/
 	db.Find(u)
 	return  nil
 }
