@@ -3,7 +3,10 @@
 package main
 
 import (
+	"flag"
 	"fmt"
+	"gopkg.in/yaml.v2"
+	"io/ioutil"
 	"time"
 
 	"github.com/liyunpeng/shop/datasource"
@@ -12,18 +15,68 @@ import (
 	"github.com/liyunpeng/shop/web/controllers"
 	"github.com/liyunpeng/shop/web/middleware"
 
+	"github.com/jinzhu/gorm"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
 	"github.com/kataras/iris/v12/sessions"
-	"github.com/jinzhu/gorm"
 )
 
-func getDb()(db *gorm.DB){
-	defer func(){
+var Conf *Config
+var _path string
+
+func init() {
+	flag.StringVar(&_path, "c", "./config.yaml", "default config path")
+	InitConfig()
+}
+
+// 从配置文件中加载配置
+func InitConfig() error {
+	Conf = &Config{}
+
+	content, err := ioutil.ReadFile(_path)
+	if err == nil {
+		err = yaml.Unmarshal(content, Conf)
+		fmt.Println("Conf=", Conf)
+	}
+	return err
+}
+
+// 总的配置
+type Config struct {
+	Server ServerConf   `yaml:"server"`
+	Mysql  MysqlConf `yaml:"mysql"`
+	Redis  RedisConf `yaml:"redis"`
+}
+
+// 服务的配置
+type ServerConf struct {
+	Port int `yaml:"port"`
+	List []string `yaml:"list,flow"`
+}
+
+type RedisConf struct {
+	Enable bool `yaml:"enable"`
+}
+
+type MysqlConf struct {
+	MaxIdle int `yaml:"maxidle"`
+	MaxOpen int `yaml:"maxopen"`
+	User string `yaml:"user"`
+	Host string `yaml:"host"`
+	Password string `yaml:"password"`
+	Port string `yaml:"port"`
+	Name string `yaml:"name"`
+}
+
+
+func getDb() (db *gorm.DB) {
+	defer func() {
 		if err := recover(); err != nil {
 			fmt.Println(err) // 这里的err其实就是panic传入的内容
 		}
 	}()
+
+	conf := Conf.Mysql
 
 	//TODO？ 全局db没用
 	/*
@@ -31,12 +84,15 @@ func getDb()(db *gorm.DB){
 	*/
 	db, err := gorm.Open(
 		"mysql", "root:root@/gotest?charset=utf8&parseTime=True&loc=Local")
-		//"mysql", "root:password@tcp(192.168.0.220:31111)/gotest?charset=utf8&parseTime=True&loc=Local")
+	//"mysql", "root:password@tcp(192.168.0.220:31111)/gotest?charset=utf8&parseTime=True&loc=Local")
 	if err == nil {
-		fmt.Println("open db sucess", db)
-
+		db.DB().SetMaxIdleConns(conf.MaxIdle)
+		db.DB().SetMaxOpenConns(conf.MaxOpen)
+		db.DB().SetConnMaxLifetime(time.Duration(30) * time.Minute)
+		err = db.DB().Ping()
+		fmt.Println("成功连接数据库 db=", db, "err=", err)
 	} else {
-		fmt.Println("open db error ", err)
+		fmt.Println("没有连接到数据库 err= ", err)
 		panic("数据库错误")
 	}
 
@@ -95,16 +151,13 @@ func main() {
 	)
 	user.Handle(new(controllers.UserController))
 
-
 	home := mvc.New(app.Party("/index"))
 	home.Handle(new(controllers.HomeController))
-
-
 
 	self := mvc.New(app.Party("/self"))
 	self.Register(
 		sessManager.Start,
-		)
+	)
 
 	self.Handle(new(controllers.SelfController))
 
@@ -124,7 +177,6 @@ func main() {
 		sessManager.Start,
 	)
 	userg.Handle(new(controllers.UserGController))
-
 
 	app.Run(
 		// Starts the web server at localhost:8080
