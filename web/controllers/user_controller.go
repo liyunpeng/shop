@@ -169,13 +169,21 @@ func (c *UserGController) AnyLogout() {
 }
 
 func ApiUserGetAll(c iris.Context) {
-
-
-
+	users := models.UserFindAll()
 	c.StatusCode(http.StatusOK)
-	v1 := []string{"one", "two", "three"}
-	_, _ = c.JSON(ApiResource(true, v1, "RepsonseJson message  "))
+	//v1 := []string{"one", "two", "three"}
+	_, _ = c.JSON(ApiResource(true, users, "RepsonseJson message  "))
 }
+
+
+func ApiUserGetById(ctx iris.Context) {
+	id, _ := ctx.Params().GetUint("id")
+	user := models.UserFindById(id)
+	ctx.StatusCode(http.StatusOK)
+	//v1 := []string{"one", "two", "three"}
+	_, _ = ctx.JSON(ApiResource(true, user, "RepsonseJson message  "))
+}
+
 
 func  ApiUserPost(c iris.Context) {
 	fmt.Println("context ")

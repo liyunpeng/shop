@@ -55,15 +55,15 @@ func UserDeleteByName(username string) {
 	DB.Delete(user)
 }
 
-func UserFindById(id int) *User{
+func UserFindById(id uint) *User{
 	user := new(User)
 	DB.Where("id =?", id).First(user)
 	return  user
 }
 
-
-
 func UserFindAll() (users []*User){
+	//var users []*User
+	users = make([]*User, 100)
 	DB.Find(users)
 	return
 }

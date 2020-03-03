@@ -10,6 +10,7 @@ func RegisterApi(app *iris.Application){
 
 	api.PartyFunc("/user", func(party iris.Party){
 		party.Get("/",  controllers.ApiUserGetAll)
+		party.Get("/{id:uint}",  controllers.ApiUserGetById)
 		party.Post("/",  controllers.ApiUserPost)
 	})
 }
