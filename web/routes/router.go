@@ -3,10 +3,11 @@ package routes
 import (
 	"github.com/kataras/iris/v12"
 	"shop/web/controllers"
+	"shop/web/middleware"
 )
 
 func RegisterApi(app *iris.Application){
-	api := app.Party("/api")
+	api := app.Party("/api", middleware.CorsAuth()).AllowMethods(iris.MethodOptions)
 
 	api.PartyFunc("/user", func(party iris.Party){
 		party.Get("/",  controllers.ApiUserGetAll)
