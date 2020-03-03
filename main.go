@@ -8,6 +8,7 @@ import (
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
 	"github.com/kataras/iris/v12/sessions"
+	"github.com/liyunpeng/shop/web/routes"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"time"
@@ -84,9 +85,11 @@ func main() {
 	)
 	user.Handle(new(controllers.UserGController))
 
+	routes.RegisterApi(app)
+
 	app.Run(
 		// Starts the web server at localhost:8080
-		iris.Addr(":8080"),
+		iris.Addr(":8082"),
 		// Ignores err server closed log when CTRL/CMD+C pressed.
 		iris.WithoutServerError(iris.ErrServerClosed),
 		// Enables faster json serialization and more.

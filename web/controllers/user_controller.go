@@ -6,6 +6,7 @@ import (
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
 	"github.com/kataras/iris/v12/sessions"
+	"net/http"
 )
 
 type UserGController struct {
@@ -165,4 +166,10 @@ func (c *UserGController) AnyLogout() {
 	}
 
 	c.Ctx.Redirect("/user/login")
+}
+
+func  ApiUserGet(c iris.Context) {
+	c.StatusCode(http.StatusOK)
+	v1 := []string{"one", "two", "three"}
+	_, _ = c.JSON(ApiResource(true, v1, "RepsonseJson message  "))
 }
