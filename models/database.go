@@ -16,14 +16,15 @@ func Register(conf *config.Config) {
 		}
 	}()
 	mysqlConf := conf.Mysql
+	var err error
 
-	DB, err := gorm.Open(
+	DB, err = gorm.Open(
 		"mysql", "root:root@/gotest?charset=utf8&parseTime=True&loc=Local")
 	//"mysql", "root:password@tcp(192.168.0.220:31111)/gotest?charset=utf8&parseTime=True&loc=Local")
 	if err == nil {
 		DB.DB().SetMaxIdleConns(mysqlConf.MaxIdle)
 		DB.DB().SetMaxOpenConns(mysqlConf.MaxOpen)
-		DB.DB().SetConnMaxLifetime(time.Duration(30) * time.Minute)
+		DB.DB().SetConnMaxLifetime(time.Duration(300) * time.Minute)
 		err = DB.DB().Ping()
 		fmt.Println("成功连接数据库")
 	} else {
