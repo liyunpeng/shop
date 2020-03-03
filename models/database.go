@@ -19,7 +19,7 @@ func Register(conf *config.Config) {
 	var err error
 
 	DB, err = gorm.Open(
-		"mysql", "root:root@/gotest?charset=utf8&parseTime=True&loc=Local")
+		"mysql", "root:123456@/gotest?charset=utf8&parseTime=True&loc=Local")
 	//"mysql", "root:password@tcp(192.168.0.220:31111)/gotest?charset=utf8&parseTime=True&loc=Local")
 	if err == nil {
 		DB.DB().SetMaxIdleConns(mysqlConf.MaxIdle)

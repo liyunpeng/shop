@@ -1,0 +1,22 @@
+mac 从go.1
+goproxy.cn对go1.14还没有支持好：
+shop工程go mod tidy遇到错误：
+go: github.com/kataras/iris/v12@v12.1.8 requires
+	github.com/iris-contrib/jade@v1.1.3 requires
+	github.com/Joker/hpp@v1.0.0/go.mod: verifying module: github.com/Joker/hpp@v1.0.0/go.mod: reading https://goproxy.cn/sumdb/sum.golang.org/tile/8/0/022: 502 Bad Gateway
+
+goweb工程go mod tidy遇到错误：
+go: github.com/Shopify/sarama@v1.26.1 requires
+	golang.org/x/crypto@v0.0.0-20200204104054-c9f3fb736b72/go.mod: verifying module: golang.org/x/crypto@v0.0.0-20200204104054-c9f3fb736b72/go.mod:
+	reading https://goproxy.cn/sumdb/sum.golang.org/lookup/golang.org/x/crypto@v0.0.0-20200204104054-c9f3fb736b72: 502 Bad Gateway
+GOROOT 环境变量设置错误遇到的问题
+log/syslog: malformed module path "log/syslog": missing dot in first path element
+shop imports
+	github.com/kataras/iris/v12/mvc imports
+	github.com/kataras/iris/v12/websocket imports
+	github.com/kataras/neffos/stackexchange/nats imports
+	github.com/nats-io/nats.go tested by
+	github.com/nats-io/nats.go.test imports
+	github.com/nats-io/nats-server/v2/server imports
+	golang.org/x/crypto/bcrypt imports
+	crypto/subtle: malformed module path "crypto/subtle": missing dot in first path element
