@@ -1,0 +1,1 @@
+ find  -name "*.go" | xargs  sed -i 's/github.com\/liyunpeng\///g'

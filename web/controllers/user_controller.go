@@ -1,8 +1,8 @@
 package controllers
 import (
 	"fmt"
-	"github.com/liyunpeng/shop/models"
-	"github.com/liyunpeng/shop/services"
+	"shop/models"
+	"shop/services"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
 	"github.com/kataras/iris/v12/sessions"
@@ -168,8 +168,15 @@ func (c *UserGController) AnyLogout() {
 	c.Ctx.Redirect("/user/login")
 }
 
-func  ApiUserGet(c iris.Context) {
+func ApiUserGetAll(c iris.Context) {
+
+
+
 	c.StatusCode(http.StatusOK)
 	v1 := []string{"one", "two", "three"}
 	_, _ = c.JSON(ApiResource(true, v1, "RepsonseJson message  "))
+}
+
+func  ApiUserPost(c iris.Context) {
+	fmt.Println("context ")
 }

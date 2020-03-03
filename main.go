@@ -8,15 +8,15 @@ import (
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
 	"github.com/kataras/iris/v12/sessions"
-	"github.com/liyunpeng/shop/web/routes"
+	"shop/web/routes"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"time"
 
-	"github.com/liyunpeng/shop/config"
-	"github.com/liyunpeng/shop/models"
-	"github.com/liyunpeng/shop/services"
-	"github.com/liyunpeng/shop/web/controllers"
+	"shop/config"
+	"shop/models"
+	"shop/services"
+	"shop/web/controllers"
 )
 
 var Conf *config.Config

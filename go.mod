@@ -1,4 +1,4 @@
-module github.com/liyunpeng/shop
+module shop
 
 go 1.13
 

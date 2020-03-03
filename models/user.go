@@ -63,7 +63,7 @@ func UserFindById(id int) *User{
 
 
 
-func UserFindAll(id int) (users []*User){
+func UserFindAll() (users []*User){
 	DB.Find(users)
 	return
 }

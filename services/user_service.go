@@ -2,7 +2,7 @@ package services
 
 import (
 	"fmt"
-	"github.com/liyunpeng/shop/models"
+	"shop/models"
 )
 
 type UserService interface {
@@ -35,6 +35,10 @@ func (u *userService) CreateUserTable() {
 
 func (u *userService) InsertUser(user *models.User) {
 	models.UserInsert(user)
+}
+
+func (u *userService) FindAllUser( users []*models.User) {
+	users = models.UserFindAll()
 }
 
 func (u *userService) GetByUsernameAndPassword(username, userPassword string) (*models.User, bool) {
