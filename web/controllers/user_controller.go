@@ -7,6 +7,7 @@ import (
 	"github.com/kataras/iris/v12/mvc"
 	"github.com/kataras/iris/v12/sessions"
 	"net/http"
+	validates "shop/validate"
 )
 
 type UserGController struct {
@@ -185,6 +186,18 @@ func ApiUserGetById(ctx iris.Context) {
 }
 
 
-func  ApiUserPost(c iris.Context) {
-	fmt.Println("context ")
+func  ApiUserPost(ctx iris.Context) {
+	fmt.Println("ApiUserPost is called")
+	aul := new(validates.CreateUpdateUserRequest)
+	if err := ctx.ReadJSON(aul); err != nil {
+		ctx.StatusCode(iris.StatusOK)
+		_, _ = ctx.JSON(ApiResource(false, nil, err.Error()))
+		return
+	}
+	u := models.User{}
+	u.Username = aul.Username
+	u.Password = aul.Password
+	models.UserInsert(&u)
+
+	_, _ = ctx.JSON(ApiResource(true, nil, "成功添加数据行"))
 }
