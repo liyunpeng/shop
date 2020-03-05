@@ -9,9 +9,10 @@ import (
 type User struct {
 	gorm.Model
 	Salt      string `gorm:"type:varchar(255)" json:"salt"`
-	Username  string `gorm:"type:varchar(32)" json:"username"`
+	Username  string `gorm:"unique_index" json:"username"`
 	Password  string `gorm:"type:varchar(200);column:password" json:"-"`
-	Languages string `gorm:"type:varchar(200);column:languages" json:"languages"`
+	Phonenumber  string `gorm:"type:varchar(200);column:phonenumber" json:"phonenumber"`
+	Level string `gorm:"type:varchar(200);column:level" json:"level"`
 }
 
 func (u User) TableName() string {
@@ -44,7 +45,7 @@ func UserFindByName(name string) *User{
 }
 
 func UserUpdate(user *User) (err error){
-	DB.Update(user)
+	DB.Model(&User{}).Update(user)
 	return nil
 }
 
@@ -61,10 +62,16 @@ func UserFindById(id uint) *User{
 	return  user
 }
 
-func UserFindAll() (users []*User){
+func UserFindAll() ( []*User){
 	//var users []*User
-	users = make([]*User, 100)
-	DB.Find(users)
-	return
+	DB.DB().Ping()
+	usersa := make([]*User, 100)
+
+	for i := 0; i < 100; i++ {
+		usersa[i] = new(User)
+	}
+	//TODO: find 查找全部咋用， DB.Find(usersa)
+	DB.Model(&User{}).First(usersa[0])
+	return usersa
 }
 

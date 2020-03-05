@@ -13,5 +13,11 @@ func RegisterApi(app *iris.Application){
 		party.Get("/",  controllers.ApiUserGetAll)
 		party.Get("/{id:uint}",  controllers.ApiUserGetById)
 		party.Post("/",  controllers.ApiUserPost)
+		party.Put("/",  controllers.ApiUserUpdate)
+		party.Post("/insertOrUpdate",  controllers.ApiUserInsertOrUpdate)
+	})
+
+	api.PartyFunc("/database", func(party iris.Party){
+		party.Post("/create", controllers.ApiDatabaseCreate)
 	})
 }

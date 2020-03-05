@@ -197,7 +197,54 @@ func  ApiUserPost(ctx iris.Context) {
 	u := models.User{}
 	u.Username = aul.Username
 	u.Password = aul.Password
+	u.Phonenumber = aul.Phonenumber
+	u.Level = aul.Level
 	models.UserInsert(&u)
 
 	_, _ = ctx.JSON(ApiResource(true, nil, "成功添加数据行"))
+}
+
+func  ApiUserUpdate(ctx iris.Context) {
+	fmt.Println("ApiUserUpdate is called")
+	aul := new(validates.CreateUpdateUserRequest)
+	if err := ctx.ReadJSON(aul); err != nil {
+		ctx.StatusCode(iris.StatusOK)
+		_, _ = ctx.JSON(ApiResource(false, nil, err.Error()))
+		return
+	}
+	u := models.User{}
+	u.Username = aul.Username
+	u.Password = aul.Password
+	models.UserUpdate(&u)
+
+	_, _ = ctx.JSON(ApiResource(true, nil, "成功修改数据行"))
+}
+
+func  ApiUserInsertOrUpdate(ctx iris.Context) {
+	fmt.Println("ApiUserInsertOrUpdate is called")
+	aul := new(validates.CreateUpdateUserRequest)
+	if err := ctx.ReadJSON(aul); err != nil {
+		ctx.StatusCode(iris.StatusOK)
+		_, _ = ctx.JSON(ApiResource(false, nil, err.Error()))
+		return
+	}
+	u := models.User{}
+	u.Username = aul.Username
+	u.Password = aul.Password
+	u.Phonenumber = aul.Phonenumber
+	u.Level = aul.Level
+
+	if models.UserFindByName(u.Username) != nil {
+		models.UserUpdate(&u)
+	}else{
+		models.UserInsert(&u)
+	}
+
+	_, _ = ctx.JSON(ApiResource(true, nil, "成功更新数据行"))
+}
+
+func  ApiDatabaseCreate(ctx iris.Context) {
+	str := models.UserCreateTable()
+	_, _ = ctx.JSON(ApiResource(true, nil, str))
+
 }
