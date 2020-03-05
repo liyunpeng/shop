@@ -64,14 +64,16 @@ func UserFindById(id uint) *User{
 
 func UserFindAll() ( []*User){
 	//var users []*User
-	DB.DB().Ping()
-	usersa := make([]*User, 100)
-
-	for i := 0; i < 100; i++ {
-		usersa[i] = new(User)
-	}
-	//TODO: find 查找全部咋用， DB.Find(usersa)
-	DB.Model(&User{}).First(usersa[0])
+	//DB.DB().Ping()
+	//usersa := make([]*User, 100)
+	//
+	//for i := 0; i < 100; i++ {
+	//	usersa[i] = new(User)
+	//}
+	var usersa []*User
+	//TODO: find 查找全部咋用，
+	DB.Model(&User{}).Find(&usersa)
+	//DB.Model(&User{}).First(usersa[0])
 	return usersa
 }
 
