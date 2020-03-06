@@ -61,7 +61,7 @@ func UserFindByName(name string) *User{
 }
 
 func UserUpdate(user *User) (err error){
-	DB.Model(&User{}).Update(user)
+	DB.Model(&User{}).Where("username =?", user.Username).Update(user)
 	return nil
 }
 

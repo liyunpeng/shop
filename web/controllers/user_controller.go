@@ -249,7 +249,7 @@ func  ApiDatabaseCreate(ctx iris.Context) {
 	str := models.UserCreateTable()
 	str += models.AuthtokenCreateTable()
 	user := models.User{
-		Username : "admin",
+		Username : "admin@126.com",
 		Password : "123",
 	}
 
