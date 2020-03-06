@@ -9,7 +9,9 @@ import (
 func RegisterApi(app *iris.Application){
 	api := app.Party("/api", middleware.CorsAuth()).AllowMethods(iris.MethodOptions)
 
+	api.Post("/login", controllers.UserLogin)
 	api.PartyFunc("/user", func(party iris.Party){
+		party.Use(middleware.JwtHandler().Serve) //登录验证
 		party.Get("/",  controllers.ApiUserGetAll)
 		party.Get("/{id:uint}",  controllers.ApiUserGetById)
 		party.Post("/",  controllers.ApiUserPost)

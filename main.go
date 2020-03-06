@@ -8,14 +8,15 @@ import (
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
 	"github.com/kataras/iris/v12/sessions"
-	"shop/web/routes"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
+	"shop/web/routes"
 	"time"
 
 	"shop/config"
 	"shop/models"
 	"shop/services"
+	_ "shop/validate"
 	"shop/web/controllers"
 )
 

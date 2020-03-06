@@ -1,6 +1,7 @@
 package controllers
 import (
 	"fmt"
+	"github.com/go-playground/validator/v10"
 	"shop/models"
 	"shop/services"
 	"github.com/kataras/iris/v12"
@@ -229,7 +230,7 @@ func  ApiUserInsertOrUpdate(ctx iris.Context) {
 		return
 	}
 	u := models.User{}
-	u.Username = aul.Username
+
 	u.Password = aul.Password
 	u.Phonenumber = aul.Phonenumber
 	u.Level = aul.Level
@@ -237,6 +238,7 @@ func  ApiUserInsertOrUpdate(ctx iris.Context) {
 	if models.UserFindByName(u.Username) != nil {
 		models.UserUpdate(&u)
 	}else{
+		u.Username = aul.Username
 		models.UserInsert(&u)
 	}
 
@@ -245,6 +247,43 @@ func  ApiUserInsertOrUpdate(ctx iris.Context) {
 
 func  ApiDatabaseCreate(ctx iris.Context) {
 	str := models.UserCreateTable()
+	str += models.AuthtokenCreateTable()
+	user := models.User{
+		Username : "admin",
+		Password : "123",
+	}
+
+	models.UserInsert(&user)
+
 	_, _ = ctx.JSON(ApiResource(true, nil, str))
+
+}
+
+func UserLogin(ctx iris.Context) {
+	aul := new(validates.LoginRequest)
+
+	if err := ctx.ReadJSON(aul); err != nil {  //{"username":"username", "password","passrd"}
+		ctx.StatusCode(iris.StatusOK)
+		_, _ = ctx.JSON(ApiResource(false, nil, err.Error()))
+		return
+	}
+
+	err := validates.Validate.Struct(*aul)
+	if err != nil {
+		errs := err.(validator.ValidationErrors)
+		for _, e := range errs.Translate(validates.ValidateTrans) {
+			if len(e) > 0 {
+				ctx.StatusCode(iris.StatusOK)
+				_, _ = ctx.JSON(ApiResource(false, nil, e))
+				return
+			}
+		}
+	}
+
+	ctx.Application().Logger().Infof("%s 登录系统", aul.Username)
+	ctx.StatusCode(iris.StatusOK)
+	response, status, msg := models.CheckLogin(aul.Username, aul.Password)
+	_, _ = ctx.JSON(ApiResource(status, response, msg))
+	return
 
 }

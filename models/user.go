@@ -2,8 +2,14 @@ package models
 
 import (
 	"bytes"
+	"errors"
+	"fmt"
+	"github.com/fatih/color"
+	"github.com/iris-contrib/middleware/jwt"
+	"github.com/jameskeane/bcrypt"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
+	"time"
 )
 
 type User struct {
@@ -35,6 +41,16 @@ func UserCreateTable() (s string) {
 }
 
 func UserInsert(user *User){
+	salt, _ := bcrypt.Salt(10)
+	hash, _ := bcrypt.Hash(user.Password, salt)
+
+	user.Password = hash
+	//user = &User{
+	//	Username: aul.Username,
+	//	Password: hash,
+	//	Name:     aul.Name,
+	//}
+
 	DB.Create(user)
 }
 
@@ -77,3 +93,47 @@ func UserFindAll() ( []*User){
 	return usersa
 }
 
+func IsNotFound(err error) {
+	if ok := errors.Is(err, gorm.ErrRecordNotFound); !ok && err != nil {
+		color.Red(fmt.Sprintf("error :%v \n ", err))
+	}
+}
+
+func UserAdminCheckLogin(username string) *User {
+	user := new(User)
+	IsNotFound(DB.Where("username = ?", username).First(user).Error)
+
+	return user
+}
+
+func CheckLogin(username, password string) (response Token, status bool, msg string) {
+	user := UserAdminCheckLogin(username)
+	if user.ID == 0 {
+		msg = "用户不存在"
+		return
+	} else {
+		if ok := bcrypt.Match(password, user.Password); ok {
+			token := jwt.NewTokenWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+				"exp": time.Now().Add(time.Hour * time.Duration(1)).Unix(),
+				"iat": time.Now().Unix(),
+			})
+			tokenString, _ := token.SignedString([]byte("HS2JDFKhu7Y1av7b"))
+			oauthToken := new(OauthToken)
+			oauthToken.Token = tokenString
+			oauthToken.UserId = user.ID
+			oauthToken.Secret = "secret"
+			oauthToken.Revoked = false
+			oauthToken.ExpressIn = time.Now().Add(time.Hour * time.Duration(1)).Unix()
+			oauthToken.CreatedAt = time.Now()
+			response = oauthToken.OauthTokenCreate()
+			status = true
+			msg = "登陆成功"
+
+			return
+
+		} else {
+			msg = "用户名或密码错误"
+			return
+		}
+	}
+}
