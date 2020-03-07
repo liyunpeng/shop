@@ -56,8 +56,27 @@ func UserInsert(user *User){
 
 func UserFindByName(name string) *User{
 	user := new(User)
-	DB.Where("username =?", name).First(user)
-	return  user
+	tx := DB.Where("username =?", name).Find(&user)
+	if ( tx.Error == nil){
+		return user
+	}else{
+		return nil
+	}
+}
+
+func IsUserExist(name string)  bool {
+	var count int
+	if DB.Model(&User{}).Where("username =?", name).Count(&count).Error != nil {
+		panic("IsExist 异常")
+	} else {
+		if (count == 0 ) {
+			return false
+		} else if ( count == 1) {
+			return true
+		} else {
+			panic("IsExist count 异常")
+		}
+	}
 }
 
 func UserUpdate(user *User) (err error){

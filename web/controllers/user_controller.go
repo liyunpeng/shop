@@ -231,11 +231,12 @@ func  ApiUserInsertOrUpdate(ctx iris.Context) {
 	}
 	u := models.User{}
 
+	u.Username = aul.Username
 	u.Password = aul.Password
 	u.Phonenumber = aul.Phonenumber
 	u.Level = aul.Level
 
-	if models.UserFindByName(u.Username) != nil {
+	if models.IsUserExist(u.Username) == true {
 		models.UserUpdate(&u)
 	}else{
 		u.Username = aul.Username
@@ -285,5 +286,4 @@ func UserLogin(ctx iris.Context) {
 	response, status, msg := models.CheckLogin(aul.Username, aul.Password)
 	_, _ = ctx.JSON(ApiResource(status, response, msg))
 	return
-
 }
