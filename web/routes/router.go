@@ -13,20 +13,20 @@ import (
 func RegisterApi(app *iris.Application){
 	api := app.Party("/api", middleware.CorsAuth()).AllowMethods(iris.MethodOptions)
 
-	api.Post("/login", controllers.UserLogin)
+	api.Post("/login", controllers.UserLogin).Name = "登录"
 	api.PartyFunc("/user", func(party iris.Party){
 		casbinMiddleware := middleware.New(models.Enforcer)                  //casbin for gorm                                                   // <- IMPORTANT, register the middleware.
 		party.Use(middleware.JwtHandler().Serve) //登录验证
-		party.Use(middleware.JwtHandler().Serve, casbinMiddleware.ServeHTTP) //登录验证
-		party.Get("/",  controllers.ApiUserGetAll)
-		party.Get("/{id:uint}",  controllers.ApiUserGetById)
-		party.Post("/",  controllers.ApiUserPost)
-		party.Put("/",  controllers.ApiUserUpdate)
-		party.Post("/insertOrUpdate",  controllers.ApiUserInsertOrUpdate)
+		party.Use(middleware.JwtHandler().Serve, casbinMiddleware.ServeHTTP) //权限验证
+		party.Get("/",  controllers.ApiUserGetAll).Name = "获取所有用户"
+		party.Get("/{id:uint}",  controllers.ApiUserGetById).Name = "获取指定用户"
+		party.Post("/",  controllers.ApiUserPost).Name = "创建用户"
+		party.Put("/",  controllers.ApiUserUpdate).Name = "修改用户"
+		party.Post("/insertOrUpdate",  controllers.ApiUserInsertOrUpdate).Name = "创建或修改用户"
 	})
 
 	api.PartyFunc("/database", func(party iris.Party){
-		party.Post("/create", controllers.ApiDatabaseCreate)
+		party.Post("/create", controllers.ApiDatabaseCreate).Name = "创建初始数据库"
 	})
 }
 
