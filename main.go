@@ -16,7 +16,7 @@ import (
 	"shop/config"
 	"shop/models"
 	"shop/services"
-	_ "shop/validate"
+	_ "shop/validates"
 	"shop/web/controllers"
 )
 
@@ -40,6 +40,13 @@ func main() {
 	app.Logger().SetLevel("debug")
 
 	models.Register(Conf)
+
+	models.DB.AutoMigrate(
+		&models.User{},
+		&models.OauthToken{},
+		&models.Role{},
+		&models.Permission{},
+	)
 
 	tmpl := iris.HTML("./web/views", ".html").
 		Layout("shared/layout.html").
@@ -87,6 +94,8 @@ func main() {
 	user.Handle(new(controllers.UserGController))
 
 	routes.RegisterApi(app)
+	apiRoutes := routes.GetRoutes(app)
+	models.CreateSystemData(apiRoutes)
 
 	app.Run(
 		// Starts the web server at localhost:8080

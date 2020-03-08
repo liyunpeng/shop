@@ -4,6 +4,9 @@ go 1.13
 
 require (
 	github.com/ajg/form v1.5.1 // indirect
+	github.com/casbin/casbin v1.9.1
+	github.com/casbin/casbin/v2 v2.2.1
+	github.com/casbin/gorm-adapter/v2 v2.0.3
 	github.com/fasthttp-contrib/websocket v0.0.0-20160511215533-1f3b11f56072 // indirect
 	github.com/fatih/color v1.9.0
 	github.com/go-playground/locales v0.13.0

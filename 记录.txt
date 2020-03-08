@@ -1,1 +1,12 @@
+1. 批量替换文件
  find  -name "*.go" | xargs  sed -i 's/github.com\/liyunpeng\///g'
+
+
+ 2. 批量创建数据库表
+ 	models.DB.AutoMigrate(
+ 		&models.User{},
+ 		&models.OauthToken{},
+ 		&models.Role{},
+ 		&models.Permission{},
+ 	)
+

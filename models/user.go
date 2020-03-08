@@ -9,6 +9,8 @@ import (
 	"github.com/jameskeane/bcrypt"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
+	"shop/validates"
+	"strconv"
 	"time"
 )
 
@@ -16,6 +18,7 @@ type User struct {
 	gorm.Model
 	Salt      string `gorm:"type:varchar(255)" json:"salt"`
 	Username  string `gorm:"unique_index" json:"username"`
+	Name     string `gorm:"not null VARCHAR(191)"`
 	Password  string `gorm:"type:varchar(200);column:password" json:"-"`
 	Phonenumber  string `gorm:"type:varchar(200);column:phonenumber" json:"phonenumber"`
 	Level string `gorm:"type:varchar(200);column:level" json:"level"`
@@ -156,3 +159,60 @@ func CheckLogin(username, password string) (response Token, status bool, msg str
 		}
 	}
 }
+func addRoles(uj *validates.CreateUpdateUserRequest, user *User) {
+	if len(uj.RoleIds) > 0 {
+		userId := strconv.FormatUint(uint64(user.ID), 10)
+		if _, err = Enforcer.DeleteRolesForUser(userId); err != nil {
+			color.Red(fmt.Sprintf("CreateUserErr:%s \n ", err))
+		}
+
+		for _, roleId := range uj.RoleIds {
+			roleId := strconv.FormatUint(uint64(roleId), 10)
+			if _, err = Enforcer.AddRoleForUser(userId, roleId); err != nil {
+				color.Red(fmt.Sprintf("CreateUserErr:%s \n ", err))
+			}
+		}
+	}
+}
+
+func CreateUser(aul *validates.CreateUpdateUserRequest) (user *User) {
+	salt, _ := bcrypt.Salt(10)
+	hash, _ := bcrypt.Hash(aul.Password, salt)
+
+	user = &User{
+		Username: aul.Username,
+		Password: hash,
+		Name:     aul.Name,
+	}
+
+	if err := DB.Create(user).Error; err != nil {
+		color.Red(fmt.Sprintf("CreateUserErr:%s \n ", err))
+	}
+
+	addRoles(aul, user)
+
+	return
+}
+
+func CreateSystemAdmin(roleId uint ) *User {
+	aul := &validates.CreateUpdateUserRequest{
+		Username: "admin",
+		Password: "123",
+		Name:    "admin",
+		RoleIds:  []uint{roleId},
+	}
+
+	if ( IsUserExist( aul.Username)) {
+		return CreateUser(aul)
+	}else{
+		user := UserFindByName(aul.Username)
+		return user
+	}
+	//user := UserFindByName(aul.Username)
+	//if user.ID == 0 {
+	//	return CreateUser(aul)
+	//} else {
+	//	return user
+	//}
+}
+

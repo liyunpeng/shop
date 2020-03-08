@@ -8,7 +8,7 @@ import (
 	"github.com/kataras/iris/v12/mvc"
 	"github.com/kataras/iris/v12/sessions"
 	"net/http"
-	validates "shop/validate"
+	validates "shop/validates"
 )
 
 type UserGController struct {
