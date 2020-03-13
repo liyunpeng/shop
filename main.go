@@ -3,6 +3,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
 	"github.com/kataras/iris/v12/sessions"
@@ -77,6 +78,24 @@ func getSysConf() *transformer.Conf {
 	return cf
 }
 
+func GetEtcdKeys() ([]string) {
+	var etcdKeys []string
+	//ips, err := getLocalIP()
+	var ips []string
+	//var err error
+	ips = append(ips, "192.168.0.142")
+	//if err != nil {
+	//	fmt.Println("get local ip error:", err)
+	//	//return err
+	//}
+	for _, ip := range ips {
+		key := fmt.Sprintf("/logagent/%s/logconfig", ip)
+		etcdKeys = append(etcdKeys, key)
+	}
+	fmt.Println("从etcd服务器获取到的以IP名为键的键值对: \n", etcdKeys)
+	return etcdKeys
+}
+
 func main() {
 	app := iris.New()
 	app.Logger().SetLevel("debug")
@@ -84,6 +103,25 @@ func main() {
 	Sc = iris.TOML("./config/conf.tml")
 	rc := getSysConf()
 	models.Register(rc)
+
+
+	etcdService := services.NewEtcdService(
+		[]string{"192.168.0.141:2379"}, 5 * time.Second)
+	//[]string{"127.0.0.1:2379"}, 5 * time.Second)
+
+	etcdKeys := GetEtcdKeys()
+	fmt.Println("到etcd服务器，按指定的键遍历键值对")
+	for _, key := range etcdKeys {
+		resp := etcdService.Get(key)
+		for _, ev := range resp.Kvs {
+			services.ConfChan <- string(ev.Value)
+			fmt.Printf("etcdkey = %s \n etcdvalue = %s \n", ev.Key, ev.Value)
+		}
+	}
+
+	// 启动对etcd的监听服务，有新的键值对会被监听到
+	go etcdService.EtcdWatch(etcdKeys)
+
 
 	models.DB.AutoMigrate(
 		&models.User{},
