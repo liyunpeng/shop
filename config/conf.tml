@@ -15,9 +15,11 @@ Charset = "UTF-8"
         # CreateSysData = 1 # 是否创建系统数据 true / false
     [Other.Mysql]
         DirverName = "mysql" # 数据库驱动名称
-        Connect ="root:root@(127.0.0.1:3306)/"
-        Name ="iris" # 数据库名称
-        TName ="iris_test" # 测试数据库名称
+        Connect ="root:123456@/gotest?charset=utf8&parseTime=True&loc=Local"
+        Name ="gotest" # 数据库名称
+        TName ="gotest_test" # 测试数据库名称
+        # MaxIdle =1000
+        # MaxOpen	=1000
     [Other.Mongodb]
         Connect = "mongodb://root:123456@127.0.0.1:27017/admin"
     [Other.Sqlite]

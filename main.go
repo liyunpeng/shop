@@ -3,19 +3,17 @@
 package main
 
 import (
-	"flag"
-	"fmt"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
 	"github.com/kataras/iris/v12/sessions"
-	"gopkg.in/yaml.v2"
-	"io/ioutil"
 	"shop/web/routes"
 	"time"
 
+	gf "github.com/snowlyg/gotransformer"
 	"shop/config"
 	"shop/models"
 	"shop/services"
+	"shop/transformer"
 	_ "shop/validates"
 	"shop/web/controllers"
 )
@@ -23,23 +21,69 @@ import (
 var Conf *config.Config
 
 func init() {
-	var _path string
+	//var _path string
+	//
+	//flag.StringVar(&_path, "c", "./config.yaml", "default config path")
+	//Conf = &config.Config{}
+	//
+	//content, err := ioutil.ReadFile(_path)
+	//if err == nil {
+	//	err = yaml.Unmarshal(content, Conf)
+	//	fmt.Println("Conf=", Conf)
+	//}
+}
 
-	flag.StringVar(&_path, "c", "./config.yaml", "default config path")
-	Conf = &config.Config{}
+var Sc iris.Configuration
 
-	content, err := ioutil.ReadFile(_path)
-	if err == nil {
-		err = yaml.Unmarshal(content, Conf)
-		fmt.Println("Conf=", Conf)
+func getSysConf() *transformer.Conf {
+	app := transformer.App{}
+	g := gf.NewTransform(&app, Sc.Other["App"], time.RFC3339)
+	_ = g.Transformer()
+
+	db := transformer.Mysql{}
+	g.OutputObj = &db
+	g.InsertObj = Sc.Other["Mysql"]
+	_ = g.Transformer()
+
+	mongodb := transformer.Mongodb{}
+	g.OutputObj = &mongodb
+	g.InsertObj = Sc.Other["Mongodb"]
+	_ = g.Transformer()
+
+	redis := transformer.Redis{}
+	g.OutputObj = &redis
+	g.InsertObj = Sc.Other["Redis"]
+	_ = g.Transformer()
+
+	sqlite := transformer.Sqlite{}
+	g.OutputObj = &sqlite
+	g.InsertObj = Sc.Other["Sqlite"]
+	_ = g.Transformer()
+
+	testData := transformer.TestData{}
+	g.OutputObj = &testData
+	g.InsertObj = Sc.Other["TestData"]
+	_ = g.Transformer()
+
+	cf := &transformer.Conf{
+		App:      app,
+		Mysql:    db,
+		Mongodb:  mongodb,
+		Redis:    redis,
+		Sqlite:   sqlite,
+		TestData: testData,
 	}
+
+	return cf
 }
 
 func main() {
 	app := iris.New()
 	app.Logger().SetLevel("debug")
 
-	models.Register(Conf)
+	Sc = iris.TOML("./config/conf.tml")
+	rc := getSysConf()
+	models.Register(rc)
 
 	models.DB.AutoMigrate(
 		&models.User{},
@@ -103,6 +147,7 @@ func main() {
 		// Ignores err server closed log when CTRL/CMD+C pressed.
 		iris.WithoutServerError(iris.ErrServerClosed),
 		// Enables faster json serialization and more.
-		iris.WithOptimizations,
+		//iris.WithOptimizations,
+		iris.WithConfiguration(Sc),
 	)
 }

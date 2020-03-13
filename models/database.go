@@ -6,8 +6,8 @@ import (
 	gormadapter "github.com/casbin/gorm-adapter/v2"
 	"github.com/fatih/color"
 	"github.com/jinzhu/gorm"
-	"shop/config"
 	_ "shop/config"
+	"shop/transformer"
 	"shop/validates"
 	"time"
 )
@@ -15,21 +15,22 @@ var Enforcer *casbin.Enforcer
 var err error
 var c *gormadapter.Adapter
 var DB *gorm.DB
-func Register(conf *config.Config) {
+func Register(rc *transformer.Conf) {
 	defer func() {
 		if err := recover(); err != nil {
 			fmt.Println(err) // 这里的err其实就是panic传入的内容
 		}
 	}()
-	mysqlConf := conf.Mysql
+	//mysqlConf := conf.Mysql
 
-	DBConn := "root:123456@/gotest?charset=utf8&parseTime=True&loc=Local"
+	//DBConn := "root:123456@/gotest?charset=utf8&parseTime=True&loc=Local"
+	mysql := rc.Mysql // "root:123456@/gotest?charset=utf8&parseTime=True&loc=Local"
 	DB, err = gorm.Open(
-		"mysql",  DBConn)
+		"mysql",  mysql.Connect)
 	//"mysql", "root:password@tcp(192.168.0.220:31111)/gotest?charset=utf8&parseTime=True&loc=Local")
 	if err == nil {
-		DB.DB().SetMaxIdleConns(mysqlConf.MaxIdle)
-		DB.DB().SetMaxOpenConns(mysqlConf.MaxOpen)
+		//DB.DB().SetMaxIdleConns(mysql.MaxIdle)
+		//DB.DB().SetMaxOpenConns(mysql.MaxOpen)
 		DB.DB().SetConnMaxLifetime(time.Duration(300) * time.Minute)
 		err = DB.DB().Ping()
 		fmt.Println("成功连接数据库")
