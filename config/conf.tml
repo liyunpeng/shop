@@ -32,6 +32,8 @@ Charset = "UTF-8"
 #      DB = "0"
 
     [Other.TestData]
-          UserName = "username" #管理员用户名
-          Name = "name"  #管理员名称
-          Pwd = "password" #管理员密码
+      UserName = "username" #管理员用户名
+      Name = "name"  #管理员名称
+      Pwd = "password" #管理员密码
+    [Other.Kafka]
+      Addr = "9092"

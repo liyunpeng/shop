@@ -11,6 +11,7 @@ type Conf struct {
 	Sqlite   Sqlite
 	Redis    Redis
 	TestData TestData
+	Kafka    Kafka
 }
 
 type App struct {
@@ -53,4 +54,8 @@ type TestData struct {
 	Pwd             string
 	DataBaseDriver  string
 	DataBaseConnect string
+}
+
+type Kafka struct {
+	Addr     string
 }

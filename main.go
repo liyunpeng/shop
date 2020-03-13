@@ -123,6 +123,26 @@ func main() {
 	go etcdService.EtcdWatch(etcdKeys)
 
 
+	tailService := services.NewTailService()
+	go tailService.RunServer()
+
+	services.NewKafkaService(
+		rc.Kafka.Addr, 3)
+
+	/*
+		创建iris应用的
+		app.Party得到一个路由对象， party的参数就是一个路径，整个应有都是在这个路径下，
+		mvc.new 由这个路由对象， 创建一个mvc的app对象。
+		这个app就可以做很多事情，
+		注册服务啊，注册控制器
+
+	*/
+	etcdManagerApp := mvc.New(app.Party("/etcdmanager"))
+	etcdManagerApp.Register(etcdService)
+	etcdManagerApp.Handle(new(controllers.EtcdManangerController))
+
+
+
 	models.DB.AutoMigrate(
 		&models.User{},
 		&models.OauthToken{},
