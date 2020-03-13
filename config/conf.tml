@@ -8,7 +8,7 @@ Charset = "UTF-8"
 [Other]
     [Other.App]
         Name = "IrisAdminApi" #项目名称
-        URl = "http://192.168.0.141"
+        URl = "http://192.168.0.198"
         Port = ":8081"
         LoggerLevel = "debug" # 日志类型 "disable" "fatal" "error" "warn""info" "debug"
         DirverType = "Mysql" # 数据库类型 "Sqlite" "Mysql"

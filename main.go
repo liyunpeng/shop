@@ -34,36 +34,34 @@ func init() {
 	//}
 }
 
-var Sc iris.Configuration
-
-func getSysConf() *transformer.Conf {
+func getTransformConfiguration( irisConfiguration iris.Configuration) *transformer.Conf {
 	app := transformer.App{}
-	g := gf.NewTransform(&app, Sc.Other["App"], time.RFC3339)
+	g := gf.NewTransform(&app, irisConfiguration.Other["App"], time.RFC3339)
 	_ = g.Transformer()
 
 	db := transformer.Mysql{}
 	g.OutputObj = &db
-	g.InsertObj = Sc.Other["Mysql"]
+	g.InsertObj = irisConfiguration.Other["Mysql"]
 	_ = g.Transformer()
 
 	mongodb := transformer.Mongodb{}
 	g.OutputObj = &mongodb
-	g.InsertObj = Sc.Other["Mongodb"]
+	g.InsertObj = irisConfiguration.Other["Mongodb"]
 	_ = g.Transformer()
 
 	redis := transformer.Redis{}
 	g.OutputObj = &redis
-	g.InsertObj = Sc.Other["Redis"]
+	g.InsertObj = irisConfiguration.Other["Redis"]
 	_ = g.Transformer()
 
 	sqlite := transformer.Sqlite{}
 	g.OutputObj = &sqlite
-	g.InsertObj = Sc.Other["Sqlite"]
+	g.InsertObj = irisConfiguration.Other["Sqlite"]
 	_ = g.Transformer()
 
 	testData := transformer.TestData{}
 	g.OutputObj = &testData
-	g.InsertObj = Sc.Other["TestData"]
+	g.InsertObj = irisConfiguration.Other["TestData"]
 	_ = g.Transformer()
 
 	cf := &transformer.Conf{
@@ -100,13 +98,12 @@ func main() {
 	app := iris.New()
 	app.Logger().SetLevel("debug")
 
-	Sc = iris.TOML("./config/conf.tml")
-	rc := getSysConf()
-	models.Register(rc)
-
+	irisConfiguration := iris.TOML("./config/conf.tml")
+	transformConfiguration := getTransformConfiguration(irisConfiguration)
+	models.Register(transformConfiguration)
 
 	etcdService := services.NewEtcdService(
-		[]string{"192.168.0.141:2379"}, 5 * time.Second)
+		[]string{"192.168.0.198:2379"}, 5 * time.Second)
 	//[]string{"127.0.0.1:2379"}, 5 * time.Second)
 
 	etcdKeys := GetEtcdKeys()
@@ -127,7 +124,7 @@ func main() {
 	go tailService.RunServer()
 
 	services.NewKafkaService(
-		rc.Kafka.Addr, 3)
+		transformConfiguration.Kafka.Addr, 3)
 
 	/*
 		创建iris应用的
@@ -137,11 +134,9 @@ func main() {
 		注册服务啊，注册控制器
 
 	*/
-	etcdManagerApp := mvc.New(app.Party("/etcdmanager"))
-	etcdManagerApp.Register(etcdService)
-	etcdManagerApp.Handle(new(controllers.EtcdManangerController))
-
-
+	etcdApp := mvc.New(app.Party("/etcd"))
+	etcdApp.Register(etcdService)
+	etcdApp.Handle(new(controllers.EtcdController))
 
 	models.DB.AutoMigrate(
 		&models.User{},
@@ -206,6 +201,6 @@ func main() {
 		iris.WithoutServerError(iris.ErrServerClosed),
 		// Enables faster json serialization and more.
 		//iris.WithOptimizations,
-		iris.WithConfiguration(Sc),
+		iris.WithConfiguration(irisConfiguration),
 	)
 }
