@@ -24,6 +24,30 @@ func (e *EtcdController) Get() mvc.Result {
 	return v
 }
 
+type MonitorFile struct {
+	FileName string `json:"filename"`
+	FileSize int  `json:"filesize"`
+	FileKeyWords string `json:"filekeywords"`
+}
+
+func ApiEtcdGetKV(ctx iris.Context) {
+
+	fmt.Println(" Apiectcd get kv ")
+	s := []MonitorFile{
+		{
+			FileName:"log1.txt",
+			FileSize: 1000,
+			FileKeyWords: "abc",
+		},
+		{
+			FileName:"log2.txt",
+			FileSize: 2000,
+			FileKeyWords: "edf",
+		},
+	}
+	ctx.JSON(ApiResource(true, s,  "获取etcdkvcheng"))
+}
+
 //func (e *EtcdController) Post() mvc.Response {
 //	fmt.Println("ApiUserPost is called")
 //	k := e.Ctx.FormValue("key")
