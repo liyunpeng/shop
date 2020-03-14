@@ -2,8 +2,9 @@ package controllers
 
 import (
 	"fmt"
-	"github.com/kataras/iris"
-	"github.com/kataras/iris/mvc"
+	"github.com/kataras/iris/v12"
+	"github.com/kataras/iris/v12/mvc"
+	//context2 "github.com/kataras/iris/v12/context"
 	"shop/models"
 	"shop/services"
 	"shop/validates"
@@ -24,15 +25,41 @@ func (e *EtcdController) Get() mvc.Result {
 	return v
 }
 
-func (e *EtcdController) Post() mvc.Response {
-	k := e.Ctx.FormValue("key")
-	v := e.Ctx.FormValue("value")
-
-	e.Service.PutKV(k, v)
-	return mvc.Response{
-		Text: "ok",
+//func (e *EtcdController) Post() mvc.Response {
+//	fmt.Println("ApiUserPost is called")
+//	k := e.Ctx.FormValue("key")
+//	v := e.Ctx.FormValue("value")
+//
+//	e.Service.PutKV(k, v)
+//	return mvc.Response{
+//		Text: "ok",
+//	}
+//}
+func (e *EtcdController) Post() {
+	fmt.Println("ApiUserPost is called")
+	aul := new(validates.CreateEtcdKVRequest)
+	if err := e.Ctx.ReadJSON(aul); err != nil {
+		e.Ctx.StatusCode(iris.StatusOK)
+		_, _ = e.Ctx.JSON(ApiResource(false, nil, err.Error()))
+		return
 	}
+
+	e.Service.PutKV(aul.Key, aul.Value)
+	_, _ = e.Ctx.JSON(ApiResource(true, nil, "成功添加etcd键值对"))
 }
+
+//func ApiEtcdPost(ctx context2.Context) {
+//	fmt.Println("ApiUserPost is called")
+//	aul := new(validates.CreateEtcdKVRequest)
+//	if err := ctx.ReadJSON(aul); err != nil {
+//		ctx.StatusCode(iris.StatusOK)
+//		_, _ = ctx.JSON(ApiResource(false, nil, err.Error()))
+//		return
+//	}
+//
+//	//e.Service.PutKV(aul.Key, aul.Value)
+//	_, _ = ctx.JSON(ApiResource(true, nil, "成功添加etcd键值对"))
+//}
 
 func (e *EtcdController) GetKv() string {
 	k := e.Ctx.FormValue("k")
@@ -81,5 +108,6 @@ func ApiEtcdGetKv(ctx iris.Context) {
 //		Text: "ok",
 //	}
 //}
+
 	_, _ = ctx.JSON(ApiResource(true, nil, "成功添加数据行"))
 }
