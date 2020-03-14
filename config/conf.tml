@@ -36,4 +36,4 @@ Charset = "UTF-8"
       Name = "name"  #管理员名称
       Pwd = "password" #管理员密码
     [Other.Kafka]
-      Addr = "9092"
+      Addr = "192.168.0.198:9092"

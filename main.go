@@ -64,6 +64,11 @@ func getTransformConfiguration( irisConfiguration iris.Configuration) *transform
 	g.InsertObj = irisConfiguration.Other["TestData"]
 	_ = g.Transformer()
 
+	kafkaConf := transformer.Kafka{}
+	g.OutputObj = &kafkaConf
+	g.InsertObj = irisConfiguration.Other["Kafka"]
+	_ = g.Transformer()
+
 	cf := &transformer.Conf{
 		App:      app,
 		Mysql:    db,
@@ -71,6 +76,7 @@ func getTransformConfiguration( irisConfiguration iris.Configuration) *transform
 		Redis:    redis,
 		Sqlite:   sqlite,
 		TestData: testData,
+		Kafka: kafkaConf,
 	}
 
 	return cf
@@ -90,7 +96,7 @@ func GetEtcdKeys() ([]string) {
 		key := fmt.Sprintf("/logagent/%s/logconfig", ip)
 		etcdKeys = append(etcdKeys, key)
 	}
-	fmt.Println("从etcd服务器获取到的以IP名为键的键值对: \n", etcdKeys)
+	fmt.Println("从etcd服务器获取到的以IP名为键的键值对: ", etcdKeys)
 	return etcdKeys
 }
 
@@ -116,6 +122,22 @@ func main() {
 		}
 	}
 
+	etcdService.PutKV("/logagent/192.168.0.142/logconfig", `
+[
+	{
+		"topic":"nginx_log",
+		"log_path":"/Users/admin1/goworkspace/shop/log1.txt",
+		"service":"test_service",
+		"send_rate":1000
+	},
+		
+	{
+		"topic":"nginx_log1",
+		"log_path":"/Users/admin1/goworkspace/shop/log2.txt",
+		"service":"test_service1",
+		"send_rate":1000
+	}
+]` )
 	// 启动对etcd的监听服务，有新的键值对会被监听到
 	go etcdService.EtcdWatch(etcdKeys)
 
@@ -124,7 +146,7 @@ func main() {
 	go tailService.RunServer()
 
 	services.NewKafkaService(
-		transformConfiguration.Kafka.Addr, 3)
+		transformConfiguration.Kafka.Addr, 1)
 
 	/*
 		创建iris应用的

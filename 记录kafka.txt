@@ -1,0 +1,59 @@
+1. docker 里的kafka启动不了
+问题：
+docker logs 看到这样的log:
+Will not attempt to authenticate using SASL (unknown error) ,
+运行kafka的时候,提示连接zookeeper错误
+
+分析：
+后来发现是启动zookeeper命令错误
+
+docker run -d --name zookeeper -p 2181:2181 -t wurstmeister/zookeeper
+
+很多网上是这么写的启动zookeeper，虽然启动了，但是其他程序无法访问
+
+解决方式：修改zookeeper启动命令
+    docker run -itd --name zookeeper -p 2181:2181 wurstmeister/zookeeper
+
+tips:
+
+1).-it 是允许与容器实例进行交互的，如果不加的话容器里的连接会拒绝
+
+2). -p 端口映射，把容器的端口和宿主机的端口进行映射
+
+2. 启动kafka
+docker run -d --name kafka -p 9092:9092 -e KAFKA_BROKER_ID=0 -e KAFKA_ZOOKEEPER_CONNECT=192.168.0.198:2181 -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://192.168.0.198:9092 -e KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:9092 -t wurstmeister/kafka
+
+------------------
+bogon:shop admin1$ docker exec -it ef0857453b57 /bin/sh
+/ # ls
+bogon:shop admin1$ docker exec -it ef0857453b57 /bin/sh
+/ # ls
+bin    etc    kafka  lib64  mnt    proc   run    srv    tmp    var
+dev    home   lib    media  opt    root   sbin   sys    usr
+
+kafka脚本自动在path里， 按tab可以看到这些命令
+/ # kafka-
+kafka-acls.sh                        kafka-delete-records.sh              kafka-replica-verification.sh
+kafka-broker-api-versions.sh         kafka-dump-log.sh                    kafka-run-class.sh
+kafka-configs.sh                     kafka-leader-election.sh             kafka-server-start.sh
+kafka-console-consumer.sh            kafka-log-dirs.sh                    kafka-server-stop.sh
+kafka-console-producer.sh            kafka-mirror-maker.sh                kafka-streams-application-reset.sh
+kafka-consumer-groups.sh             kafka-preferred-replica-election.sh  kafka-topics.sh
+kafka-consumer-perf-test.sh          kafka-producer-perf-test.sh          kafka-verifiable-consumer.sh
+kafka-delegation-tokens.sh           kafka-reassign-partitions.sh         kafka-verifiable-producer.sh
+
+创建主题
+/ # kafka-topics.sh --create --zookeeper 192.168.0.198:2181 --replication-factor 1 --partitions 1 --topic MyTopic
+Created topic MyTopic.
+MyTopic
+
+生产者向主题发消息
+/ # kafka-console-producer.sh --broker-list 192.168.0.198:9092 --topic MyTopic
+>1111111111
+>ffffff
+
+打开另一终端，进入容器， 消费者接受消息：
+bogon:shop admin1$ docker exec -it ef0857453b57 /bin/sh
+/ # kafka-console-consumer.sh --bootstrap-server PLAINTEXT://192.168.0.198:9092 --topic MyTopic --from-beginning
+1111111111
+ffffff

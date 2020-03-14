@@ -20,7 +20,14 @@ func NewKafkaService(kafkaAddr string, threadNum int) *kafkaService {
 	k := &kafkaService{
 		Sendors: make([]*KafkaSender, 5, 10),
 	}
-	kafkaSender, _ = NewKafkaSend(kafkaAddr, threadNum)
+	var err error
+	kafkaSender, err = NewKafkaSend(kafkaAddr, threadNum)
+	if ( err != nil) {
+		fmt.Println("kafka 地址=", kafkaAddr)
+		panic("连接kafka broker错误 ")
+	} else {
+		fmt.Println("成功连接kafka broker")
+	}
 	k.Sendors[0] = kafkaSender
 
 	// TODO  comsumer
@@ -71,10 +78,12 @@ func (k *KafkaSender) sendMsgToKfk() {
 		msg.Topic = v.topic
 		msg.Value = sarama.StringEncoder(v.line)
 
-		_, _, err := k.producerClient.SendMessage(msg)
-
 		fmt.Println("kafka生产者向kafka broker发送消息，消息字符串=",
 			msg.Value, ", 消息主题=", msg.Topic)
+
+		_, _, err := k.producerClient.SendMessage(msg)
+
+		fmt.Println("kafka生产者发送消息完成")
 
 		if err != nil {
 			logs.Error("send massage to kafka error: %v", err)
