@@ -7,14 +7,19 @@ import (
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
 	"github.com/kataras/iris/v12/sessions"
+	"net/http"
+	"shop/handler"
+
 	"shop/web/routes"
 	"time"
 
 	gf "github.com/snowlyg/gotransformer"
+	"golang.org/x/net/websocket"
 	"shop/config"
 	"shop/models"
 	"shop/services"
 	"shop/transformer"
+
 	_ "shop/validates"
 	"shop/web/controllers"
 )
@@ -27,7 +32,7 @@ func init() {
 	//flag.StringVar(&_path, "c", "./config.yaml", "default config path")
 	//Conf = &config.Config{}
 	//
-	//content, err := ioutil.ReadFile(_path)
+	//content, err := ioutil.ReadFile(_path)®
 	//if err == nil {
 	//	err = yaml.Unmarshal(content, Conf)
 	//	fmt.Println("Conf=", Conf)
@@ -216,6 +221,17 @@ func main() {
 	apiRoutes := routes.GetRoutes(app)
 	models.CreateSystemData(apiRoutes)
 
+	go func() {
+		fmt.Println("启动 websocket 服务")
+		http.Handle("/ws", websocket.Handler(handler.Handle))
+		err := http.ListenAndServe(":88", nil)
+		if err != nil {
+			fmt.Println(err)
+			fmt.Println("websocket 启动异常")
+		}else{
+			fmt.Println("websocket 监听服务")
+		}
+	}()
 	app.Run(
 		// Starts the web server at localhost:8080
 		iris.Addr(":8082"),
@@ -225,4 +241,7 @@ func main() {
 		//iris.WithOptimizations,
 		iris.WithConfiguration(irisConfiguration),
 	)
+
+
+
 }

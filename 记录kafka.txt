@@ -58,9 +58,40 @@ bogon:shop admin1$ docker exec -it ef0857453b57 /bin/sh
 1111111111
 ffffff
 
-查看主题下的所有没被消费的消息：
+查看主题下的所有消息：
 / # kafka-console-consumer.sh --bootstrap-server 192.168.0.198:9092 --topic nginx_log  --from-beginning
 100
 300
+
+-------------------------
+日志目录:
+/kafka # ls kafka-logs-ef0857453b57/
+MyTopic-0                         __consumer_offsets-25             __consumer_offsets-42
+__consumer_offsets-0              __consumer_offsets-26             __consumer_offsets-43
+__consumer_offsets-1              __consumer_offsets-27             __consumer_offsets-44
+__consumer_offsets-10             __consumer_offsets-28             __consumer_offsets-45
+__consumer_offsets-11             __consumer_offsets-29             __consumer_offsets-46
+__consumer_offsets-12             __consumer_offsets-3              __consumer_offsets-47
+__consumer_offsets-13             __consumer_offsets-30             __consumer_offsets-48
+__consumer_offsets-14             __consumer_offsets-31             __consumer_offsets-49
+__consumer_offsets-15             __consumer_offsets-32             __consumer_offsets-5
+__consumer_offsets-16             __consumer_offsets-33             __consumer_offsets-6
+__consumer_offsets-17             __consumer_offsets-34             __consumer_offsets-7
+__consumer_offsets-18             __consumer_offsets-35             __consumer_offsets-8
+__consumer_offsets-19             __consumer_offsets-36             __consumer_offsets-9
+__consumer_offsets-2              __consumer_offsets-37             cleaner-offset-checkpoint
+__consumer_offsets-20             __consumer_offsets-38             log-start-offset-checkpoint
+__consumer_offsets-21             __consumer_offsets-39             meta.properties
+__consumer_offsets-22             __consumer_offsets-4              nginx_log-0
+__consumer_offsets-23             __consumer_offsets-40             recovery-point-offset-checkpoint
+__consumer_offsets-24             __consumer_offsets-41             replication-offset-checkpoint
+
+/kafka/kafka-logs-ef0857453b57/nginx_log-0 # ls -l
+total 12
+-rw-r--r--    1 root     root      10485760 Mar 14 23:28 00000000000000000000.index
+-rw-r--r--    1 root     root          1846 Mar 15 01:53 00000000000000000000.log
+-rw-r--r--    1 root     root      10485756 Mar 14 23:28 00000000000000000000.timeindex
+-rw-r--r--    1 root     root            10 Mar 14 23:28 00000000000000000003.snapshot
+-rw-r--r--    1 root     root             8 Mar 14 23:28 leader-epoch-checkpoint
 
 

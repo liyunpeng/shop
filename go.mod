@@ -55,5 +55,6 @@ require (
 	go.etcd.io/bbolt v1.3.3 // indirect
 	go.etcd.io/etcd v3.3.18+incompatible
 	go.uber.org/zap v1.14.0 // indirect
+	golang.org/x/net v0.0.0-20191209160850-c0dbc17a3553
 	sigs.k8s.io/yaml v1.2.0 // indirect
 )
