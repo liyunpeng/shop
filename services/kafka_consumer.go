@@ -20,7 +20,7 @@ func StartKafkaConsumer() {
 	//广播式消费：消费者1
 	go clusterConsumer(wg, Address, topic, "group-1")
 	//广播式消费：消费者2
-	go clusterConsumer(wg, Address, topic, "group-2")
+	//go clusterConsumer(wg, Address, topic, "group-2")
 
 	wg.Wait()
 }

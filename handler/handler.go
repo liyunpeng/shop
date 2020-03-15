@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"encoding/json"
 	//"encoding/json"
 	"fmt"
 	"golang.org/x/net/websocket"
@@ -22,10 +23,11 @@ func Handle(conn *websocket.Conn) {
 	defer conn.Close()
 	jsonHandler := websocket.JSON
 	userInfo := &UserInfo{}
-	//res := &Response{
-	//	Code: 1,
-	//	Msg:  "success",
-	//}
+	res := &Response{
+		Code: 1,
+		Msg:  "success",
+		Data:  "init",
+	}
 
 	go Push(conn)
 
@@ -35,13 +37,13 @@ func Handle(conn *websocket.Conn) {
 			fmt.Println(err)
 			break
 		}
-		//jsonData, _ := json.Marshal(userInfo)
-		//fmt.Println("receive data:", string(jsonData[:]))
-		//err = jsonHandler.Send(conn, res)
-		//if err != nil {
-		//	fmt.Println(err)
-		//	break
-		//}
+		jsonData, _ := json.Marshal(userInfo)
+		fmt.Println("receive frontend data:", string(jsonData[:]))
+		err = jsonHandler.Send(conn, res)
+		if err != nil {
+			fmt.Println(err)
+			break
+		}
 
 
 	}
@@ -49,11 +51,7 @@ func Handle(conn *websocket.Conn) {
 
 func Push(conn *websocket.Conn) {
 	jsonHandler := websocket.JSON
-	//res := &Response{
-	//	Code: 1,
-	//	Msg:  "success",
-	//	Data: "hello client",
-	//}
+
 	for {
 		//err := jsonHandler.Send(conn, res)
 		//if err != nil {
@@ -64,7 +62,12 @@ func Push(conn *websocket.Conn) {
 		select {
 		case msg := <- WebsocketChan:
 			fmt.Println("向前端发送数据=",msg)
-			jsonHandler.Send(conn, msg)
+			res := &Response{
+				Code: 1,
+				Msg:  "success",
+				Data: msg,
+			}
+			jsonHandler.Send(conn, res)
 		}
 	}
 }

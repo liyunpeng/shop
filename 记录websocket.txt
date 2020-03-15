@@ -1,0 +1,17 @@
+
+	res := &Response{
+				Code: 1,
+				Msg:  "success",
+				Data: msg,
+			}
+			jsonHandler.Send(conn, res)
+服务器返回结构化数据res， vue的onmessage才会走到， 不然死活走不到，
+还是断点调试， 能最快定位问题， 香型断点调试
+goland编辑vue太慢
+
+  this.websock.onopen = this.onopen
+      this.websock.onerror = this.onerror
+      this.websock.onclose = this.onclose
+    },
+    onmessage: function (e) {
+      // let _this = this

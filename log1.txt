@@ -1,53 +1,3413 @@
+wwwwbvvvvvw
+wwwwbvvvvvw
+wwwwbvvvvvwssssssssssssssss
+wwwwbvvvvvwssfffffff
+wwwwbvvvvvwssfffffff
+wwwwbvvvvvwssfffffff
+wwwwbvvvvvwssfffffff
+wwwwbvvvvvwssfffffff
+wwwwbvvvvvwssfffffff
+wwwwbvvvvvwssfffffff
+wwwwbvvvvvwssfffffff
+wwwwbvvvvvwssfffffff
+wwwwbvvvvvwssfffffff
+wwwwbvvvvvwssfffffff
+wwwwbvvvvvwssfffffff
+wwwwbvvvvvwssfffffff
+wwwwbvvvvvwssfffffff
+wwwwbvvvvvwssfffffff
+wwwwbvvvvvwssfffffff
+wwwwbvvvvvwssfffffff
+wwwwbvvvvvwssfffffff
+wwwwbvvvvvwssfffffff
+wwwwbvvvvvwssfffffff
+wwwwbvvvvvwssfffffff
+wwwwbvvvvvwssfffffff
+wwwwbvvvvvwssfffffff
+wwwwbvvvvvwssfffffff
+wwwwbvvvvvwssfffffff
+wwwwbvvvvvwssfffffff
+wwwwbvvvvvwssfffffff
+wwwwbvvvvvwssfffffff
+wwwwbvvvvvwssfffffff
+wwwwbvvvvvwssfffffff
+wwwwbvvvvvwssfffffff
+wwwwbvvvvvwssfffffff
+wwwwbvvvvvwssfffffff
+wwwwbvvvvvwssfffffff
+wwwwbvvvvvwssfffffff
+wwwwbvvvvvwssfffffff
+wwwwbvvvvvwssfffffff
+wwwwbvvvvvwssfffffff
+wwwwbvvvvvwssfffffff
+wwwwbvvvvvwssfffffff
+wwwwbvvvvvwssfffffff
+wwwwbvvvvvwssfffffff
+wwwwbvvvvvwssfffffff
+wwwwbvvvvvwssfffffff
+wwwwbvvvvvwssfffffff
+wwwwbvvvvvwssfffffff
+wwwwbvvvvvwssfffffff
+wwwwbvvvvvwssfffffff
+wwwwbvvvvvwssfffffff
+aaaaaaaaf
+aaaaaaaaf
+aaaaaaaaf
+aaaaaaaaf
+aaaaaaaaf
+aaaaaaaaf
+aaaaaaaaf
+aaaaaaaaf
+aaaaaaaaf
+aaaaaaaaf
+aaaaaaaaf
+ccccc
+ccccc
+ccccc
+ccccc
+ccccc
+ccccc
+ccccc
+ccccc
+ccccc
+ccccc
+ddd
+ddd
+ddd
+ddd
+ddd
+ddd
+ddd
+ddd
+ddd
+ddd
+ddd
+dddffffffff
+dddffffffff
+dddffffffff
+dddffffffff
+dddffffffff
+dddffffffff
+dddffffffff
+dddffffffff
+dddffffffff
+fffffff
+fffffff
+fffffff
+fffffff
+fffffddddd  
+visit beautiful //
+visit beautiful file:
+visit beautiful main.go
+visit beautiful package
+visit beautiful main
+visit beautiful import
+visit beautiful (
+visit beautiful "fmt"
+visit beautiful "github.com/kataras/iris/v12"
+visit beautiful "github.com/kataras/iris/v12/mvc"
+visit beautiful "github.com/kataras/iris/v12/sessions"
+visit beautiful //"github.com/kataras/iris/v12/websocket"
+visit beautiful "net/http"
+visit beautiful "shop/handler"
+visit beautiful gf
+visit beautiful "github.com/snowlyg/gotransformer"
+visit beautiful "shop/web/routes"
+visit beautiful "time"
+visit beautiful "golang.org/x/net/websocket"
+visit beautiful "shop/config"
+visit beautiful "shop/models"
+visit beautiful "shop/services"
+visit beautiful "shop/transformer"
+visit beautiful _
+visit beautiful "shop/validates"
+visit beautiful "shop/web/controllers"
+visit beautiful )
+visit beautiful var
+visit beautiful Conf
+visit beautiful *config.Config
+visit beautiful func
+visit beautiful init()
+visit beautiful {
+visit beautiful //var
+visit beautiful _path
+visit beautiful string
+visit beautiful //
+visit beautiful //flag.StringVar(&_path,
+visit beautiful "c",
+visit beautiful "./config.yaml",
+visit beautiful "default
+visit beautiful config
+visit beautiful path")
+visit beautiful //Conf
+visit beautiful =
+visit beautiful &config.Config{}
+visit beautiful //
+visit beautiful //content,
+visit beautiful err
+visit beautiful :=
+visit beautiful ioutil.ReadFile(_path)®
+visit beautiful //if
+visit beautiful err
+visit beautiful ==
+visit beautiful nil
+visit beautiful {
+visit beautiful //
+visit beautiful err
+visit beautiful =
+visit beautiful yaml.Unmarshal(content,
+visit beautiful Conf)
+visit beautiful //
+visit beautiful fmt.Println("Conf=",
+visit beautiful Conf)
+visit beautiful //}
+visit beautiful }
+visit beautiful func
+visit beautiful getTransformConfiguration(
+visit beautiful irisConfiguration
+visit beautiful iris.Configuration)
+visit beautiful *transformer.Conf
+visit beautiful {
+visit beautiful app
+visit beautiful :=
+visit beautiful transformer.App{}
+visit beautiful g
+visit beautiful :=
+visit beautiful gf.NewTransform(&app,
+visit beautiful irisConfiguration.Other["App"],
+visit beautiful time.RFC3339)
+visit beautiful _
+visit beautiful =
+visit beautiful g.Transformer()
+visit beautiful db
+visit beautiful :=
+visit beautiful transformer.Mysql{}
+visit beautiful g.OutputObj
+visit beautiful =
+visit beautiful &db
+visit beautiful g.InsertObj
+visit beautiful =
+visit beautiful irisConfiguration.Other["Mysql"]
+visit beautiful _
+visit beautiful =
+visit beautiful g.Transformer()
+visit beautiful mongodb
+visit beautiful :=
+visit beautiful transformer.Mongodb{}
+visit beautiful g.OutputObj
+visit beautiful =
+visit beautiful &mongodb
+visit beautiful g.InsertObj
+visit beautiful =
+visit beautiful irisConfiguration.Other["Mongodb"]
+visit beautiful _
+visit beautiful =
+visit beautiful g.Transformer()
+visit beautiful redis
+visit beautiful :=
+visit beautiful transformer.Redis{}
+visit beautiful g.OutputObj
+visit beautiful =
+visit beautiful &redis
+visit beautiful g.InsertObj
+visit beautiful =
+visit beautiful irisConfiguration.Other["Redis"]
+visit beautiful _
+visit beautiful =
+visit beautiful g.Transformer()
+visit beautiful sqlite
+visit beautiful :=
+visit beautiful transformer.Sqlite{}
+visit beautiful g.OutputObj
+visit beautiful =
+visit beautiful &sqlite
+visit beautiful g.InsertObj
+visit beautiful =
+visit beautiful irisConfiguration.Other["Sqlite"]
+visit beautiful _
+visit beautiful =
+visit beautiful g.Transformer()
+visit beautiful testData
+visit beautiful :=
+visit beautiful transformer.TestData{}
+visit beautiful g.OutputObj
+visit beautiful =
+visit beautiful &testData
+visit beautiful g.InsertObj
+visit beautiful =
+visit beautiful irisConfiguration.Other["TestData"]
+visit beautiful _
+visit beautiful =
+visit beautiful g.Transformer()
+visit beautiful kafkaConf
+visit beautiful :=
+visit beautiful transformer.Kafka{}
+visit beautiful g.OutputObj
+visit beautiful =
+visit beautiful &kafkaConf
+visit beautiful g.InsertObj
+visit beautiful =
+visit beautiful irisConfiguration.Other["Kafka"]
+visit beautiful _
+visit beautiful =
+visit beautiful g.Transformer()
+visit beautiful cf
+visit beautiful :=
+visit beautiful &transformer.Conf{
+visit beautiful App:
+visit beautiful app,
+visit beautiful Mysql:
+visit beautiful db,
+visit beautiful Mongodb:
+visit beautiful mongodb,
+visit beautiful Redis:
+visit beautiful redis,
+visit beautiful Sqlite:
+visit beautiful sqlite,
+visit beautiful TestData:
+visit beautiful testData,
+visit beautiful Kafka:
+visit beautiful kafkaConf,
+visit beautiful }
+visit beautiful return
+visit beautiful cf
+visit beautiful }
+visit beautiful func
+visit beautiful GetEtcdKeys()
+visit beautiful ([]string)
+visit beautiful {
+visit beautiful var
+visit beautiful etcdKeys
+visit beautiful []string
+visit beautiful //ips,
+visit beautiful err
+visit beautiful :=
+visit beautiful getLocalIP()
+visit beautiful var
+visit beautiful ips
+visit beautiful []string
+visit beautiful //var
+visit beautiful err
+visit beautiful error
+visit beautiful ips
+visit beautiful =
+visit beautiful append(ips,
+visit beautiful "192.168.0.142")
+visit beautiful //if
+visit beautiful err
+visit beautiful !=
+visit beautiful nil
+visit beautiful {
+visit beautiful //
+visit beautiful fmt.Println("get
+visit beautiful local
+visit beautiful ip
+visit beautiful error:",
+visit beautiful err)
+visit beautiful //
+visit beautiful //return
+visit beautiful err
+visit beautiful //}
+visit beautiful for
+visit beautiful _,
+visit beautiful ip
+visit beautiful :=
+visit beautiful range
+visit beautiful ips
+visit beautiful {
+visit beautiful key
+visit beautiful :=
+visit beautiful fmt.Sprintf("/logagent/%s/logconfig",
+visit beautiful ip)
+visit beautiful etcdKeys
+visit beautiful =
+visit beautiful append(etcdKeys,
+visit beautiful key)
+visit beautiful }
+visit beautiful fmt.Println("从etcd服务器获取到的以IP名为键的键值对:
+visit beautiful ",
+visit beautiful etcdKeys)
+visit beautiful return
+visit beautiful etcdKeys
+visit beautiful }
+visit beautiful //
+visit beautiful values
+visit beautiful should
+visit beautiful match
+visit beautiful with
+visit beautiful the
+visit beautiful client
+visit beautiful sides
+visit beautiful as
+visit beautiful well.
+visit beautiful const
+visit beautiful enableJWT
+visit beautiful =
+visit beautiful true
+visit beautiful const
+visit beautiful namespace
+visit beautiful =
+visit beautiful "default"
+visit beautiful //
+visit beautiful if
+visit beautiful namespace
+visit beautiful is
+visit beautiful empty
+visit beautiful then
+visit beautiful simply
+visit beautiful websocket.Events{...}
+visit beautiful can
+visit beautiful be
+visit beautiful used
+visit beautiful instead.
+visit beautiful //var
+visit beautiful serverEvents
+visit beautiful =
+visit beautiful websocket.Namespaces{
+visit beautiful //
+visit beautiful namespace:
+visit beautiful websocket.Events{
+visit beautiful //
+visit beautiful websocket.OnNamespaceConnected:
+visit beautiful func(nsConn
+visit beautiful *websocket.NSConn,
+visit beautiful msg
+visit beautiful websocket.Message)
+visit beautiful error
+visit beautiful {
+visit beautiful //
+visit beautiful //
+visit beautiful with
+visit beautiful `websocket.GetContext`
+visit beautiful you
+visit beautiful can
+visit beautiful retrieve
+visit beautiful the
+visit beautiful Iris'
+visit beautiful `Context`.
+visit beautiful //
+visit beautiful ctx
+visit beautiful :=
+visit beautiful websocket.GetContext(nsConn.Conn)
+visit beautiful //
+visit beautiful //
+visit beautiful log.Printf("[%s]
+visit beautiful connected
+visit beautiful to
+visit beautiful namespace
+visit beautiful [%s]
+visit beautiful with
+visit beautiful IP
+visit beautiful [%s]",
+visit beautiful //
+visit beautiful nsConn,
+visit beautiful msg.Namespace,
+visit beautiful //
+visit beautiful ctx.RemoteAddr())
+visit beautiful //
+visit beautiful return
+visit beautiful nil
+visit beautiful //
+visit beautiful },
+visit beautiful //
+visit beautiful websocket.OnNamespaceDisconnect:
+visit beautiful func(nsConn
+visit beautiful *websocket.NSConn,
+visit beautiful msg
+visit beautiful websocket.Message)
+visit beautiful error
+visit beautiful {
+visit beautiful //
+visit beautiful log.Printf("[%s]
+visit beautiful disconnected
+visit beautiful from
+visit beautiful namespace
+visit beautiful [%s]",
+visit beautiful nsConn,
+visit beautiful msg.Namespace)
+visit beautiful //
+visit beautiful return
+visit beautiful nil
+visit beautiful //
+visit beautiful },
+visit beautiful //
+visit beautiful "chat":
+visit beautiful func(nsConn
+visit beautiful *websocket.NSConn,
+visit beautiful msg
+visit beautiful websocket.Message)
+visit beautiful error
+visit beautiful {
+visit beautiful //
+visit beautiful //
+visit beautiful room.String()
+visit beautiful returns
+visit beautiful ->
+visit beautiful NSConn.String()
+visit beautiful returns
+visit beautiful ->
+visit beautiful Conn.String()
+visit beautiful returns
+visit beautiful ->
+visit beautiful Conn.ID()
+visit beautiful //
+visit beautiful log.Printf("[%s]
+visit beautiful sent:
+visit beautiful %s",
+visit beautiful nsConn,
+visit beautiful string(msg.Body))
+visit beautiful //
+visit beautiful //
+visit beautiful //
+visit beautiful Write
+visit beautiful message
+visit beautiful back
+visit beautiful to
+visit beautiful the
+visit beautiful client
+visit beautiful message
+visit beautiful owner
+visit beautiful with:
+visit beautiful //
+visit beautiful //
+visit beautiful nsConn.Emit("chat",
+visit beautiful msg)
+visit beautiful //
+visit beautiful //
+visit beautiful Write
+visit beautiful message
+visit beautiful to
+visit beautiful all
+visit beautiful except
+visit beautiful this
+visit beautiful client
+visit beautiful with:
+visit beautiful //
+visit beautiful nsConn.Conn.Server().Broadcast(nsConn,
+visit beautiful msg)
+visit beautiful //
+visit beautiful return
+visit beautiful nil
+visit beautiful //
+visit beautiful },
+visit beautiful //
+visit beautiful },
+visit beautiful //}
+visit beautiful //func
+visit beautiful websocket1(app
+visit beautiful *iris.Application)
+visit beautiful {
+visit beautiful //
+visit beautiful websocketServer
+visit beautiful :=
+visit beautiful websocket.New(
+visit beautiful //
+visit beautiful websocket.DefaultGorillaUpgrader,
+visit beautiful /Applications
+visit beautiful /Library
+visit beautiful /Network
+visit beautiful /System
+visit beautiful /Users
+visit beautiful /Volumes
+visit beautiful /bin
+visit beautiful /cores
+visit beautiful /dev
+visit beautiful /etc
+visit beautiful /home
+visit beautiful /installer.failurerequests
+visit beautiful /net
+visit beautiful /opt
+visit beautiful /private
+visit beautiful /sbin
+visit beautiful /tmp
+visit beautiful /usr
+visit beautiful /var
+visit beautiful DefaultGobwasUpgrader
+visit beautiful can
+visit beautiful be
+visit beautiful used
+visit beautiful too.
+visit beautiful config/
+visit beautiful handler/
+visit beautiful models/
+visit beautiful services/
+visit beautiful transformer/
+visit beautiful validates/
+visit beautiful vendor/
+visit beautiful web/
+visit beautiful //
+visit beautiful serverEvents)
+visit beautiful //
+visit beautiful //
+visit beautiful //j
+visit beautiful :=
+visit beautiful jwt.New(jwt.Config{
+visit beautiful //
+visit beautiful //
+visit beautiful //
+visit beautiful Extract
+visit beautiful by
+visit beautiful the
+visit beautiful "token"
+visit beautiful url,
+visit beautiful //
+visit beautiful //
+visit beautiful //
+visit beautiful so
+visit beautiful the
+visit beautiful client
+visit beautiful should
+visit beautiful dial
+visit beautiful with
+visit beautiful ws://localhost:8080/echo?token=$token
+visit beautiful //
+visit beautiful //
+visit beautiful Extractor:
+visit beautiful jwt.FromParameter("token"),
+visit beautiful //
+visit beautiful //
+visit beautiful //
+visit beautiful //
+visit beautiful ValidationKeyGetter:
+visit beautiful func(token
+visit beautiful *jwt.Token)
+visit beautiful (interface{},
+visit beautiful error)
+visit beautiful {
+visit beautiful //
+visit beautiful //
+visit beautiful return
+visit beautiful []byte("My
+visit beautiful Secret"),
+visit beautiful nil
+visit beautiful //
+visit beautiful //
+visit beautiful },
+visit beautiful //
+visit beautiful //
+visit beautiful //
+visit beautiful //
+visit beautiful //
+visit beautiful When
+visit beautiful set,
+visit beautiful the
+visit beautiful middleware
+visit beautiful verifies
+visit beautiful that
+visit beautiful tokens
+visit beautiful are
+visit beautiful signed
+visit beautiful //
+visit beautiful //
+visit beautiful //
+visit beautiful with
+visit beautiful the
+visit beautiful specific
+visit beautiful signing
+visit beautiful algorithm
+visit beautiful //
+visit beautiful //
+visit beautiful //
+visit beautiful If
+visit beautiful the
+visit beautiful signing
+visit beautiful method
+visit beautiful is
+visit beautiful not
+visit beautiful constant
+visit beautiful the
+visit beautiful //
+visit beautiful //
+visit beautiful //
+visit beautiful `Config.ValidationKeyGetter`
+visit beautiful callback
+visit beautiful field
+visit beautiful can
+visit beautiful be
+visit beautiful used
+visit beautiful //
+visit beautiful //
+visit beautiful //
+visit beautiful to
+visit beautiful implement
+visit beautiful additional
+visit beautiful checks
+visit beautiful //
+visit beautiful //
+visit beautiful //
+visit beautiful Important
+visit beautiful to
+visit beautiful avoid
+visit beautiful security
+visit beautiful issues
+visit beautiful described
+visit beautiful here:
+visit beautiful //
+visit beautiful //
+visit beautiful //
+visit beautiful https://auth0.com/blog/2015/03/31/critical-vulnerabilities-in-json-web-token-libraries/
+visit beautiful //
+visit beautiful //
+visit beautiful SigningMethod:
+visit beautiful jwt.SigningMethodHS256,
+visit beautiful //
+visit beautiful //})
+visit beautiful //
+visit beautiful //
+visit beautiful idGen
+visit beautiful :=
+visit beautiful func(ctx
+visit beautiful iris.Context)
+visit beautiful string
+visit beautiful {
+visit beautiful //
+visit beautiful if
+visit beautiful username
+visit beautiful :=
+visit beautiful ctx.GetHeader("X-Username");
+visit beautiful username
+visit beautiful !=
+visit beautiful ""
+visit beautiful {
+visit beautiful //
+visit beautiful return
+visit beautiful username
+visit beautiful //
+visit beautiful }
+visit beautiful //
+visit beautiful //
+visit beautiful return
+visit beautiful websocket.DefaultIDGenerator(ctx)
+visit beautiful //
+visit beautiful }
+visit beautiful //
+visit beautiful //
+visit beautiful //
+visit beautiful serves
+visit beautiful the
+visit beautiful endpoint
+visit beautiful of
+visit beautiful ws://localhost:8080/echo
+visit beautiful //
+visit beautiful //
+visit beautiful with
+visit beautiful optional
+visit beautiful custom
+visit beautiful ID
+visit beautiful generator.
+visit beautiful //
+visit beautiful //websocketRoute
+visit beautiful :=
+visit beautiful app.Get("/echo",
+visit beautiful websocket.Handler(websocketServer,
+visit beautiful idGen))
+visit beautiful //
+visit beautiful app.Get("/echo",
+visit beautiful websocket.Handler(websocketServer,
+visit beautiful idGen))
+visit beautiful //
+visit beautiful //}
+visit beautiful func
+visit beautiful main()
+visit beautiful {
+visit beautiful app
+visit beautiful :=
+visit beautiful iris.New()
+visit beautiful app.Logger().SetLevel("debug")
+visit beautiful handler.WebsocketChan
+visit beautiful =
+visit beautiful make(
+visit beautiful chan
+visit beautiful string,
+visit beautiful 1000)
+visit beautiful irisConfiguration
+visit beautiful :=
+visit beautiful iris.TOML("./config/conf.tml")
+visit beautiful transformConfiguration
+visit beautiful :=
+visit beautiful getTransformConfiguration(irisConfiguration)
+visit beautiful models.Register(transformConfiguration)
+visit beautiful etcdService
+visit beautiful :=
+visit beautiful services.NewEtcdService(
+visit beautiful []string{"192.168.0.198:2379"},
+visit beautiful 5
+visit beautiful a.sh
+visit beautiful config
+visit beautiful config.yaml
+visit beautiful etcd操作记录.txt
+visit beautiful folder_structure.png
+visit beautiful go.mod
+visit beautiful go.sum
+visit beautiful handler
+visit beautiful log1.txt
+visit beautiful main
+visit beautiful main.go
+visit beautiful models
+visit beautiful services
+visit beautiful transformer
+visit beautiful validates
+visit beautiful vendor
+visit beautiful web
+visit beautiful 记录kafka.txt
+visit beautiful 记录websocket.txt
+visit beautiful 记录数据库操作.txt
+visit beautiful 调试中途问题记录.txt
+visit beautiful 理解通道缓冲区个数问题.txt
+visit beautiful time.Second)
+visit beautiful //[]string{"127.0.0.1:2379"},
+visit beautiful 5
+visit beautiful a.sh
+visit beautiful config
+visit beautiful config.yaml
+visit beautiful etcd操作记录.txt
+visit beautiful folder_structure.png
+visit beautiful go.mod
+visit beautiful go.sum
+visit beautiful handler
+visit beautiful log1.txt
+visit beautiful main
+visit beautiful main.go
+visit beautiful models
+visit beautiful services
+visit beautiful transformer
+visit beautiful validates
+visit beautiful vendor
+visit beautiful web
+visit beautiful 记录kafka.txt
+visit beautiful 记录websocket.txt
+visit beautiful 记录数据库操作.txt
+visit beautiful 调试中途问题记录.txt
+visit beautiful 理解通道缓冲区个数问题.txt
+visit beautiful time.Second)
+visit beautiful etcdKeys
+visit beautiful :=
+visit beautiful GetEtcdKeys()
+visit beautiful fmt.Println("到etcd服务器，按指定的键遍历键值对")
+visit beautiful for
+visit beautiful _,
+visit beautiful key
+visit beautiful :=
+visit beautiful range
+visit beautiful etcdKeys
+visit beautiful {
+visit beautiful resp
+visit beautiful :=
+visit beautiful etcdService.Get(key)
+visit beautiful for
+visit beautiful _,
+visit beautiful ev
+visit beautiful :=
+visit beautiful range
+visit beautiful resp.Kvs
+visit beautiful {
+visit beautiful services.ConfChan
+visit beautiful <-
+visit beautiful string(ev.Value)
+visit beautiful fmt.Printf("etcdkey
+visit beautiful =
+visit beautiful %s
+visit beautiful 
+
+visit beautiful etcdvalue
+visit beautiful =
+visit beautiful %s
+visit beautiful 
+",
+visit beautiful ev.Key,
+visit beautiful ev.Value)
+visit beautiful }
+visit beautiful }
+visit beautiful etcdService.PutKV("/logagent/192.168.0.142/logconfig",
+visit beautiful `
+visit beautiful [
+visit beautiful {
+visit beautiful "topic":"nginx_log",
+visit beautiful "log_path":"/Users/admin1/goworkspace/shop/log1.txt",
+visit beautiful "service":"test_service",
+visit beautiful "send_rate":1000
+visit beautiful },
+visit beautiful {
+visit beautiful "topic":"nginx_log1",
+visit beautiful "log_path":"/Users/admin1/goworkspace/shop/log2.txt",
+visit beautiful "service":"test_service1",
+visit beautiful "send_rate":1000
+visit beautiful }
+visit beautiful ]`
+visit beautiful )
+visit beautiful //
+visit beautiful 启动对etcd的监听服务，有新的键值对会被监听到
+visit beautiful go
+visit beautiful etcdService.EtcdWatch(etcdKeys)
+visit beautiful tailService
+visit beautiful :=
+visit beautiful services.NewTailService()
+visit beautiful go
+visit beautiful tailService.RunServer()
+visit beautiful services.NewKafkaService(
+visit beautiful transformConfiguration.Kafka.Addr,
+visit beautiful 1)
+visit beautiful /Applications
+visit beautiful /Library
+visit beautiful /Network
+visit beautiful /System
+visit beautiful /Users
+visit beautiful /Volumes
+visit beautiful /bin
+visit beautiful /cores
+visit beautiful /dev
+visit beautiful /etc
+visit beautiful /home
+visit beautiful /installer.failurerequests
+visit beautiful /net
+visit beautiful /opt
+visit beautiful /private
+visit beautiful /sbin
+visit beautiful /tmp
+visit beautiful /usr
+visit beautiful /var
+visit beautiful 创建iris应用的
+visit beautiful app.Party得到一个路由对象，
+visit beautiful party的参数就是一个路径，整个应有都是在这个路径下，
+visit beautiful mvc.new
+visit beautiful 由这个路由对象，
+visit beautiful 创建一个mvc的app对象。
+visit beautiful 这个app就可以做很多事情，
+visit beautiful 注册服务啊，注册控制器
+visit beautiful config/
+visit beautiful handler/
+visit beautiful models/
+visit beautiful services/
+visit beautiful transformer/
+visit beautiful validates/
+visit beautiful vendor/
+visit beautiful web/
+visit beautiful etcdApp
+visit beautiful :=
+visit beautiful mvc.New(app.Party("/etcd"))
+visit beautiful etcdApp.Register(etcdService)
+visit beautiful etcdApp.Handle(new(controllers.EtcdController))
+visit beautiful models.DB.AutoMigrate(
+visit beautiful &models.User{},
+visit beautiful &models.OauthToken{},
+visit beautiful &models.Role{},
+visit beautiful &models.Permission{},
+visit beautiful )
+visit beautiful tmpl
+visit beautiful :=
+visit beautiful iris.HTML("./web/views",
+visit beautiful ".html").
+visit beautiful Layout("shared/layout.html").
+visit beautiful Reload(true)
+visit beautiful app.RegisterView(tmpl)
+visit beautiful app.HandleDir("/public",
+visit beautiful "./web/public")
+visit beautiful app.OnAnyErrorCode(func(ctx
+visit beautiful iris.Context)
+visit beautiful {
+visit beautiful ctx.ViewData("Message",
+visit beautiful ctx.Values().
+visit beautiful GetStringDefault("message",
+visit beautiful "The
+visit beautiful page
+visit beautiful you're
+visit beautiful looking
+visit beautiful for
+visit beautiful doesn't
+visit beautiful exist"))
+visit beautiful ctx.View("shared/error.html")
+visit beautiful })
+visit beautiful sessManager
+visit beautiful :=
+visit beautiful sessions.New(sessions.Config{
+visit beautiful Cookie:
+visit beautiful "sessioncookiename",
+visit beautiful Expires:
+visit beautiful 24
+visit beautiful a.sh
+visit beautiful config
+visit beautiful config.yaml
+visit beautiful etcd操作记录.txt
+visit beautiful folder_structure.png
+visit beautiful go.mod
+visit beautiful go.sum
+visit beautiful handler
+visit beautiful log1.txt
+visit beautiful main
+visit beautiful main.go
+visit beautiful models
+visit beautiful services
+visit beautiful transformer
+visit beautiful validates
+visit beautiful vendor
+visit beautiful web
+visit beautiful 记录kafka.txt
+visit beautiful 记录websocket.txt
+visit beautiful 记录数据库操作.txt
+visit beautiful 调试中途问题记录.txt
+visit beautiful 理解通道缓冲区个数问题.txt
+visit beautiful time.Hour,
+visit beautiful })
+visit beautiful index
+visit beautiful :=
+visit beautiful mvc.New(app.Party("/index"))
+visit beautiful index.Handle(new(controllers.IndexController))
+visit beautiful self
+visit beautiful :=
+visit beautiful mvc.New(app.Party("/self"))
+visit beautiful self.Register(
+visit beautiful sessManager.Start,
+visit beautiful )
+visit beautiful self.Handle(new(controllers.SelfController))
+visit beautiful shopCar
+visit beautiful :=
+visit beautiful mvc.New(app.Party("/shopcar"))
+visit beautiful shopCar.Handle(new(controllers.ShopCarController))
+visit beautiful assort
+visit beautiful :=
+visit beautiful mvc.New(app.Party("/assort"))
+visit beautiful assort.Handle(new(controllers.AssortController))
+visit beautiful order
+visit beautiful :=
+visit beautiful mvc.New(app.Party("/order"))
+visit beautiful order.Handle(new(controllers.OrderController))
+visit beautiful user
+visit beautiful :=
+visit beautiful mvc.New(app.Party("/user"))
+visit beautiful userService
+visit beautiful :=
+visit beautiful services.NewUserService()
+visit beautiful user.Register(
+visit beautiful userService,
+visit beautiful sessManager.Start,
+visit beautiful )
+visit beautiful user.Handle(new(controllers.UserGController))
+visit beautiful routes.RegisterApi(app)
+visit beautiful apiRoutes
+visit beautiful :=
+visit beautiful routes.GetRoutes(app)
+visit beautiful models.CreateSystemData(apiRoutes)
+visit beautiful //websocket1(app)
+visit beautiful go
+visit beautiful func()
+visit beautiful {
+visit beautiful fmt.Println("启动
+visit beautiful websocket
+visit beautiful 服务")
+visit beautiful http.Handle("/ws",
+visit beautiful websocket.Handler(handler.Handle))
+visit beautiful err
+visit beautiful :=
+visit beautiful http.ListenAndServe(":88",
+visit beautiful nil)
+visit beautiful if
+visit beautiful err
+visit beautiful !=
+visit beautiful nil
+visit beautiful {
+visit beautiful fmt.Println(err)
+visit beautiful fmt.Println("websocket
+visit beautiful 启动异常")
+visit beautiful }else{
+visit beautiful fmt.Println("websocket
+visit beautiful 监听服务")
+visit beautiful }
+visit beautiful }()
+visit beautiful //setupWebsocket(app)
+visit beautiful fmt.Println("启动
+visit beautiful iris
+visit beautiful 服务
+visit beautiful ")
+visit beautiful app.Run(
+visit beautiful //
+visit beautiful Starts
+visit beautiful the
+visit beautiful web
+visit beautiful server
+visit beautiful at
+visit beautiful localhost:8080
+visit beautiful iris.Addr(":8082"),
+visit beautiful //
+visit beautiful Ignores
+visit beautiful err
+visit beautiful server
+visit beautiful closed
+visit beautiful log
+visit beautiful when
+visit beautiful CTRL/CMD+C
+visit beautiful pressed.
+visit beautiful iris.WithoutServerError(iris.ErrServerClosed),
+visit beautiful //
+visit beautiful Enables
+visit beautiful faster
+visit beautiful json
+visit beautiful serialization
+visit beautiful and
+visit beautiful more.
+visit beautiful //iris.WithOptimizations,
+visit beautiful iris.WithConfiguration(irisConfiguration),
+visit beautiful )
+visit beautiful fmt.Println("启动
+visit beautiful iris
+visit beautiful 服务
+visit beautiful 1
+visit beautiful ")
+visit beautiful }
+visit beautiful //func
+visit beautiful setupWebsocket(app
+visit beautiful *iris.Application)
+visit beautiful {
+visit beautiful //
+visit beautiful //
+visit beautiful create
+visit beautiful our
+visit beautiful echo
+visit beautiful websocket
+visit beautiful server
+visit beautiful //
+visit beautiful ws
+visit beautiful :=
+visit beautiful websocket.New(websocket.Config{
+visit beautiful //
+visit beautiful ReadBufferSize:
+visit beautiful 1024,
+visit beautiful //
+visit beautiful WriteBufferSize:
+visit beautiful 1024,
+visit beautiful //
+visit beautiful })
+visit beautiful //
+visit beautiful ws.OnConnection(handleConnection)
+visit beautiful //
+visit beautiful //
+visit beautiful //
+visit beautiful register
+visit beautiful the
+visit beautiful server
+visit beautiful on
+visit beautiful an
+visit beautiful endpoint.
+visit beautiful //
+visit beautiful //
+visit beautiful see
+visit beautiful the
+visit beautiful inline
+visit beautiful javascript
+visit beautiful code
+visit beautiful in
+visit beautiful the
+visit beautiful websockets.html,
+visit beautiful //
+visit beautiful //
+visit beautiful this
+visit beautiful endpoint
+visit beautiful is
+visit beautiful used
+visit beautiful to
+visit beautiful connect
+visit beautiful to
+visit beautiful the
+visit beautiful server.
+visit beautiful //
+visit beautiful app.Get("/echo",
+visit beautiful ws.Handler())
+visit beautiful //
+visit beautiful //
+visit beautiful serve
+visit beautiful the
+visit beautiful javascript
+visit beautiful built'n
+visit beautiful client-side
+visit beautiful library,
+visit beautiful //
+visit beautiful //
+visit beautiful see
+visit beautiful websockets.html
+visit beautiful script
+visit beautiful tags,
+visit beautiful this
+visit beautiful path
+visit beautiful is
+visit beautiful used.
+visit beautiful //
+visit beautiful app.Any("/iris-ws.js",
+visit beautiful websocket.ClientHandler())
+visit beautiful //}
+visit beautiful //
+visit beautiful //func
+visit beautiful handleConnection(c
+visit beautiful websocket.Connection)
+visit beautiful {
+visit beautiful //
+visit beautiful //
+visit beautiful Read
+visit beautiful events
+visit beautiful from
+visit beautiful browser
+visit beautiful //
+visit beautiful c.On("chat",
+visit beautiful func(msg
+visit beautiful string)
+visit beautiful {
+visit beautiful //
+visit beautiful //
+visit beautiful Print
+visit beautiful the
+visit beautiful message
+visit beautiful to
+visit beautiful the
+visit beautiful console,
+visit beautiful c.Context()
+visit beautiful is
+visit beautiful the
+visit beautiful iris's
+visit beautiful http
+visit beautiful context.
+visit beautiful //
+visit beautiful fmt.Printf("%s
+visit beautiful sent:
+visit beautiful %s
+",
+visit beautiful c.Context().RemoteAddr(),
+visit beautiful msg)
+visit beautiful //
+visit beautiful //
+visit beautiful Write
+visit beautiful message
+visit beautiful back
+visit beautiful to
+visit beautiful the
+visit beautiful client
+visit beautiful message
+visit beautiful owner
+visit beautiful with:
+visit beautiful //
+visit beautiful //
+visit beautiful c.Emit("chat",
+visit beautiful msg)
+visit beautiful //
+visit beautiful //
+visit beautiful Write
+visit beautiful message
+visit beautiful to
+visit beautiful all
+visit beautiful except
+visit beautiful this
+visit beautiful client
+visit beautiful with:
+visit beautiful //
+visit beautiful c.To(websocket.Broadcast).Emit("chat",
+visit beautiful msg)
+visit beautiful //
+visit beautiful })
+visit beautiful //}
+//
+file:
+main.go
+package
+main
+import
+(
+"fmt"
+"github.com/kataras/iris/v12"
+"github.com/kataras/iris/v12/mvc"
+"github.com/kataras/iris/v12/sessions"
+//"github.com/kataras/iris/v12/websocket"
+"net/http"
+"shop/handler"
+gf
+"github.com/snowlyg/gotransformer"
+"shop/web/routes"
+"time"
+"golang.org/x/net/websocket"
+"shop/config"
+"shop/models"
+"shop/services"
+"shop/transformer"
+_
+"shop/validates"
+"shop/web/controllers"
+)
+var
+Conf
+*config.Config
+func
+init()
+{
+//var
+_path
+string
+//
+//flag.StringVar(&_path,
+"c",
+"./config.yaml",
+"default
+config
+path")
+//Conf
+=
+&config.Config{}
+//
+//content,
+err
+:=
+ioutil.ReadFile(_path)®
+//if
+err
+==
+nil
+{
+//
+err
+=
+yaml.Unmarshal(content,
+Conf)
+//
+fmt.Println("Conf=",
+Conf)
+//}
+}
+func
+getTransformConfiguration(
+irisConfiguration
+iris.Configuration)
+*transformer.Conf
+{
+app
+:=
+transformer.App{}
+g
+:=
+gf.NewTransform(&app,
+irisConfiguration.Other["App"],
+time.RFC3339)
+_
+=
+g.Transformer()
+db
+:=
+transformer.Mysql{}
+g.OutputObj
+=
+&db
+g.InsertObj
+=
+irisConfiguration.Other["Mysql"]
+_
+=
+g.Transformer()
+mongodb
+:=
+transformer.Mongodb{}
+g.OutputObj
+=
+&mongodb
+g.InsertObj
+=
+irisConfiguration.Other["Mongodb"]
+_
+=
+g.Transformer()
+redis
+:=
+transformer.Redis{}
+g.OutputObj
+=
+&redis
+g.InsertObj
+=
+irisConfiguration.Other["Redis"]
+_
+=
+g.Transformer()
+sqlite
+:=
+transformer.Sqlite{}
+g.OutputObj
+=
+&sqlite
+g.InsertObj
+=
+irisConfiguration.Other["Sqlite"]
+_
+=
+g.Transformer()
+testData
+:=
+transformer.TestData{}
+g.OutputObj
+=
+&testData
+g.InsertObj
+=
+irisConfiguration.Other["TestData"]
+_
+=
+g.Transformer()
+kafkaConf
+:=
+transformer.Kafka{}
+g.OutputObj
+=
+&kafkaConf
+g.InsertObj
+=
+irisConfiguration.Other["Kafka"]
+_
+=
+g.Transformer()
+cf
+:=
+&transformer.Conf{
+App:
+app,
+Mysql:
+db,
+Mongodb:
+mongodb,
+Redis:
+redis,
+Sqlite:
+sqlite,
+TestData:
+testData,
+Kafka:
+kafkaConf,
+}
+return
+cf
+}
+func
+GetEtcdKeys()
+([]string)
+{
+var
+etcdKeys
+[]string
+//ips,
+err
+:=
+getLocalIP()
+var
+ips
+[]string
+//var
+err
+error
+ips
+=
+append(ips,
+"192.168.0.142")
+//if
+err
+!=
+nil
+{
+//
+fmt.Println("get
+local
+ip
+error:",
+err)
+//
+//return
+err
+//}
+for
+_,
+ip
+:=
+range
+ips
+{
+key
+:=
+fmt.Sprintf("/logagent/%s/logconfig",
+ip)
+etcdKeys
+=
+append(etcdKeys,
+key)
+}
+fmt.Println("从etcd服务器获取到的以IP名为键的键值对:
+",
+etcdKeys)
+return
+etcdKeys
+}
+//
+values
+should
+match
+with
+the
+client
+sides
+as
+well.
+const
+enableJWT
+=
+true
+const
+namespace
+=
+"default"
+//
+if
+namespace
+is
+empty
+then
+simply
+websocket.Events{...}
+can
+be
+used
+instead.
+//var
+serverEvents
+=
+websocket.Namespaces{
+//
+namespace:
+websocket.Events{
+//
+websocket.OnNamespaceConnected:
+func(nsConn
+*websocket.NSConn,
+msg
+websocket.Message)
+error
+{
+//
+//
+with
+`websocket.GetContext`
+you
+can
+retrieve
+the
+Iris'
+`Context`.
+//
+ctx
+:=
+websocket.GetContext(nsConn.Conn)
+//
+//
+log.Printf("[%s]
+connected
+to
+namespace
+[%s]
+with
+IP
+[%s]",
+//
+nsConn,
+msg.Namespace,
+//
+ctx.RemoteAddr())
+//
+return
+nil
+//
+},
+//
+websocket.OnNamespaceDisconnect:
+func(nsConn
+*websocket.NSConn,
+msg
+websocket.Message)
+error
+{
+//
+log.Printf("[%s]
+disconnected
+from
+namespace
+[%s]",
+nsConn,
+msg.Namespace)
+//
+return
+nil
+//
+},
+//
+"chat":
+func(nsConn
+*websocket.NSConn,
+msg
+websocket.Message)
+error
+{
+//
+//
+room.String()
+returns
+->
+NSConn.String()
+returns
+->
+Conn.String()
+returns
+->
+Conn.ID()
+//
+log.Printf("[%s]
+sent:
+%s",
+nsConn,
+string(msg.Body))
+//
+//
+//
+Write
+message
+back
+to
+the
+client
+message
+owner
+with:
+//
+//
+nsConn.Emit("chat",
+msg)
+//
+//
+Write
+message
+to
+all
+except
+this
+client
+with:
+//
+nsConn.Conn.Server().Broadcast(nsConn,
+msg)
+//
+return
+nil
+//
+},
+//
+},
+//}
+//func
+websocket1(app
+*iris.Application)
+{
+//
+websocketServer
+:=
+websocket.New(
+//
+websocket.DefaultGorillaUpgrader,
+/Applications
+/Library
+/Network
+/System
+/Users
+/Volumes
+/bin
+/cores
+/dev
+/etc
+/home
+/installer.failurerequests
+/net
+/opt
+/private
+/sbin
+/tmp
+/usr
+/var
+DefaultGobwasUpgrader
+can
+be
+used
+too.
+config/
+handler/
+models/
+services/
+transformer/
+validates/
+vendor/
+web/
+//
+serverEvents)
+//
+//
+//j
+:=
+jwt.New(jwt.Config{
+//
+//
+//
+Extract
+by
+the
+"token"
+url,
+//
+//
+//
+so
+the
+client
+should
+dial
+with
+ws://localhost:8080/echo?token=$token
+//
+//
+Extractor:
+jwt.FromParameter("token"),
+//
+//
+//
+//
+ValidationKeyGetter:
+func(token
+*jwt.Token)
+(interface{},
+error)
+{
+//
+//
+return
+[]byte("My
+Secret"),
+nil
+//
+//
+},
+//
+//
+//
+//
+//
+When
+set,
+the
+middleware
+verifies
+that
+tokens
+are
+signed
+//
+//
+//
+with
+the
+specific
+signing
+algorithm
+//
+//
+//
+If
+the
+signing
+method
+is
+not
+constant
+the
+//
+//
+//
+`Config.ValidationKeyGetter`
+callback
+field
+can
+be
+used
+//
+//
+//
+to
+implement
+additional
+checks
+//
+//
+//
+Important
+to
+avoid
+security
+issues
+described
+here:
+//
+//
+//
+https://auth0.com/blog/2015/03/31/critical-vulnerabilities-in-json-web-token-libraries/
+//
+//
+SigningMethod:
+jwt.SigningMethodHS256,
+//
+//})
+//
+//
+idGen
+:=
+func(ctx
+iris.Context)
+string
+{
+//
+if
+username
+:=
+ctx.GetHeader("X-Username");
+username
+!=
+""
+{
+//
+return
+username
+//
+}
+//
+//
+return
+websocket.DefaultIDGenerator(ctx)
+//
+}
+//
+//
+//
+serves
+the
+endpoint
+of
+ws://localhost:8080/echo
+//
+//
+with
+optional
+custom
+ID
+generator.
+//
+//websocketRoute
+:=
+app.Get("/echo",
+websocket.Handler(websocketServer,
+idGen))
+//
+app.Get("/echo",
+websocket.Handler(websocketServer,
+idGen))
+//
+//}
+func
+main()
+{
+app
+:=
+iris.New()
+app.Logger().SetLevel("debug")
+handler.WebsocketChan
+=
+make(
+chan
+string,
+1000)
+irisConfiguration
+:=
+iris.TOML("./config/conf.tml")
+transformConfiguration
+:=
+getTransformConfiguration(irisConfiguration)
+models.Register(transformConfiguration)
+etcdService
+:=
+services.NewEtcdService(
+[]string{"192.168.0.198:2379"},
+5
+a.sh
+config
+config.yaml
+etcd操作记录.txt
+folder_structure.png
+go.mod
+go.sum
+handler
+log1.txt
+main
+main.go
+models
+services
+transformer
+validates
+vendor
+web
+记录kafka.txt
+记录websocket.txt
+记录数据库操作.txt
+调试中途问题记录.txt
+理解通道缓冲区个数问题.txt
+time.Second)
+//[]string{"127.0.0.1:2379"},
+5
+a.sh
+config
+config.yaml
+etcd操作记录.txt
+folder_structure.png
+go.mod
+go.sum
+handler
+log1.txt
+main
+main.go
+models
+services
+transformer
+validates
+vendor
+web
+记录kafka.txt
+记录websocket.txt
+记录数据库操作.txt
+调试中途问题记录.txt
+理解通道缓冲区个数问题.txt
+time.Second)
+etcdKeys
+:=
+GetEtcdKeys()
+fmt.Println("到etcd服务器，按指定的键遍历键值对")
+for
+_,
+key
+:=
+range
+etcdKeys
+{
+resp
+:=
+etcdService.Get(key)
+for
+_,
+ev
+:=
+range
+resp.Kvs
+{
+services.ConfChan
+<-
+string(ev.Value)
+fmt.Printf("etcdkey
+=
+%s
+
+
+etcdvalue
+=
+%s
+
+",
+ev.Key,
+ev.Value)
+}
+}
+etcdService.PutKV("/logagent/192.168.0.142/logconfig",
+`
+[
+{
+"topic":"nginx_log",
+"log_path":"/Users/admin1/goworkspace/shop/log1.txt",
+"service":"test_service",
+"send_rate":1000
+},
+{
+"topic":"nginx_log1",
+"log_path":"/Users/admin1/goworkspace/shop/log2.txt",
+"service":"test_service1",
+"send_rate":1000
+}
+]`
+)
+//
+启动对etcd的监听服务，有新的键值对会被监听到
+go
+etcdService.EtcdWatch(etcdKeys)
+tailService
+:=
+services.NewTailService()
+go
+tailService.RunServer()
+services.NewKafkaService(
+transformConfiguration.Kafka.Addr,
+1)
+/Applications
+/Library
+/Network
+/System
+/Users
+/Volumes
+/bin
+/cores
+/dev
+/etc
+/home
+/installer.failurerequests
+/net
+/opt
+/private
+/sbin
+/tmp
+/usr
+/var
+创建iris应用的
+app.Party得到一个路由对象，
+party的参数就是一个路径，整个应有都是在这个路径下，
+mvc.new
+由这个路由对象，
+创建一个mvc的app对象。
+这个app就可以做很多事情，
+注册服务啊，注册控制器
+config/
+handler/
+models/
+services/
+transformer/
+validates/
+vendor/
+web/
+etcdApp
+:=
+mvc.New(app.Party("/etcd"))
+etcdApp.Register(etcdService)
+etcdApp.Handle(new(controllers.EtcdController))
+models.DB.AutoMigrate(
+&models.User{},
+&models.OauthToken{},
+&models.Role{},
+&models.Permission{},
+)
+tmpl
+:=
+iris.HTML("./web/views",
+".html").
+Layout("shared/layout.html").
+Reload(true)
+app.RegisterView(tmpl)
+app.HandleDir("/public",
+"./web/public")
+app.OnAnyErrorCode(func(ctx
+iris.Context)
+{
+ctx.ViewData("Message",
+ctx.Values().
+GetStringDefault("message",
+"The
+page
+you're
+looking
+for
+doesn't
+exist"))
+ctx.View("shared/error.html")
+})
+sessManager
+:=
+sessions.New(sessions.Config{
+Cookie:
+"sessioncookiename",
+Expires:
+24
+a.sh
+config
+config.yaml
+etcd操作记录.txt
+folder_structure.png
+go.mod
+go.sum
+handler
+log1.txt
+main
+main.go
+models
+services
+transformer
+validates
+vendor
+web
+记录kafka.txt
+记录websocket.txt
+记录数据库操作.txt
+调试中途问题记录.txt
+理解通道缓冲区个数问题.txt
+time.Hour,
+})
+index
+:=
+mvc.New(app.Party("/index"))
+index.Handle(new(controllers.IndexController))
+self
+:=
+mvc.New(app.Party("/self"))
+self.Register(
+sessManager.Start,
+)
+self.Handle(new(controllers.SelfController))
+shopCar
+:=
+mvc.New(app.Party("/shopcar"))
+shopCar.Handle(new(controllers.ShopCarController))
+assort
+:=
+mvc.New(app.Party("/assort"))
+assort.Handle(new(controllers.AssortController))
+order
+:=
+mvc.New(app.Party("/order"))
+order.Handle(new(controllers.OrderController))
+user
+:=
+mvc.New(app.Party("/user"))
+userService
+:=
+services.NewUserService()
+user.Register(
+userService,
+sessManager.Start,
+)
+user.Handle(new(controllers.UserGController))
+routes.RegisterApi(app)
+apiRoutes
+:=
+routes.GetRoutes(app)
+models.CreateSystemData(apiRoutes)
+//websocket1(app)
+go
+func()
+{
+fmt.Println("启动
+websocket
+服务")
+http.Handle("/ws",
+websocket.Handler(handler.Handle))
+err
+:=
+http.ListenAndServe(":88",
+nil)
+if
+err
+!=
+nil
+{
+fmt.Println(err)
+fmt.Println("websocket
+启动异常")
+}else{
+fmt.Println("websocket
+监听服务")
+}
+}()
+//setupWebsocket(app)
+fmt.Println("启动
+iris
+服务
+")
+app.Run(
+//
+Starts
+the
+web
+server
+at
+localhost:8080
+iris.Addr(":8082"),
+//
+Ignores
+err
+server
+closed
+log
+when
+CTRL/CMD+C
+pressed.
+iris.WithoutServerError(iris.ErrServerClosed),
+//
+Enables
+faster
+json
+serialization
+and
+more.
+//iris.WithOptimizations,
+iris.WithConfiguration(irisConfiguration),
+)
+fmt.Println("启动
+iris
+服务
 1
+")
+}
+//func
+setupWebsocket(app
+*iris.Application)
+{
+//
+//
+create
+our
+echo
+websocket
+server
+//
+ws
+:=
+websocket.New(websocket.Config{
+//
+ReadBufferSize:
+1024,
+//
+WriteBufferSize:
+1024,
+//
+})
+//
+ws.OnConnection(handleConnection)
+//
+//
+//
+register
+the
+server
+on
+an
+endpoint.
+//
+//
+see
+the
+inline
+javascript
+code
+in
+the
+websockets.html,
+//
+//
+this
+endpoint
+is
+used
+to
+connect
+to
+the
+server.
+//
+app.Get("/echo",
+ws.Handler())
+//
+//
+serve
+the
+javascript
+built'n
+client-side
+library,
+//
+//
+see
+websockets.html
+script
+tags,
+this
+path
+is
+used.
+//
+app.Any("/iris-ws.js",
+websocket.ClientHandler())
+//}
+//
+//func
+handleConnection(c
+websocket.Connection)
+{
+//
+//
+Read
+events
+from
+browser
+//
+c.On("chat",
+func(msg
+string)
+{
+//
+//
+Print
+the
+message
+to
+the
+console,
+c.Context()
+is
+the
+iris's
+http
+context.
+//
+fmt.Printf("%s
+sent:
+%s
+",
+c.Context().RemoteAddr(),
+msg)
+//
+//
+Write
+message
+back
+to
+the
+client
+message
+owner
+with:
+//
+//
+c.Emit("chat",
+msg)
+//
+//
+Write
+message
+to
+all
+except
+this
+client
+with:
+//
+c.To(websocket.Broadcast).Emit("chat",
+msg)
+//
+})
+//}
+//
+file:
+main.go
+package
+main
+import
+(
+"fmt"
+"github.com/kataras/iris/v12"
+"github.com/kataras/iris/v12/mvc"
+"github.com/kataras/iris/v12/sessions"
+//"github.com/kataras/iris/v12/websocket"
+"net/http"
+"shop/handler"
+gf
+"github.com/snowlyg/gotransformer"
+"shop/web/routes"
+"time"
+"golang.org/x/net/websocket"
+"shop/config"
+"shop/models"
+"shop/services"
+"shop/transformer"
+_
+"shop/validates"
+"shop/web/controllers"
+)
+var
+Conf
+*config.Config
+func
+init()
+{
+//var
+_path
+string
+//
+//flag.StringVar(&_path,
+"c",
+"./config.yaml",
+"default
+config
+path")
+//Conf
+=
+&config.Config{}
+//
+//content,
+err
+:=
+ioutil.ReadFile(_path)®
+//if
+err
+==
+nil
+{
+//
+err
+=
+yaml.Unmarshal(content,
+Conf)
+//
+fmt.Println("Conf=",
+Conf)
+//}
+}
+func
+getTransformConfiguration(
+irisConfiguration
+iris.Configuration)
+*transformer.Conf
+{
+app
+:=
+transformer.App{}
+g
+:=
+gf.NewTransform(&app,
+irisConfiguration.Other["App"],
+time.RFC3339)
+_
+=
+g.Transformer()
+db
+:=
+transformer.Mysql{}
+g.OutputObj
+=
+&db
+g.InsertObj
+=
+irisConfiguration.Other["Mysql"]
+_
+=
+g.Transformer()
+mongodb
+:=
+transformer.Mongodb{}
+g.OutputObj
+=
+&mongodb
+g.InsertObj
+=
+irisConfiguration.Other["Mongodb"]
+_
+=
+g.Transformer()
+redis
+:=
+transformer.Redis{}
+g.OutputObj
+=
+&redis
+g.InsertObj
+=
+irisConfiguration.Other["Redis"]
+_
+=
+g.Transformer()
+sqlite
+:=
+transformer.Sqlite{}
+g.OutputObj
+=
+&sqlite
+g.InsertObj
+=
+irisConfiguration.Other["Sqlite"]
+_
+=
+g.Transformer()
+testData
+:=
+transformer.TestData{}
+g.OutputObj
+=
+&testData
+g.InsertObj
+=
+irisConfiguration.Other["TestData"]
+_
+=
+g.Transformer()
+kafkaConf
+:=
+transformer.Kafka{}
+g.OutputObj
+=
+&kafkaConf
+g.InsertObj
+=
+irisConfiguration.Other["Kafka"]
+_
+=
+g.Transformer()
+cf
+:=
+&transformer.Conf{
+App:
+app,
+Mysql:
+db,
+Mongodb:
+mongodb,
+Redis:
+redis,
+Sqlite:
+sqlite,
+TestData:
+testData,
+Kafka:
+kafkaConf,
+}
+return
+cf
+}
+func
+GetEtcdKeys()
+([]string)
+{
+var
+etcdKeys
+[]string
+//ips,
+err
+:=
+getLocalIP()
+var
+ips
+[]string
+//var
+err
+error
+ips
+=
+append(ips,
+"192.168.0.142")
+//if
+err
+!=
+nil
+{
+//
+fmt.Println("get
+local
+ip
+error:",
+err)
+//
+//return
+err
+//}
+for
+_,
+ip
+:=
+range
+ips
+{
+key
+:=
+fmt.Sprintf("/logagent/%s/logconfig",
+ip)
+etcdKeys
+=
+append(etcdKeys,
+key)
+}
+fmt.Println("从etcd服务器获取到的以IP名为键的键值对:
+",
+etcdKeys)
+return
+etcdKeys
+}
+//
+values
+should
+match
+with
+the
+client
+sides
+as
+well.
+const
+enableJWT
+=
+true
+const
+namespace
+=
+"default"
+//
+if
+namespace
+is
+empty
+then
+simply
+websocket.Events{...}
+can
+be
+used
+instead.
+//var
+serverEvents
+=
+websocket.Namespaces{
+//
+namespace:
+websocket.Events{
+//
+websocket.OnNamespaceConnected:
+func(nsConn
+*websocket.NSConn,
+msg
+websocket.Message)
+error
+{
+//
+//
+with
+`websocket.GetContext`
+you
+can
+retrieve
+the
+Iris'
+`Context`.
+//
+ctx
+:=
+websocket.GetContext(nsConn.Conn)
+//
+//
+log.Printf("[%s]
+connected
+to
+namespace
+[%s]
+with
+IP
+[%s]",
+//
+nsConn,
+msg.Namespace,
+//
+ctx.RemoteAddr())
+//
+return
+nil
+//
+},
+//
+websocket.OnNamespaceDisconnect:
+func(nsConn
+*websocket.NSConn,
+msg
+websocket.Message)
+error
+{
+//
+log.Printf("[%s]
+disconnected
+from
+namespace
+[%s]",
+nsConn,
+msg.Namespace)
+//
+return
+nil
+//
+},
+//
+"chat":
+func(nsConn
+*websocket.NSConn,
+msg
+websocket.Message)
+error
+{
+//
+//
+room.String()
+returns
+->
+NSConn.String()
+returns
+->
+Conn.String()
+returns
+->
+Conn.ID()
+//
+log.Printf("[%s]
+sent:
+%s",
+nsConn,
+string(msg.Body))
+//
+//
+//
+Write
+message
+back
+to
+the
+client
+message
+owner
+with:
+//
+//
+nsConn.Emit("chat",
+msg)
+//
+//
+Write
+message
+to
+all
+except
+this
+client
+with:
+//
+nsConn.Conn.Server().Broadcast(nsConn,
+msg)
+//
+return
+nil
+//
+},
+//
+},
+//}
+//func
+websocket1(app
+*iris.Application)
+{
+//
+websocketServer
+:=
+websocket.New(
+//
+websocket.DefaultGorillaUpgrader,
+/Applications
+/Library
+/Network
+/System
+/Users
+/Volumes
+/bin
+/cores
+/dev
+/etc
+/home
+/installer.failurerequests
+/net
+/opt
+/private
+/sbin
+/tmp
+/usr
+/var
+DefaultGobwasUpgrader
+can
+be
+used
+too.
+config/
+handler/
+models/
+services/
+transformer/
+validates/
+vendor/
+web/
+//
+serverEvents)
+//
+//
+//j
+:=
+jwt.New(jwt.Config{
+//
+//
+//
+Extract
+by
+the
+"token"
+url,
+//
+//
+//
+so
+the
+client
+should
+dial
+with
+ws://localhost:8080/echo?token=$token
+//
+//
+Extractor:
+jwt.FromParameter("token"),
+//
+//
+//
+//
+ValidationKeyGetter:
+func(token
+*jwt.Token)
+(interface{},
+error)
+{
+//
+//
+return
+[]byte("My
+Secret"),
+nil
+//
+//
+},
+//
+//
+//
+//
+//
+When
+set,
+the
+middleware
+verifies
+that
+tokens
+are
+signed
+//
+//
+//
+with
+the
+specific
+signing
+algorithm
+//
+//
+//
+If
+the
+signing
+method
+is
+not
+constant
+the
+//
+//
+//
+`Config.ValidationKeyGetter`
+callback
+field
+can
+be
+used
+//
+//
+//
+to
+implement
+additional
+checks
+//
+//
+//
+Important
+to
+avoid
+security
+issues
+described
+here:
+//
+//
+//
+https://auth0.com/blog/2015/03/31/critical-vulnerabilities-in-json-web-token-libraries/
+//
+//
+SigningMethod:
+jwt.SigningMethodHS256,
+//
+//})
+//
+//
+idGen
+:=
+func(ctx
+iris.Context)
+string
+{
+//
+if
+username
+:=
+ctx.GetHeader("X-Username");
+username
+!=
+""
+{
+//
+return
+username
+//
+}
+//
+//
+return
+websocket.DefaultIDGenerator(ctx)
+//
+}
+//
+//
+//
+serves
+the
+endpoint
+of
+ws://localhost:8080/echo
+//
+//
+with
+optional
+custom
+ID
+generator.
+//
+//websocketRoute
+:=
+app.Get("/echo",
+websocket.Handler(websocketServer,
+idGen))
+//
+app.Get("/echo",
+websocket.Handler(websocketServer,
+idGen))
+//
+//}
+func
+main()
+{
+app
+:=
+iris.New()
+app.Logger().SetLevel("debug")
+handler.WebsocketChan
+=
+make(
+chan
+string,
+1000)
+irisConfiguration
+:=
+iris.TOML("./config/conf.tml")
+transformConfiguration
+:=
+getTransformConfiguration(irisConfiguration)
+models.Register(transformConfiguration)
+etcdService
+:=
+services.NewEtcdService(
+[]string{"192.168.0.198:2379"},
+5
+a.sh
+config
+config.yaml
+etcd操作记录.txt
+folder_structure.png
+go.mod
+go.sum
+handler
+log1.txt
+main
+main.go
+models
+services
+transformer
+validates
+vendor
+web
+记录kafka.txt
+记录websocket.txt
+记录数据库操作.txt
+调试中途问题记录.txt
+理解通道缓冲区个数问题.txt
+time.Second)
+//[]string{"127.0.0.1:2379"},
+5
+a.sh
+config
+config.yaml
+etcd操作记录.txt
+folder_structure.png
+go.mod
+go.sum
+handler
+log1.txt
+main
+main.go
+models
+services
+transformer
+validates
+vendor
+web
+记录kafka.txt
+记录websocket.txt
+记录数据库操作.txt
+调试中途问题记录.txt
+理解通道缓冲区个数问题.txt
+time.Second)
+etcdKeys
+:=
+GetEtcdKeys()
+fmt.Println("到etcd服务器，按指定的键遍历键值对")
+for
+_,
+key
+:=
+range
+etcdKeys
+{
+resp
+:=
+etcdService.Get(key)
+for
+_,
+ev
+:=
+range
+resp.Kvs
+{
+services.ConfChan
+<-
+string(ev.Value)
+fmt.Printf("etcdkey
+=
+%s
+
+
+etcdvalue
+=
+%s
+
+",
+ev.Key,
+ev.Value)
+}
+}
+etcdService.PutKV("/logagent/192.168.0.142/logconfig",
+`
+[
+{
+"topic":"nginx_log",
+"log_path":"/Users/admin1/goworkspace/shop/log1.txt",
+"service":"test_service",
+"send_rate":1000
+},
+{
+"topic":"nginx_log1",
+"log_path":"/Users/admin1/goworkspace/shop/log2.txt",
+"service":"test_service1",
+"send_rate":1000
+}
+]`
+)
+//
+启动对etcd的监听服务，有新的键值对会被监听到
+go
+etcdService.EtcdWatch(etcdKeys)
+tailService
+:=
+services.NewTailService()
+go
+tailService.RunServer()
+services.NewKafkaService(
+transformConfiguration.Kafka.Addr,
+1)
+/Applications
+/Library
+/Network
+/System
+/Users
+/Volumes
+/bin
+/cores
+/dev
+/etc
+/home
+/installer.failurerequests
+/net
+/opt
+/private
+/sbin
+/tmp
+/usr
+/var
+创建iris应用的
+app.Party得到一个路由对象，
+party的参数就是一个路径，整个应有都是在这个路径下，
+mvc.new
+由这个路由对象，
+创建一个mvc的app对象。
+这个app就可以做很多事情，
+注册服务啊，注册控制器
+config/
+handler/
+models/
+services/
+transformer/
+validates/
+vendor/
+web/
+etcdApp
+:=
+mvc.New(app.Party("/etcd"))
+etcdApp.Register(etcdService)
+etcdApp.Handle(new(controllers.EtcdController))
+models.DB.AutoMigrate(
+&models.User{},
+&models.OauthToken{},
+&models.Role{},
+&models.Permission{},
+)
+tmpl
+:=
+iris.HTML("./web/views",
+".html").
+Layout("shared/layout.html").
+Reload(true)
+app.RegisterView(tmpl)
+app.HandleDir("/public",
+"./web/public")
+app.OnAnyErrorCode(func(ctx
+iris.Context)
+{
+ctx.ViewData("Message",
+ctx.Values().
+GetStringDefault("message",
+"The
+page
+you're
+looking
+for
+doesn't
+exist"))
+ctx.View("shared/error.html")
+})
+sessManager
+:=
+sessions.New(sessions.Config{
+Cookie:
+"sessioncookiename",
+Expires:
+24
+a.sh
+config
+config.yaml
+etcd操作记录.txt
+folder_structure.png
+go.mod
+go.sum
+handler
+log1.txt
+main
+main.go
+models
+services
+transformer
+validates
+vendor
+web
+记录kafka.txt
+记录websocket.txt
+记录数据库操作.txt
+调试中途问题记录.txt
+理解通道缓冲区个数问题.txt
+time.Hour,
+})
+index
+:=
+mvc.New(app.Party("/index"))
+index.Handle(new(controllers.IndexController))
+self
+:=
+mvc.New(app.Party("/self"))
+self.Register(
+sessManager.Start,
+)
+self.Handle(new(controllers.SelfController))
+shopCar
+:=
+mvc.New(app.Party("/shopcar"))
+shopCar.Handle(new(controllers.ShopCarController))
+assort
+:=
+mvc.New(app.Party("/assort"))
+assort.Handle(new(controllers.AssortController))
+order
+:=
+mvc.New(app.Party("/order"))
+order.Handle(new(controllers.OrderController))
+user
+:=
+mvc.New(app.Party("/user"))
+userService
+:=
+services.NewUserService()
+user.Register(
+userService,
+sessManager.Start,
+)
+user.Handle(new(controllers.UserGController))
+routes.RegisterApi(app)
+apiRoutes
+:=
+routes.GetRoutes(app)
+models.CreateSystemData(apiRoutes)
+//websocket1(app)
+go
+func()
+{
+fmt.Println("启动
+websocket
+服务")
+http.Handle("/ws",
+websocket.Handler(handler.Handle))
+err
+:=
+http.ListenAndServe(":88",
+nil)
+if
+err
+!=
+nil
+{
+fmt.Println(err)
+fmt.Println("websocket
+启动异常")
+}else{
+fmt.Println("websocket
+监听服务")
+}
+}()
+//setupWebsocket(app)
+fmt.Println("启动
+iris
+服务
+")
+app.Run(
+//
+Starts
+the
+web
+server
+at
+localhost:8080
+iris.Addr(":8082"),
+//
+Ignores
+err
+server
+closed
+log
+when
+CTRL/CMD+C
+pressed.
+iris.WithoutServerError(iris.ErrServerClosed),
+//
+Enables
+faster
+json
+serialization
+and
+more.
+//iris.WithOptimizations,
+iris.WithConfiguration(irisConfiguration),
+)
+fmt.Println("启动
+iris
+服务
 1
-1
-1
-1
-1
-1
-1
-1
-100
-100
-100
-300
-300
-300
-300kk
-300kk
-300kk
-300kk
-300kk
-300kk
-300kk
-300kkkhhhhhhh
-111111
-111111
-111111
-111111
-111111
-111111
-111111
-111111
-111111
-111111
-111111
-111111
-111111
-111111
-111111
-111111
-111111
-111111
-111111
-111111
-1112222
-1112222
-ffffff
-ffffff
-ffffff
-ffffff
-ffffff
-ffffff
-ffffff
-ffffffffffvvv
+")
+}
+//func
+setupWebsocket(app
+*iris.Application)
+{
+//
+//
+create
+our
+echo
+websocket
+server
+//
+ws
+:=
+websocket.New(websocket.Config{
+//
+ReadBufferSize:
+1024,
+//
+WriteBufferSize:
+1024,
+//
+})
+//
+ws.OnConnection(handleConnection)
+//
+//
+//
+register
+the
+server
+on
+an
+endpoint.
+//
+//
+see
+the
+inline
+javascript
+code
+in
+the
+websockets.html,
+//
+//
+this
+endpoint
+is
+used
+to
+connect
+to
+the
+server.
+//
+app.Get("/echo",
+ws.Handler())
+//
+//
+serve
+the
+javascript
+built'n
+client-side
+library,
+//
+//
+see
+websockets.html
+script
+tags,
+this
+path
+is
+used.
+//
+app.Any("/iris-ws.js",
+websocket.ClientHandler())
+//}
+//
+//func
+handleConnection(c
+websocket.Connection)
+{
+//
+//
+Read
+events
+from
+browser
+//
+c.On("chat",
+func(msg
+string)
+{
+//
+//
+Print
+the
+message
+to
+the
+console,
+c.Context()
+is
+the
+iris's
+http
+context.
+//
+fmt.Printf("%s
+sent:
+%s
+",
+c.Context().RemoteAddr(),
+msg)
+//
+//
+Write
+message
+back
+to
+the
+client
+message
+owner
+with:
+//
+//
+c.Emit("chat",
+msg)
+//
+//
+Write
+message
+to
+all
+except
+this
+client
+with:
+//
+c.To(websocket.Broadcast).Emit("chat",
+msg)
+//
+})
+//}
