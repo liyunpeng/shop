@@ -12,7 +12,6 @@ import (
 
 type EtcdController struct {
 	Ctx iris.Context
-
 	Service services.EtcdService
 }
 
@@ -43,6 +42,33 @@ func ApiEtcdGetKV(ctx iris.Context) {
 			FileName:"log2.txt",
 			FileSize: 2000,
 			FileKeyWords: "edf",
+		},
+	}
+	ctx.JSON(ApiResource(true, s,  "获取etcdkvcheng"))
+}
+
+type EtcdOption struct {
+	Label string `json:"label"`
+	Etcdkey string `json:"etcdkey"`
+	EtcdValue string `json:"etcdvalue"`
+}
+func ApiEtcdListAllKV(ctx iris.Context) {
+	fmt.Println(" Apiectcd list all kv ")
+	s := []EtcdOption{
+		{
+			Label:"/logagent/192.168.0.0/logconfig",
+			Etcdkey: "1000",
+			EtcdValue: "abfffc",
+		},
+		{
+			Label:"/logagent/192.168.0.1/logconfig",
+			Etcdkey: "1000",
+			EtcdValue: "affbc",
+		},
+		{
+			Label:"/logagent/192.168.0.2/logconfig",
+			Etcdkey: "10l00",
+			EtcdValue: "abc",
 		},
 	}
 	ctx.JSON(ApiResource(true, s,  "获取etcdkvcheng"))

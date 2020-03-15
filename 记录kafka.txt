@@ -57,3 +57,10 @@ bogon:shop admin1$ docker exec -it ef0857453b57 /bin/sh
 / # kafka-console-consumer.sh --bootstrap-server PLAINTEXT://192.168.0.198:9092 --topic MyTopic --from-beginning
 1111111111
 ffffff
+
+查看主题下的所有没被消费的消息：
+/ # kafka-console-consumer.sh --bootstrap-server 192.168.0.198:9092 --topic nginx_log  --from-beginning
+100
+300
+
+

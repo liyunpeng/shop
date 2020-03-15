@@ -27,6 +27,7 @@ func RegisterApi(app *iris.Application){
 
 	api.PartyFunc("/etcd", func(party iris.Party){
 		party.Get("/{key:string}",  controllers.ApiEtcdGetKV).Name = "获取etcdkeyValue"
+		party.Get("/listallkeys",  controllers.ApiEtcdListAllKV).Name = "获取etcdkeyValue"
 		//party.Get("/{id:uint}",  controllers.ApiEtcdGetKv).Name = "获取kv"
 		//party.Post("/",  controllers.ApiEtcdPost).Name = "创建etcdkv"
 		//party.Put("/",  controllers.ApiUserUpdate).Name = "修改用户"

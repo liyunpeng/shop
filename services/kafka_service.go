@@ -13,12 +13,13 @@ type KafkaService interface {
 }
 
 type kafkaService struct {
-	Sendors []*KafkaSender
+	Producers []*KafkaSender
+	//consumers []*KafkaConsumer
 }
 
 func NewKafkaService(kafkaAddr string, threadNum int) *kafkaService {
 	k := &kafkaService{
-		Sendors: make([]*KafkaSender, 5, 10),
+		Producers: make([]*KafkaSender, 5, 10),
 	}
 	var err error
 	kafkaSender, err = NewKafkaSend(kafkaAddr, threadNum)
@@ -28,8 +29,9 @@ func NewKafkaService(kafkaAddr string, threadNum int) *kafkaService {
 	} else {
 		fmt.Println("成功连接kafka broker")
 	}
-	k.Sendors[0] = kafkaSender
+	k.Producers[0] = kafkaSender
 
+	StartKafkaConsumer()
 	// TODO  comsumer
 	return k
 }
@@ -43,6 +45,11 @@ type KafkaSender struct {
 	producerClient sarama.SyncProducer
 	lineChan       chan *Message
 }
+
+//type KafkaConsumer struct {
+//	consumerClient sarama.consumer
+//	lineChan       chan *Message
+//}
 
 // NewKafkaSend is
 func NewKafkaSend(kafkaAddr string, threadNum int) (kafkaSender *KafkaSender, err error) {
