@@ -181,6 +181,7 @@ func main() {
 	app := iris.New()
 	app.Logger().SetLevel("debug")
 
+	handler.WebsocketChan = make( chan string, 1000)
 	irisConfiguration := iris.TOML("./config/conf.tml")
 	transformConfiguration := getTransformConfiguration(irisConfiguration)
 	models.Register(transformConfiguration)

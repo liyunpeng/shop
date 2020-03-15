@@ -1,10 +1,9 @@
 package handler
 
 import (
-	"encoding/json"
+	//"encoding/json"
 	"fmt"
 	"golang.org/x/net/websocket"
-	"time"
 )
 
 type UserInfo struct {
@@ -23,47 +22,49 @@ func Handle(conn *websocket.Conn) {
 	defer conn.Close()
 	jsonHandler := websocket.JSON
 	userInfo := &UserInfo{}
-	res := &Response{
-		Code: 1,
-		Msg:  "success",
-	}
+	//res := &Response{
+	//	Code: 1,
+	//	Msg:  "success",
+	//}
 
-	WebsocketChan = make( chan string, 1000)
 	go Push(conn)
+
 	for {
 		err := jsonHandler.Receive(conn, userInfo)
 		if err != nil {
 			fmt.Println(err)
 			break
 		}
-		jsonData, _ := json.Marshal(userInfo)
-		fmt.Println("receive data:", string(jsonData[:]))
-		err = jsonHandler.Send(conn, res)
-		if err != nil {
-			fmt.Println(err)
-			break
-		}
+		//jsonData, _ := json.Marshal(userInfo)
+		//fmt.Println("receive data:", string(jsonData[:]))
+		//err = jsonHandler.Send(conn, res)
+		//if err != nil {
+		//	fmt.Println(err)
+		//	break
+		//}
 
-		select {
-			case msg := <- WebsocketChan:
-				jsonHandler.Send(conn, msg)
-		}
+
 	}
 }
 
 func Push(conn *websocket.Conn) {
 	jsonHandler := websocket.JSON
-	res := &Response{
-		Code: 1,
-		Msg:  "success",
-		Data: "hello client",
-	}
+	//res := &Response{
+	//	Code: 1,
+	//	Msg:  "success",
+	//	Data: "hello client",
+	//}
 	for {
-		err := jsonHandler.Send(conn, res)
-		if err != nil {
-			fmt.Println(err)
-			break
+		//err := jsonHandler.Send(conn, res)
+		//if err != nil {
+		//	fmt.Println(err)
+		//	break
+		//}
+		//time.Sleep(time.Millisecond * 500)
+		select {
+		case msg := <- WebsocketChan:
+			fmt.Println("向前端发送数据=",msg)
+			jsonHandler.Send(conn, msg)
 		}
-		time.Sleep(time.Millisecond * 500)
 	}
 }

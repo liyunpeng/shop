@@ -1,0 +1,5 @@
+		select {
+			case msg := <- WebsocketChan:
+				fmt.Println("向前端发送数据=",msg)
+				jsonHandler.Send(conn, msg)
+		}
