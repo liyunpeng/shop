@@ -6,6 +6,7 @@ import (
 	cluster "github.com/bsm/sarama-cluster"
 	"os"
 	"os/signal"
+	wshandler "shop/handler"
 	"sync"
 )
 var Address = []string{
@@ -71,6 +72,8 @@ Loop:
 		select {
 		case msg, ok := <-consumer.Messages():
 			if ok {
+				wshandler.WebsocketChan <- string(msg.Value)
+
 				fmt.Println("kafka 消费者消费消息")
 				fmt.Fprintf(
 					os.Stdout,

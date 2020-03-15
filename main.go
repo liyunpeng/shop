@@ -7,13 +7,14 @@ import (
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
 	"github.com/kataras/iris/v12/sessions"
+	//"github.com/kataras/iris/v12/websocket"
 	"net/http"
 	"shop/handler"
 
-	"shop/web/routes"
-	"time"
 
 	gf "github.com/snowlyg/gotransformer"
+	"shop/web/routes"
+	"time"
 	"golang.org/x/net/websocket"
 	"shop/config"
 	"shop/models"
@@ -105,6 +106,77 @@ func GetEtcdKeys() ([]string) {
 	return etcdKeys
 }
 
+
+// values should match with the client sides as well.
+const enableJWT = true
+const namespace = "default"
+
+// if namespace is empty then simply websocket.Events{...} can be used instead.
+//var serverEvents = websocket.Namespaces{
+//	namespace: websocket.Events{
+//		websocket.OnNamespaceConnected: func(nsConn *websocket.NSConn, msg websocket.Message) error {
+//			// with `websocket.GetContext` you can retrieve the Iris' `Context`.
+//			ctx := websocket.GetContext(nsConn.Conn)
+//
+//			log.Printf("[%s] connected to namespace [%s] with IP [%s]",
+//				nsConn, msg.Namespace,
+//				ctx.RemoteAddr())
+//			return nil
+//		},
+//		websocket.OnNamespaceDisconnect: func(nsConn *websocket.NSConn, msg websocket.Message) error {
+//			log.Printf("[%s] disconnected from namespace [%s]", nsConn, msg.Namespace)
+//			return nil
+//		},
+//		"chat": func(nsConn *websocket.NSConn, msg websocket.Message) error {
+//			// room.String() returns -> NSConn.String() returns -> Conn.String() returns -> Conn.ID()
+//			log.Printf("[%s] sent: %s", nsConn, string(msg.Body))
+//
+//			// Write message back to the client message owner with:
+//			// nsConn.Emit("chat", msg)
+//			// Write message to all except this client with:
+//			nsConn.Conn.Server().Broadcast(nsConn, msg)
+//			return nil
+//		},
+//	},
+//}
+//func websocket1(app *iris.Application) {
+//	websocketServer := websocket.New(
+//		websocket.DefaultGorillaUpgrader, /* DefaultGobwasUpgrader can be used too. */
+//		serverEvents)
+//
+//	//j := jwt.New(jwt.Config{
+//	//	// Extract by the "token" url,
+//	//	// so the client should dial with ws://localhost:8080/echo?token=$token
+//	//	Extractor: jwt.FromParameter("token"),
+//	//
+//	//	ValidationKeyGetter: func(token *jwt.Token) (interface{}, error) {
+//	//		return []byte("My Secret"), nil
+//	//	},
+//	//
+//	//	// When set, the middleware verifies that tokens are signed
+//	//	// with the specific signing algorithm
+//	//	// If the signing method is not constant the
+//	//	// `Config.ValidationKeyGetter` callback field can be used
+//	//	// to implement additional checks
+//	//	// Important to avoid security issues described here:
+//	//	// https://auth0.com/blog/2015/03/31/critical-vulnerabilities-in-json-web-token-libraries/
+//	//	SigningMethod: jwt.SigningMethodHS256,
+//	//})
+//
+//	idGen := func(ctx iris.Context) string {
+//		if username := ctx.GetHeader("X-Username"); username != "" {
+//			return username
+//		}
+//
+//		return websocket.DefaultIDGenerator(ctx)
+//	}
+//
+//	// serves the endpoint of ws://localhost:8080/echo
+//	// with optional custom ID generator.
+//	//websocketRoute := app.Get("/echo", websocket.Handler(websocketServer, idGen))
+//	app.Get("/echo", websocket.Handler(websocketServer, idGen))
+//
+//}
 func main() {
 	app := iris.New()
 	app.Logger().SetLevel("debug")
@@ -221,6 +293,8 @@ func main() {
 	apiRoutes := routes.GetRoutes(app)
 	models.CreateSystemData(apiRoutes)
 
+	//websocket1(app)
+
 	go func() {
 		fmt.Println("启动 websocket 服务")
 		http.Handle("/ws", websocket.Handler(handler.Handle))
@@ -232,6 +306,8 @@ func main() {
 			fmt.Println("websocket 监听服务")
 		}
 	}()
+	//setupWebsocket(app)
+	fmt.Println("启动  iris 服务 ")
 	app.Run(
 		// Starts the web server at localhost:8080
 		iris.Addr(":8082"),
@@ -241,7 +317,36 @@ func main() {
 		//iris.WithOptimizations,
 		iris.WithConfiguration(irisConfiguration),
 	)
-
-
+	fmt.Println("启动  iris 服务 1 ")
 
 }
+
+//func setupWebsocket(app *iris.Application) {
+//	// create our echo websocket server
+//	ws := websocket.New(websocket.Config{
+//		ReadBufferSize:  1024,
+//		WriteBufferSize: 1024,
+//	})
+//	ws.OnConnection(handleConnection)
+//
+//	// register the server on an endpoint.
+//	// see the inline javascript code in the websockets.html,
+//	// this endpoint is used to connect to the server.
+//	app.Get("/echo", ws.Handler())
+//	// serve the javascript built'n client-side library,
+//	// see websockets.html script tags, this path is used.
+//	app.Any("/iris-ws.js", websocket.ClientHandler())
+//}
+//
+//func handleConnection(c websocket.Connection) {
+//	// Read events from browser
+//	c.On("chat", func(msg string) {
+//		// Print the message to the console, c.Context() is the iris's http context.
+//		fmt.Printf("%s sent: %s\n", c.Context().RemoteAddr(), msg)
+//		// Write message back to the client message owner with:
+//		// c.Emit("chat", msg)
+//		// Write message to all except this client with:
+//		c.To(websocket.Broadcast).Emit("chat", msg)
+//	})
+//}
+

@@ -31,7 +31,7 @@ func NewKafkaService(kafkaAddr string, threadNum int) *kafkaService {
 	}
 	k.Producers[0] = kafkaSender
 
-	StartKafkaConsumer()
+	go StartKafkaConsumer()
 	// TODO  comsumer
 	return k
 }

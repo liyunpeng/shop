@@ -18,7 +18,7 @@ type Response struct {
 	Msg  string
 	Data interface{}
 }
-
+var WebsocketChan chan  string
 func Handle(conn *websocket.Conn) {
 	defer conn.Close()
 	jsonHandler := websocket.JSON
@@ -27,6 +27,8 @@ func Handle(conn *websocket.Conn) {
 		Code: 1,
 		Msg:  "success",
 	}
+
+	WebsocketChan = make( chan string, 1000)
 	go Push(conn)
 	for {
 		err := jsonHandler.Receive(conn, userInfo)
@@ -40,6 +42,11 @@ func Handle(conn *websocket.Conn) {
 		if err != nil {
 			fmt.Println(err)
 			break
+		}
+
+		select {
+			case msg := <- WebsocketChan:
+				jsonHandler.Send(conn, msg)
 		}
 	}
 }
