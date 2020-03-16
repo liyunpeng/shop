@@ -1,17 +1,19 @@
+websocket服务器返回结构化数据res， vue的onmessage才会走到， 不然死活走不到，
+res的结构化数据， 必须包括code,msg,data三个部分： 
+res := &Response{
+	Code: 1,
+	Msg:  "success",
+	Data: msg,
+}
+jsonHandler.Send(conn, res)
 
-	res := &Response{
-				Code: 1,
-				Msg:  "success",
-				Data: msg,
-			}
-			jsonHandler.Send(conn, res)
-服务器返回结构化数据res， vue的onmessage才会走到， 不然死活走不到，
-还是断点调试， 能最快定位问题， 香型断点调试
+这样在vue的onmessage接受websocket服务数据的函数才会走到：
+this.websock.onmessage = this.onmessage
+onmessage: function (e) {
+   
+}
+还是断点调试， 能最快定位问题，goland启动断点调试很快
+
 goland编辑vue太慢
 
-  this.websock.onopen = this.onopen
-      this.websock.onerror = this.onerror
-      this.websock.onclose = this.onclose
-    },
-    onmessage: function (e) {
-      // let _this = this
+  
