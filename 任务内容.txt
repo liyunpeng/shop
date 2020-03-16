@@ -1,0 +1,8 @@
+服务器用centos系统
+开发用
+开发用mac proc， 
+给组内培训docker的使用， 可以方便运行mysql, redis, kafka调试需要的服务器
+熟悉linux命令使用， sed, tar, grep，find， netstat,
+熟练使用git 
+使用goland 集成开发环境
+了解vue的基本概念，编写vue组件，用cors完成跨域访问后台服务器数据，
