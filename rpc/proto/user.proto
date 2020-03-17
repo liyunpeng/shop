@@ -1,0 +1,30 @@
+// 版本号
+syntax = "proto3";
+
+// 指定生成 user.pb.go的包名
+package proto;
+
+// 定义客户端请求的数据格式
+message UserRequest{
+// 定义请求参数
+string name = 1;
+}
+
+// 定义服务端相应的额数据格式
+message UserResponse{
+//定义响应参数
+int32 id = 1;
+string name = 2;
+int32 age = 3;
+// 字段修饰符
+// repeated表示可变数组，类似于切片类型
+repeated string hobby = 4;
+}
+
+// 相当于接口
+// service 定义开放调用的额服务
+service UserInfoService{
+//相当于接口内的方法
+// 定义请求参数为UserRequest,响应参数为UserResponse
+rpc GetUserInfo(UserRequest) returns (UserResponse){}
+}

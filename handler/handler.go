@@ -2,7 +2,6 @@ package handler
 
 import (
 	"encoding/json"
-	//"encoding/json"
 	"fmt"
 	"golang.org/x/net/websocket"
 )

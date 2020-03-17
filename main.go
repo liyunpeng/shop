@@ -7,6 +7,8 @@ import (
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
 	"github.com/kataras/iris/v12/sessions"
+	"shop/rpc"
+
 	//"github.com/kataras/iris/v12/websocket"
 	"net/http"
 	"shop/handler"
@@ -313,6 +315,10 @@ func main() {
 			fmt.Println("websocket 监听服务")
 		}
 	}()
+
+
+	go rpc.Server()
+
 	//setupWebsocket(app)
 	fmt.Println("启动  iris 服务 ")
 	app.Run(

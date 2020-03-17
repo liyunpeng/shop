@@ -1,0 +1,330 @@
+shop$ docker inspect 167b6c04bf77
+[
+    {
+        "Id": "167b6c04bf7765b90d8bb1f7061931968ba4a633a94b17cfe28b3b031f24ceff",
+        "Created": "2020-03-14T03:56:45.184434088Z",
+        "Path": "/usr/local/bin/etcd",
+        "Args": [
+            "-name",
+            "etcd0",
+            "-advertise-client-urls",
+            "http://192.168.0.198:2379,http://192.168.0.198:4001",
+            "-listen-client-urls",
+            "http://0.0.0.0:2379,http://0.0.0.0:4001",
+            "-initial-advertise-peer-urls",
+            "http://192.168.0.198:2380",
+            "-listen-peer-urls",
+            "http://0.0.0.0:2380",
+            "-initial-cluster-token",
+            "etcd-cluster-1",
+            "-initial-cluster",
+            "etcd0=http://192.168.0.198:2380",
+            "-initial-cluster-state",
+            "new"
+        ],
+        "State": {
+            "Status": "running",
+            "Running": true,
+            "Paused": false,
+            "Restarting": false,
+            "OOMKilled": false,
+            "Dead": false,
+            "Pid": 1909,
+            "ExitCode": 0,
+            "Error": "",
+            "StartedAt": "2020-03-17T13:05:48.380841703Z",
+            "FinishedAt": "2020-03-17T13:05:46.037121819Z"
+        },
+        "Image": "sha256:8cd5759ef0c0395f28354417ffbff33cf7aa76e17f2169412254f36fc1ef0e71",
+        "ResolvConfPath": "/var/lib/docker/containers/167b6c04bf7765b90d8bb1f7061931968ba4a633a94b17cfe28b3b031f24ceff/resolv.conf",
+        "HostnamePath": "/var/lib/docker/containers/167b6c04bf7765b90d8bb1f7061931968ba4a633a94b17cfe28b3b031f24ceff/hostname",
+        "HostsPath": "/var/lib/docker/containers/167b6c04bf7765b90d8bb1f7061931968ba4a633a94b17cfe28b3b031f24ceff/hosts",
+        "LogPath": "/var/lib/docker/containers/167b6c04bf7765b90d8bb1f7061931968ba4a633a94b17cfe28b3b031f24ceff/167b6c04bf7765b90d8bb1f7061931968ba4a633a94b17cfe28b3b031f24ceff-json.log",
+        "Name": "/etcd",
+        "RestartCount": 0,
+        "Driver": "overlay2",
+        "Platform": "linux",
+        "MountLabel": "",
+        "ProcessLabel": "",
+        "AppArmorProfile": "",
+        "ExecIDs": null,
+        "HostConfig": {
+            "Binds": [
+                "/usr/share/ca-certificates/:/etc/ssl/certs"
+            ],
+            "ContainerIDFile": "",
+            "LogConfig": {
+                "Type": "json-file",
+                "Config": {}
+            },
+            "NetworkMode": "default",
+            "PortBindings": {
+                "2379/tcp": [
+                    {
+                        "HostIp": "",
+                        "HostPort": "2379"
+                    }
+                ],
+                "2380/tcp": [
+                    {
+                        "HostIp": "",
+                        "HostPort": "2380"
+                    }
+                ],
+                "4001/tcp": [
+                    {
+                        "HostIp": "",
+                        "HostPort": "4001"
+                    }
+                ]
+            },
+            "RestartPolicy": {
+                "Name": "always",
+                "MaximumRetryCount": 0
+            },
+            "AutoRemove": false,
+            "VolumeDriver": "",
+            "VolumesFrom": null,
+            "CapAdd": null,
+            "CapDrop": null,
+            "Capabilities": null,
+            "Dns": [],
+            "DnsOptions": [],
+            "DnsSearch": [],
+            "ExtraHosts": null,
+            "GroupAdd": null,
+            "IpcMode": "private",
+            "Cgroup": "",
+            "Links": null,
+            "OomScoreAdj": 0,
+            "PidMode": "",
+            "Privileged": false,
+            "PublishAllPorts": false,
+            "ReadonlyRootfs": false,
+            "SecurityOpt": null,
+            "UTSMode": "",
+            "UsernsMode": "",
+            "ShmSize": 67108864,
+            "Runtime": "runc",
+            "ConsoleSize": [
+                0,
+                0
+            ],
+            "Isolation": "",
+            "CpuShares": 0,
+            "Memory": 0,
+            "NanoCpus": 0,
+            "CgroupParent": "",
+            "BlkioWeight": 0,
+            "BlkioWeightDevice": [],
+            "BlkioDeviceReadBps": null,
+            "BlkioDeviceWriteBps": null,
+            "BlkioDeviceReadIOps": null,
+            "BlkioDeviceWriteIOps": null,
+            "CpuPeriod": 0,
+            "CpuQuota": 0,
+            "CpuRealtimePeriod": 0,
+            "CpuRealtimeRuntime": 0,
+            "CpusetCpus": "",
+            "CpusetMems": "",
+            "Devices": [],
+            "DeviceCgroupRules": null,
+            "DeviceRequests": null,
+            "KernelMemory": 0,
+            "KernelMemoryTCP": 0,
+            "MemoryReservation": 0,
+            "MemorySwap": 0,
+            "MemorySwappiness": null,
+            "OomKillDisable": false,
+            "PidsLimit": null,
+            "Ulimits": null,
+            "CpuCount": 0,
+            "CpuPercent": 0,
+            "IOMaximumIOps": 0,
+            "IOMaximumBandwidth": 0,
+            "MaskedPaths": [
+                "/proc/asound",
+                "/proc/acpi",
+                "/proc/kcore",
+                "/proc/keys",
+                "/proc/latency_stats",
+                "/proc/timer_list",
+                "/proc/timer_stats",
+                "/proc/sched_debug",
+                "/proc/scsi",
+                "/sys/firmware"
+            ],
+            "ReadonlyPaths": [
+                "/proc/bus",
+                "/proc/fs",
+                "/proc/irq",
+                "/proc/sys",
+                "/proc/sysrq-trigger"
+            ]
+        },
+        "GraphDriver": {
+            "Data": {
+                "LowerDir": "/var/lib/docker/overlay2/2b0404aed1bf03f2feb8a0a2a8ed955bbe9e6b3e6ea17bc01b45817f9ff9f207-init/diff:/var/lib/docker/overlay2/d055fe94d895d2a264650962faa12faad1c4efd92ec53acb181c4a052ff3c728/diff:/var/lib/docker/overlay2/51ecb4e33b1faa26807ace31324c2dcbd6cb46173a3ed7c20c2a99c9b208800a/diff:/var/lib/docker/overlay2/531239f68ceace59ecdeb8cb4c13e152f8696a25dc9a8cd93407d9f7bae2bdb2/diff:/var/lib/docker/overlay2/4f3b3492df00e40c3d76a6517113e70b4ee5f4be6c2b52dfa86732eecd48f458/diff:/var/lib/docker/overlay2/5e4e98e6e384ced2c1c68e5a57663ccd6128e293d2ddbb85d3021ec909e06089/diff:/var/lib/docker/overlay2/cf016e0b1bf27ab5fa08d062a4ca14a38409403fdece15c9c93621386f3c4249/diff",
+                "MergedDir": "/var/lib/docker/overlay2/2b0404aed1bf03f2feb8a0a2a8ed955bbe9e6b3e6ea17bc01b45817f9ff9f207/merged",
+                "UpperDir": "/var/lib/docker/overlay2/2b0404aed1bf03f2feb8a0a2a8ed955bbe9e6b3e6ea17bc01b45817f9ff9f207/diff",
+                "WorkDir": "/var/lib/docker/overlay2/2b0404aed1bf03f2feb8a0a2a8ed955bbe9e6b3e6ea17bc01b45817f9ff9f207/work"
+            },
+            "Name": "overlay2"
+        },
+        "Mounts": [
+            {
+                "Type": "bind",
+                "Source": "/usr/share/ca-certificates",
+                "Destination": "/etc/ssl/certs",
+                "Mode": "",
+                "RW": true,
+                "Propagation": "rprivate"
+            }
+        ],
+        "Config": {
+            "Hostname": "167b6c04bf77",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "ExposedPorts": {
+                "2379/tcp": {},
+                "2380/tcp": {},
+                "4001/tcp": {}
+            },
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+            ],
+            "Cmd": [
+                "/usr/local/bin/etcd",
+                "-name",
+                "etcd0",
+                "-advertise-client-urls",
+                "http://192.168.0.198:2379,http://192.168.0.198:4001",
+                "-listen-client-urls",
+                "http://0.0.0.0:2379,http://0.0.0.0:4001",
+                "-initial-advertise-peer-urls",
+                "http://192.168.0.198:2380",
+                "-listen-peer-urls",
+                "http://0.0.0.0:2380",
+                "-initial-cluster-token",
+                "etcd-cluster-1",
+                "-initial-cluster",
+                "etcd0=http://192.168.0.198:2380",
+                "-initial-cluster-state",
+                "new"
+            ],
+            "Image": "registry.cn-hangzhou.aliyuncs.com/coreos_etcd/etcd:v3",
+            "Volumes": null,
+            "WorkingDir": "",
+            "Entrypoint": null,
+            "OnBuild": null,
+            "Labels": {}
+        },
+        "NetworkSettings": {
+            "Bridge": "",
+            "SandboxID": "7157b22a92cc9f4f086b598c6f16482b45c75c808ae97119d716de94e2018ebe",
+            "HairpinMode": false,
+            "LinkLocalIPv6Address": "",
+            "LinkLocalIPv6PrefixLen": 0,
+            "Ports": {
+                "2379/tcp": [
+                    {
+                        "HostIp": "0.0.0.0",
+                        "HostPort": "2379"
+                    }
+                ],
+                "2380/tcp": [
+                    {
+                        "HostIp": "0.0.0.0",
+                        "HostPort": "2380"
+                    }
+                ],
+                "4001/tcp": [
+                    {
+                        "HostIp": "0.0.0.0",
+                        "HostPort": "4001"
+                    }
+                ]
+            },
+            "SandboxKey": "/var/run/docker/netns/7157b22a92cc",
+            "SecondaryIPAddresses": null,
+            "SecondaryIPv6Addresses": null,
+            "EndpointID": "46eea5c095638928601f3aca2b9ceeb9532069c50a7c7aff5b146d8ef03a861e",
+            "Gateway": "172.17.0.1",
+            "GlobalIPv6Address": "",
+            "GlobalIPv6PrefixLen": 0,
+            "IPAddress": "172.17.0.2",
+            "IPPrefixLen": 16,
+            "IPv6Gateway": "",
+            "MacAddress": "02:42:ac:11:00:02",
+            "Networks": {
+                "bridge": {
+                    "IPAMConfig": null,
+                    "Links": null,
+                    "Aliases": null,
+                    "NetworkID": "11294ded35c196bde45813d36278723cfaecad529961908b810546f909d221ab",
+                    "EndpointID": "46eea5c095638928601f3aca2b9ceeb9532069c50a7c7aff5b146d8ef03a861e",
+                    "Gateway": "172.17.0.1",
+                    "IPAddress": "172.17.0.2",
+                    "IPPrefixLen": 16,
+                    "IPv6Gateway": "",
+                    "GlobalIPv6Address": "",
+                    "GlobalIPv6PrefixLen": 0,
+                    "MacAddress": "02:42:ac:11:00:02",
+                    "DriverOpts": null
+                }
+            }
+        }
+    }
+]
+   shop$ ifconfig
+/ # ps -fe > ~/1.txt
+/ # cat ~/1.txt
+PID   USER     TIME   COMMAND
+    1 root       0:16 /usr/local/bin/etcd -name etcd0 -advertise-client-urls http://192.168.0.198:2379,http://192.168.0.198:4001 -listen-client-urls http://0.0.0.0:2379,http://0.0.0.0:4001 -initial-advertise-peer-urls http://192.168.0.198:2380 -listen-peer-urls http://0.0.0.0:2380 -initial-cluster-token etcd-cluster-1 -initial-cluster etcd0=http://192.168.0.198:2380 -initial-cluster-state new
+   16 root       0:00 /bin/sh
+   24 root       0:00 ps -fe
+/ #
+  /usr/local/bin/etcd -name etcd0
+  -advertise-client-urls  http://192.168.0.198:2379,http://192.168.0.198:4001 \
+  -listen-client-urls http://0.0.0.0:2379,http://0.0.0.0:4001  \
+   -initial-advertise-peer-urls http://192.168.0.198:2380   \
+   -listen-peer-urls http://0.0.0.0:2380 \
+   -initial-cluster-token etcd-cluster-1  \
+   -initial-cluster etcd0=http://192.168.0.198:2380 \
+   -initial-cluster-state new
+   16 root       0:00 /bin/sh
+
+---------------
+
+容器的启动命令：
+1，在容器外部，物理机上，可以用docker inspect查看或者，docker inspect container。
+
+2，如果在容器内部。可以用 ps -fe 查看。其中1号进程就是启动命令。
+
+3，Docker会在隔离的容器中运行进程。当运行docker run命令时，Docker会启动一个进程，并为这个进程分配其独占的文件系统、网络资源和以此进程为根进程的进程组。在容器启动时，镜像可能已经定义了要运行的二进制文件、暴露的网络端口等，但是用户可以通过docker run命令重新定义（译者注：docker run可以控制一个容器运行时的行为，它可以覆盖docker build在构建镜像时的一些默认配置），这也是为什么run命令相比于其它命令有如此多的参数的原因。4，命令格式
+
+5，最基本的docker run命令的格式如下：$ sudo docker run [OPTIONS] IMAGE[:TAG] [COMMAND] [ARG...]
+
+6，如果需要查看[OPTIONS]的详细使用说明，请参考Docker关于OPTIONS的章节。这里仅简要介绍Run所使用到的参数。OPTIONS总起来说可以分为两类：
+
+设置运行方式：
+
+决定容器的运行方式，前台执行还是后台执行；
+
+设置containerID；
+
+设置网络参数；
+
+设置容器的CPU和内存参数；
+
+设置权限和LXC参数；
+
+设置镜像的默认资源，也就是说用户可以使用该命令来覆盖在镜像构建时的一些默认配置。
+
+7，docker run [OPTIONS]可以让用户完全控制容器的生命周期，并允许用户覆盖执行docker build时所设定的参数，甚至也可以修改本身由Docker所控制的内核级参数。

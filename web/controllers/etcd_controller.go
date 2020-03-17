@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
-
+	"shop/rpc"
 	"shop/services"
 	"shop/validates"
 	"strings"
@@ -71,6 +71,8 @@ func ApiEtcdListAllKV(ctx iris.Context) {
 			EtcdValue: "abc",
 		},
 	}
+
+	rpc.Client()
 	ctx.JSON(ApiResource(true, s,  "获取etcdkvcheng"))
 }
 
@@ -105,6 +107,8 @@ func (e *EtcdController) GetAll() {
 	resp := e.Service.Get(k)
 
 	var v strings.Builder
+
+
 
 	m := make(map[string]interface{}, 100)
 	for _, ev := range resp.Kvs {
