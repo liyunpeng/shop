@@ -42,12 +42,12 @@ func Register(rc *transformer.Conf) {
 	casbinConn  := mysql.CasbinConnect  //"root:123456@(127.0.0.1:3306)/"
 	c, err = gormadapter.NewAdapter(driverName, casbinConn) // Your driver and data source.
 	if err != nil {
-		color.Red(fmt.Sprintf("NewAdapter 错误: %v", err))
+		color.Red(fmt.Sprintf("casbin NewAdapter 错误: %v", err))
 	}
 
 	Enforcer, err =  casbin.NewEnforcer("./config/rbac_model.conf", c)
 	if err != nil {
-		color.Red(fmt.Sprintf("NewEnforcer 错误: %v", err))
+		color.Red(fmt.Sprintf("casbin NewEnforcer 错误: %v", err))
 	}
 	_ = Enforcer.LoadPolicy()
 
