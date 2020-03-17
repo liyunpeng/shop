@@ -1,0 +1,41 @@
+p	0	/user/logout	DELETE	""
+p	0	/user/logout	CONNECT	""
+p	0	/user/logout	TRACE	""
+p	1	/user/logout	DELETE	""
+p	1	/user/logout	CONNECT	""
+p	1	/user/logout	TRACE	""
+p	1	/api/login	POST	""
+p	1	/api/user	GET	""
+p	1	/api/user/*	GET	""
+p	1	/api/user	POST	""
+p	1	/api/user	PUT	""
+p	1	/api/user/insertOrUpdate	POST	""
+p	1	/api/database/create	POST	""
+g	1	1	""	""
+
+
+func CreateUser(aul *validates.CreateUpdateUserRequest) (user *User) {
+	salt, _ := bcrypt.Salt(10)
+	hash, _ := bcrypt.Hash(aul.Password, salt)
+
+	user = &User{
+		Username: aul.Username,
+		Password: hash,
+		Name:     aul.Name,
+	}
+
+	if err := DB.Create(user).Error; err != nil {
+		color.Red(fmt.Sprintf("CreateUserErr:%s \n ", err))
+	}
+
+	addRoles(aul, user)
+
+	return
+}
+
+o
+
+表示橘色与用户的绑定
+[role_definition]
+g = _, _
+
