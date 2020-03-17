@@ -12,6 +12,7 @@ type Conf struct {
 	Redis    Redis
 	TestData TestData
 	Kafka    Kafka
+	Etcd    EtcdConf
 }
 
 type App struct {
@@ -26,6 +27,8 @@ type App struct {
 type Mysql struct {
 	DirverName string
 	Connect    string
+	CasbinConnect    string
+
 	Name       string
 	TName      string
 	MaxIdle		int
@@ -57,5 +60,9 @@ type TestData struct {
 }
 
 type Kafka struct {
+	Addr     string
+}
+
+type EtcdConf struct {
 	Addr     string
 }

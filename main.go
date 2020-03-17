@@ -75,6 +75,11 @@ func getTransformConfiguration( irisConfiguration iris.Configuration) *transform
 	g.InsertObj = irisConfiguration.Other["Kafka"]
 	_ = g.Transformer()
 
+	etcdConf := transformer.EtcdConf{}
+	g.OutputObj = &etcdConf
+	g.InsertObj = irisConfiguration.Other["Etcd"]
+	_ = g.Transformer()
+
 	cf := &transformer.Conf{
 		App:      app,
 		Mysql:    db,
@@ -83,6 +88,7 @@ func getTransformConfiguration( irisConfiguration iris.Configuration) *transform
 		Sqlite:   sqlite,
 		TestData: testData,
 		Kafka: kafkaConf,
+		Etcd: etcdConf,
 	}
 
 	return cf
@@ -187,7 +193,7 @@ func main() {
 	models.Register(transformConfiguration)
 
 	etcdService := services.NewEtcdService(
-		[]string{"192.168.0.198:2379"}, 5 * time.Second)
+		[]string{transformConfiguration.Etcd.Addr}, 5 * time.Second)
 	//[]string{"127.0.0.1:2379"}, 5 * time.Second)
 
 	etcdKeys := GetEtcdKeys()

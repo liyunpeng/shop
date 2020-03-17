@@ -13,10 +13,12 @@ var Address = []string{
 	"192.168.0.198:9092",
 }
 
-func StartKafkaConsumer() {
+func StartKafkaConsumer(kafkaAdress string) {
 	topic := []string{"nginx_log"}
 	var wg = &sync.WaitGroup{}
 	wg.Add(2)
+	//Address.append(kafkaAdress)kafkaAdress
+	Address = append(Address, kafkaAdress)
 	//广播式消费：消费者1
 	go clusterConsumer(wg, Address, topic, "group-1")
 	//广播式消费：消费者2

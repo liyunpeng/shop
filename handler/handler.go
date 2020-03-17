@@ -21,24 +21,25 @@ type Response struct {
 var WebsocketChan chan  string
 func Handle(conn *websocket.Conn) {
 	defer conn.Close()
-	jsonHandler := websocket.JSON
-	userInfo := &UserInfo{}
-	res := &Response{
-		Code: 1,
-		Msg:  "success",
-		Data:  "init",
-	}
 
 	go Push(conn)
 
 	for {
+		jsonHandler := websocket.JSON
+		userInfo := &UserInfo{}
 		err := jsonHandler.Receive(conn, userInfo)
 		if err != nil {
 			fmt.Println(err)
 			break
 		}
 		jsonData, _ := json.Marshal(userInfo)
+
 		fmt.Println("receive frontend data:", string(jsonData[:]))
+		res := &Response{
+			Code: 1,
+			Msg:  "success",
+			Data:  "from web socket ",
+		}
 		err = jsonHandler.Send(conn, res)
 		if err != nil {
 			fmt.Println(err)

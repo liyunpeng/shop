@@ -39,7 +39,7 @@ func Register(rc *transformer.Conf) {
 		panic("数据库错误")
 	}
 	driverName := "mysql"
-	casbinConn  :="root:123456@(127.0.0.1:3306)/"
+	casbinConn  := mysql.CasbinConnect  //"root:123456@(127.0.0.1:3306)/"
 	c, err = gormadapter.NewAdapter(driverName, casbinConn) // Your driver and data source.
 	if err != nil {
 		color.Red(fmt.Sprintf("NewAdapter 错误: %v", err))

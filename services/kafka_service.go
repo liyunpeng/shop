@@ -2,7 +2,7 @@ package services
 
 import (
 	"fmt"
-	"github.com/Shopify/sarama"
+		"github.com/Shopify/sarama"
 	"github.com/astaxie/beego/logs"
 )
 
@@ -31,7 +31,7 @@ func NewKafkaService(kafkaAddr string, threadNum int) *kafkaService {
 	}
 	k.Producers[0] = kafkaSender
 
-	go StartKafkaConsumer()
+	go StartKafkaConsumer(kafkaAddr)
 	// TODO  comsumer
 	return k
 }
