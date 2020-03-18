@@ -1,6 +1,7 @@
 package rpc
 
 import (
+	"bufio"
 	"context"
 	"fmt"
 	"google.golang.org/grpc"
@@ -32,6 +33,23 @@ func writefile(s string){
 	f.Close()
 }
 
+func bufioWriteFile( s string){
+	file, err := os.OpenFile("./a.txt", os.O_CREATE|os.O_RDWR|os.O_APPEND, 0666)
+	if err != nil {
+		fmt.Println(err)
+	}
+	defer file.Close()
+
+	content := []byte(s)
+	newWriter := bufio.NewWriterSize(file, 1024)
+	if _, err = newWriter.Write(content); err != nil {
+		fmt.Println(err)
+	}
+	if err = newWriter.Flush(); err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println("write file successful")
+}
 // 实现服务端需要首先的接口
 func (s *UserInfoService) GetUserInfo(ctx context.Context, req *pb.UserRequest) (resp *pb.UserResponse, err error) {
 	name := req.Name
@@ -54,7 +72,8 @@ func (s *UserInfoService) GetUserInfo(ctx context.Context, req *pb.UserRequest) 
 		}
 	}
 
-	writefile(name)
+	//writefile(name)
+	bufioWriteFile(name)
 	err = nil
 	return
 }
