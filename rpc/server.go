@@ -4,7 +4,9 @@ import (
 	"context"
 	"fmt"
 	"google.golang.org/grpc"
+	"log"
 	"net"
+	"os"
 	pb "shop/rpc/proto"
 )
 
@@ -13,6 +15,22 @@ type UserInfoService struct {
 }
 
 var u = UserInfoService{}
+
+func writefile(s string){
+	f, _ := os.Create("a.txt")
+
+	f.Write([]byte(s))
+
+	f.Seek(0, os.SEEK_SET)
+
+	p := make([]byte, 5)
+
+	if _, err := f.Read(p); err != nil {
+		log.Fatal("[File]", err)
+	}
+
+	f.Close()
+}
 
 // 实现服务端需要首先的接口
 func (s *UserInfoService) GetUserInfo(ctx context.Context, req *pb.UserRequest) (resp *pb.UserResponse, err error) {
@@ -26,7 +44,17 @@ func (s *UserInfoService) GetUserInfo(ctx context.Context, req *pb.UserRequest) 
 			//切片字段
 			Hobby: []string{"Sing", "run", "basketball"},
 		}
+	}else{
+		resp = &pb.UserResponse{
+			Id:   1,
+			Name: name,
+			Age:  22,
+			//切片字段
+			Hobby: []string{"1", "2", "3"},
+		}
 	}
+
+	writefile(name)
 	err = nil
 	return
 }

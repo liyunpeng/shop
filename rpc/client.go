@@ -7,7 +7,7 @@ import (
 	pb "shop/rpc/proto"
 )
 
-func Client() {
+func Client( msg string) {
 	// 1. 创建与gRPC服务端的连接
 	conn, err := grpc.Dial("127.0.0.1:8989", grpc.WithInsecure())
 	if err != nil {
@@ -18,7 +18,7 @@ func Client() {
 	client := pb.NewUserInfoServiceClient(conn)
 	// 3. 组装参数
 	req := new(pb.UserRequest)
-	req.Name = "zhangsan"
+	req.Name = msg
 	// 4. 调用接口
 	resp, err := client.GetUserInfo(context.Background(), req)
 	if err != nil {

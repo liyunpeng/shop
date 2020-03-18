@@ -222,6 +222,13 @@ func main() {
 		"log_path":"/Users/admin1/goworkspace/shop/log2.txt",
 		"service":"test_service1",
 		"send_rate":1000
+	},
+
+	{
+		"topic":"nginx_log",
+		"log_path":"D:\\goworkspace\\shop\\log1.txt",
+		"service":"test_service1",
+		"send_rate":1000
 	}
 ]` )
 	// 启动对etcd的监听服务，有新的键值对会被监听到

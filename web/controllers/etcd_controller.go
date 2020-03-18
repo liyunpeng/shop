@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
-	"shop/rpc"
 	"shop/services"
 	"shop/validates"
 	"strings"
@@ -72,7 +71,6 @@ func ApiEtcdListAllKV(ctx iris.Context) {
 		},
 	}
 
-	rpc.Client()
 	ctx.JSON(ApiResource(true, s,  "获取etcdkvcheng"))
 }
 
