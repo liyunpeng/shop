@@ -1,4 +1,0 @@
-2020/03/18 12:39:15 Seeked D:\goworkspace\shop\log1.txt - &{Offset:0 Whence:2}
-ffff
-ffff
-ffff
