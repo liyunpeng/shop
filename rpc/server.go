@@ -8,6 +8,7 @@ import (
 	"net"
 	"os"
 	pb "shop/rpc/proto"
+	"shop/transformer"
 )
 
 // 定义服务端实现约定的接口
@@ -64,10 +65,10 @@ func (u *UserInfoService) destroy(){
 	u.file.Close()
 }
 
-func Server() {
+func GrpcServer(grpcConf transformer.GrpcConf) {
 	// 1. 监听
-	addr := "127.0.0.1:8989"
-	lis, err := net.Listen("tcp", addr)
+	addr :=  grpcConf.Addr
+	listenSocket, err := net.Listen("tcp", grpcConf.Addr)
 	if err != nil {
 		fmt.Printf("监听异常：%s\n", err)
 	}
@@ -81,5 +82,5 @@ func Server() {
 	// 第二个参数类型需要接口类型的变量
 	pb.RegisterUserInfoServiceServer(s, &u)
 	// 4.启动gRPC服务
-	s.Serve(lis)
+	s.Serve(listenSocket)
 }

@@ -82,6 +82,11 @@ func getTransformConfiguration( irisConfiguration iris.Configuration) *transform
 	g.InsertObj = irisConfiguration.Other["Etcd"]
 	_ = g.Transformer()
 
+	grpcConf := transformer.GrpcConf{}
+	g.OutputObj = &grpcConf
+	g.InsertObj = irisConfiguration.Other["Grpc"]
+	_ = g.Transformer()
+
 	cf := &transformer.Conf{
 		App:      app,
 		Mysql:    db,
@@ -91,6 +96,7 @@ func getTransformConfiguration( irisConfiguration iris.Configuration) *transform
 		TestData: testData,
 		Kafka: kafkaConf,
 		Etcd: etcdConf,
+		Grpc: grpcConf,
 	}
 
 	return cf
@@ -142,7 +148,7 @@ const namespace = "default"
 //			// Write message back to the client message owner with:
 //			// nsConn.Emit("chat", msg)
 //			// Write message to all except this client with:
-//			nsConn.Conn.Server().Broadcast(nsConn, msg)
+//			nsConn.Conn.GrpcServer().Broadcast(nsConn, msg)
 //			return nil
 //		},
 //	},
@@ -238,9 +244,10 @@ func main() {
 	tailService := services.NewTailService()
 	go tailService.RunServer()
 
-	services.NewKafkaService(
+	services.StartKafkaProducer(
 		transformConfiguration.Kafka.Addr, 1)
 
+	go services.StartKafkaConsumer(transformConfiguration.Kafka.Addr)
 	/*
 		创建iris应用的
 		app.Party得到一个路由对象， party的参数就是一个路径，整个应有都是在这个路径下，
@@ -324,7 +331,7 @@ func main() {
 	}()
 
 
-	go rpc.Server()
+	go rpc.GrpcServer(transformConfiguration.Grpc)
 
 	//setupWebsocket(app)
 	fmt.Println("启动  iris 服务 ")

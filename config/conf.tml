@@ -40,3 +40,5 @@ Charset = "UTF-8"
       Addr = "192.168.0.198:9092"
     [Other.Etcd]
       Addr = "192.168.0.198:2379"
+    [Other.Grpc]
+        Addr = "127.0.0.1:8989"

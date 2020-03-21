@@ -13,6 +13,7 @@ type Conf struct {
 	TestData TestData
 	Kafka    Kafka
 	Etcd    EtcdConf
+	Grpc    GrpcConf
 }
 
 type App struct {
@@ -64,5 +65,9 @@ type Kafka struct {
 }
 
 type EtcdConf struct {
+	Addr     string
+}
+
+type GrpcConf struct {
 	Addr     string
 }

@@ -10,31 +10,23 @@ import (
 	"shop/rpc"
 	"sync"
 )
-var Address = []string{
-	"192.168.0.198:9092",
-}
+var Address = []string{}
 
 func StartKafkaConsumer(kafkaAdress string) {
 	topic := []string{"nginx_log"}
 	var wg = &sync.WaitGroup{}
 	wg.Add(2)
-	//Address.append(kafkaAdress)kafkaAdress
 	Address = append(Address, kafkaAdress)
-	//广播式消费：消费者1
-	go clusterConsumer(wg, Address, topic, "group-1")
 
+	//广播式消费
+	go clusterConsumerWebsocket(wg, Address, topic, "group-1")
 	go clusterConsumerRpc(wg, Address, topic, "group-2")
-
-
-	//广播式消费：消费者2
-	//go clusterConsumer(wg, Address, topic, "group-2")
-
 	wg.Wait()
 }
 
 
 // 支持brokers cluster的消费者
-func clusterConsumer(wg *sync.WaitGroup, brokers, topics []string, groupId string) {
+func clusterConsumerWebsocket(wg *sync.WaitGroup, brokers, topics []string, groupId string) {
 	defer wg.Done()
 
 	config := cluster.NewConfig()
