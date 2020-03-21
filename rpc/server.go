@@ -5,7 +5,6 @@ import (
 	"context"
 	"fmt"
 	"google.golang.org/grpc"
-	"log"
 	"net"
 	"os"
 	pb "shop/rpc/proto"
@@ -13,35 +12,15 @@ import (
 
 // 定义服务端实现约定的接口
 type UserInfoService struct {
+	file *os.File
 }
 
 var u = UserInfoService{}
 
-func writefile(s string){
-	f, _ := os.Create("a.txt")
-
-	f.Write([]byte(s))
-
-	f.Seek(0, os.SEEK_SET)
-
-	p := make([]byte, 5)
-
-	if _, err := f.Read(p); err != nil {
-		log.Fatal("[File]", err)
-	}
-
-	f.Close()
-}
-
-func bufioWriteFile( s string){
-	file, err := os.OpenFile("./a.txt", os.O_CREATE|os.O_RDWR|os.O_APPEND, 0666)
-	if err != nil {
-		fmt.Println(err)
-	}
-	defer file.Close()
-
+func (u *UserInfoService)bufioWriteFile( s string){
+	var err error
 	content := []byte(s)
-	newWriter := bufio.NewWriterSize(file, 1024)
+	newWriter := bufio.NewWriterSize(u.file, 1024)
 	if _, err = newWriter.Write(content); err != nil {
 		fmt.Println(err)
 	}
@@ -59,7 +38,6 @@ func (s *UserInfoService) GetUserInfo(ctx context.Context, req *pb.UserRequest) 
 			Id:   1,
 			Name: name,
 			Age:  22,
-			//切片字段
 			Hobby: []string{"Sing", "run", "basketball"},
 		}
 	}else{
@@ -67,15 +45,23 @@ func (s *UserInfoService) GetUserInfo(ctx context.Context, req *pb.UserRequest) 
 			Id:   1,
 			Name: name,
 			Age:  22,
-			//切片字段
 			Hobby: []string{"1", "2", "3"},
 		}
 	}
 
-	//writefile(name)
-	bufioWriteFile(name)
+	u.bufioWriteFile(name)
 	err = nil
 	return
+}
+func (u *UserInfoService) init(){
+	var err error
+	u.file, err = os.OpenFile("./a.txt", os.O_CREATE|os.O_RDWR|os.O_APPEND, 0666)
+	if err != nil {
+	   fmt.Println(err)
+	}
+}
+func (u *UserInfoService) destroy(){
+	u.file.Close()
 }
 
 func Server() {
@@ -88,6 +74,9 @@ func Server() {
 	fmt.Printf("开始监听：%s\n", addr)
 	// 2.实例化gRPC
 	s := grpc.NewServer()
+
+	u.init()
+	defer u.destroy()
 	// 3.在gRPC上注册微服务
 	// 第二个参数类型需要接口类型的变量
 	pb.RegisterUserInfoServiceServer(s, &u)
