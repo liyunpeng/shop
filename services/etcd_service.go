@@ -13,6 +13,7 @@ import (
 
 var (
 	ConfChan  = make(chan string, 10)
+	EtcdServiceInsance  *etcdService
 )
 
 type EtcdService interface {
@@ -63,7 +64,7 @@ func (e *etcdService) Get(key string) (*client.GetResponse) {
 
 	getResp, err := e.EtcdKV.Get(ctx, key) //withPrefix()是未了获取该key为前缀的所有key-value
 	if err != nil {
-		panic(err)
+		fmt.Println("etcd get key 出错：", err)
 	}
 	//fmt.Printf("kvs2:  %v", getResp.Kvs)
 	cancel()

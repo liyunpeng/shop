@@ -114,7 +114,7 @@ func GetEtcdKeys() ([]string) {
 	//ips, err := getLocalIP()
 	var ips []string
 	//var err error
-	ips = append(ips, "192.168.0.142")
+	ips = append(ips, "192.168.0.1")
 	//if err != nil {
 	//	fmt.Println("get local ip error:", err)
 	//	//return err
@@ -207,21 +207,14 @@ func main() {
 	transformConfiguration := getTransformConfiguration(irisConfiguration)
 	models.Register(transformConfiguration)
 
-	etcdService := services.NewEtcdService(
+	services.EtcdServiceInsance = services.NewEtcdService(
 		[]string{transformConfiguration.Etcd.Addr}, 5 * time.Second)
 	//[]string{"127.0.0.1:2379"}, 5 * time.Second)
 
-	etcdKeys := GetEtcdKeys()
-	fmt.Println("到etcd服务器，按指定的键遍历键值对")
-	for _, key := range etcdKeys {
-		resp := etcdService.Get(key)
-		for _, ev := range resp.Kvs {
-			services.ConfChan <- string(ev.Value)
-			fmt.Printf("etcdkey = %s \n etcdvalue = %s \n", ev.Key, ev.Value)
-		}
-	}
 
-	etcdService.PutKV("/logagent/192.168.0.142/logconfig", `
+
+	//services.EtcdServiceInsance.PutKV("/logagent/192.168.0.1/logconfig", `
+	services.EtcdServiceInsance.PutKV("192.168.0.1", `
 [
 	{
 		"topic":"nginx_log",
@@ -244,9 +237,30 @@ func main() {
 		"send_rate":1000
 	}
 ]` )
+	//services.EtcdServiceInsance.PutKV("/logagent/192.168.0.2/logconfig", `
+	services.EtcdServiceInsance.PutKV("192.168.0.2", `
+[
+	{
+		"topic":"nginx_log",
+		"log_path":"/Users/admin1/goworkspace/shop/123.txt",
+		"service":"test_service",
+		"send_rate":2000
+	}
+]` )
+
+	etcdKeys := GetEtcdKeys()
+	fmt.Println("到etcd服务器，按指定的键遍历键值对")
+	for _, key := range etcdKeys {
+		resp := services.EtcdServiceInsance.Get(key)
+		for _, ev := range resp.Kvs {
+			services.ConfChan <- string(ev.Value)
+			fmt.Printf("etcdkey = %s \n etcdvalue = %s \n", ev.Key, ev.Value)
+		}
+	}
+
 	// 启动对etcd的监听服务，有新的键值对会被监听到
 	util.WaitGroup.Add(1)
-	go etcdService.EtcdWatch(etcdKeys)
+	go services.EtcdServiceInsance.EtcdWatch(etcdKeys)
 
 	tailService := services.NewTailService()
 	go tailService.RunServer()
@@ -266,7 +280,7 @@ func main() {
 
 	*/
 	etcdApp := mvc.New(app.Party("/etcd"))
-	etcdApp.Register(etcdService)
+	etcdApp.Register(services.EtcdServiceInsance)
 	etcdApp.Handle(new(controllers.EtcdController))
 
 	models.DB.AutoMigrate(

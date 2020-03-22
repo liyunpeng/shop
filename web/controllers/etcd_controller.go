@@ -1,9 +1,11 @@
 package controllers
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
+	"shop/config"
 	"shop/services"
 	"shop/validates"
 	"strings"
@@ -29,21 +31,41 @@ type MonitorFile struct {
 }
 
 func ApiEtcdGetKV(ctx iris.Context) {
-
-	fmt.Println(" Apiectcd get kv ")
-	s := []MonitorFile{
-		{
-			FileName:"log1.txt",
-			FileSize: 1000,
-			FileKeyWords: "abc",
-		},
-		{
-			FileName:"log2.txt",
-			FileSize: 2000,
-			FileKeyWords: "edf",
-		},
+	keya := ctx.Params().Get("key")
+	fmt.Println("api调用 ApiEtcdGetKV ,请求参数为",keya)
+	var ss []config.LogConfig
+	//resp :=	services.EtcdServiceInsance.Get("/logagent/192.168.0.142/logconfig")
+	resp :=	services.EtcdServiceInsance.Get(keya)
+	if resp == nil {
+		ctx.JSON(ApiResource(true, nil,  "请求出错"))
+		return
+	} else if resp.Count < 1 {
+		ctx.JSON(ApiResource(true, nil,  "请求的 key 不存在"))
+		return
 	}
-	ctx.JSON(ApiResource(true, s,  "获取etcdkvcheng"))
+	for _, ev := range resp.Kvs {
+		//v := string(ev.Value)
+		//json.Unmarshal([]byte(v), &logConfArr)
+		var logConfArr []config.LogConfig
+		json.Unmarshal(ev.Value, &logConfArr)
+		ss = append(ss, logConfArr...)
+		fmt.Printf("etcdkey = %s \n etcdvalue = %s \n", ev.Key, ev.Value)
+
+	}
+
+	//s := []MonitorFile{
+	//	{
+	//		FileName:"log1.txt",
+	//		FileSize: 1000,
+	//		FileKeyWords: "abc",
+	//	},
+	//	{
+	//		FileName:"log2.txt",
+	//		FileSize: 2000,
+	//		FileKeyWords: "edf",
+	//	},
+	//}
+	ctx.JSON(ApiResource(true, ss,  "获取etcdkvcheng"))
 }
 
 type EtcdOption struct {
@@ -55,17 +77,20 @@ func ApiEtcdListAllKV(ctx iris.Context) {
 	fmt.Println(" Apiectcd list all kv ")
 	s := []EtcdOption{
 		{
-			Label:"/logagent/192.168.0.0/logconfig",
+			//Label:"/logagent/192.168.0.1/logconfig",
+			Label:"192.168.0.1",
 			Etcdkey: "1000",
 			EtcdValue: "abfffc",
 		},
 		{
-			Label:"/logagent/192.168.0.1/logconfig",
+			//Label:"/logagent/192.168.0.2/logconfig",
+			Label:"192.168.0.2",
 			Etcdkey: "1000",
 			EtcdValue: "affbc",
 		},
 		{
-			Label:"/logagent/192.168.0.2/logconfig",
+			//Label:"/logagent/192.168.0.3/logconfig",
+			Label:"192.168.0.3",
 			Etcdkey: "10l00",
 			EtcdValue: "abc",
 		},
@@ -134,7 +159,7 @@ func (e *EtcdController) GetAll() {
 //}
 
 func (e *EtcdController) GetKv() string {
-	k := e.Ctx.FormValue("k")
+	k := e.Ctx.FormValue("keya")
 
 	resp := e.Service.Get(k)
 

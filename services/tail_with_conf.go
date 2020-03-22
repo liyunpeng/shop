@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/astaxie/beego/logs"
 	"github.com/hpcloud/tail"
+	"shop/config"
 	"strings"
 	"sync/atomic"
 	"time"
@@ -57,18 +58,11 @@ func (s *SecondLimit) Wait() bool {
 	}
 }
 
-// LogConfig is struct from etcd log conf
-type LogConfig struct {
-	Topic    string `json:"topic"`
-	LogPath  string `json:"log_path"`
-	Service  string `json:"service"`
-	SendRate int    `json:"send_rate"`
-}
 
 type TailWithConf struct {
 	tail     *tail.Tail
 	offset   int64
-	logConf  LogConfig
+	logConf  config.LogConfig
 	secLimit *SecondLimit
 	exitChan chan bool
 }

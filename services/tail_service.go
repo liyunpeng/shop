@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/astaxie/beego/logs"
 	"github.com/hpcloud/tail"
+	"shop/config"
 	"sync"
 )
 
@@ -41,7 +42,7 @@ func NewTailManager() *TailManager {
 	}
 }
 
-func (t *TailManager) NewTailWithConf(logConfig LogConfig) (*TailWithConf,  error) {
+func (t *TailManager) NewTailWithConf(logConfig config.LogConfig) (*TailWithConf,  error) {
 	t.lock.Lock()
 	defer t.lock.Unlock()
 
@@ -74,7 +75,7 @@ func (t *TailManager) NewTailWithConf(logConfig LogConfig) (*TailWithConf,  erro
 	return tailWithConf, err
 }
 
-func (t *TailManager) reloadConfig(logConfArr []LogConfig) (err error) {
+func (t *TailManager) reloadConfig(logConfArr []config.LogConfig) (err error) {
 	fmt.Println("hdcloud tail管理者重新加载配置")
 	for _, logConfArrValue := range logConfArr {
 		tailWithConf, ok := t.tailWithConfMap[logConfArrValue.LogPath]
@@ -123,7 +124,7 @@ func (t *TailManager) Process() {
 	for etcdConfValue := range ConfChan {
 		logs.Debug("log etcdConfValue: %v", etcdConfValue)
 
-		var logConfArr []LogConfig
+		var logConfArr []config.LogConfig
 
 		err := json.Unmarshal([]byte(etcdConfValue), &logConfArr)
 		fmt.Println("从etcd得到的配置字符串解析出的配置对象: ", logConfArr)
