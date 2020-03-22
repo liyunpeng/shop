@@ -3,6 +3,7 @@ package services
 import (
 	"context"
 	"fmt"
+	"shop/util"
 	"sync"
 	"time"
 
@@ -70,7 +71,6 @@ func (e *etcdService) Get(key string) (*client.GetResponse) {
 	cancel()
 	return getResp
 }
-
 func (e *etcdService) EtcdWatch(keys []string) {
 	waitGroup.Add(1)
 	defer waitGroup.Done()
@@ -85,6 +85,9 @@ func (e *etcdService) EtcdWatch(keys []string) {
 	for {
 		for _, watchC := range watchChans {
 			select {
+			case <- util.ChanStop:
+				fmt.Println("etcd watch 协程 退出")
+				return
 			case wresp := <-watchC:
 				for _, ev := range wresp.Events {
 					ConfChan <- string(ev.Kv.Value)

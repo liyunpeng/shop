@@ -15,3 +15,40 @@ models.DB.AutoMigrate(
  
 
  4。 角色表是权限表和用户表的桥梁  创建角色时，同时在casbin表中创建该角色的所有权限列表
+
+ 5. 包相互依赖的问题
+ package A依赖package B,同时 package B 依赖package A
+
+ 这样就会在编译时报 "import cycle not allowed"。
+
+ 如何避免重复导入包的问题，就需要在设计时规划好包。
+ import cycle not allowed
+ package main
+ 	imports shop/handler
+ 	imports shop/services
+ 	imports shop/handler
+ 	这里handler包和services包相互依赖问题。
+ 	解决的方法是， stopChan不应该放在services包里， stopChan是被所有包所共有，
+ 	不能放在一个具体模块的包里， 因为具体的模块要被其他模块包饮用， 回到只包相互依赖
+
+
+ 6. 如果没有打开网页， websocket会阻塞， 其接受消费者的通道在添满10000个缓冲区后， 也会随之而进入阻塞，
+ 导致消费者在发送了10000个消息时也进入阻塞， 消息会被滞留在kafka broker， 当打开页面，
+ websocket会解除阻塞，连续读取通道缓冲区的数据， 会看到连续侧的如下log输出，
+ 向前端发送数据= //
+ 向前端发送数据= WriteBufferSize:
+ 向前端发送数据= 1024,
+ 向前端发送数据= //
+ 向前端发送数据= })
+ 向前端发送数据= //
+ 向前端发送数据= ws.OnConnection(handleConnection)
+ 向前端发送数据= //
+ 向前端发送数据= //
+另一方面通道缓冲区被读走，也使得消费者也会解除阻塞，所以会间歇性的看到消费消息的log：
+消费组ID=group-1，主题=nginx_log，分区=0，offset=12608，key=，value=Write
+
+7. 信号被一个routine捕获到， 不能在被其他routine捕获到，
+kafka消费者websocket退出 group-1 consume 2536 messages
+kafka消费者rpc退出， group-2 consume 2536 messages
+    主routine 的信号没有走到。
+

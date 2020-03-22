@@ -64,23 +64,23 @@ func (u *UserInfoService) init(){
 func (u *UserInfoService) destroy(){
 	u.file.Close()
 }
-
+var GrpcSever *grpc.Server
 func GrpcServer(grpcConf transformer.GrpcConf) {
 	// 1. 监听
 	addr :=  grpcConf.Addr
 	listenSocket, err := net.Listen("tcp", grpcConf.Addr)
 	if err != nil {
-		fmt.Printf("监听异常：%s\n", err)
+		fmt.Printf("监听异常：%GrpcSever\n", err)
 	}
-	fmt.Printf("开始监听：%s\n", addr)
+	fmt.Printf("开始监听：%GrpcSever\n", addr)
 	// 2.实例化gRPC
-	s := grpc.NewServer()
+	GrpcSever = grpc.NewServer()
 
 	u.init()
 	defer u.destroy()
 	// 3.在gRPC上注册微服务
 	// 第二个参数类型需要接口类型的变量
-	pb.RegisterUserInfoServiceServer(s, &u)
+	pb.RegisterUserInfoServiceServer(GrpcSever, &u)
 	// 4.启动gRPC服务
-	s.Serve(listenSocket)
+	GrpcSever.Serve(listenSocket)
 }

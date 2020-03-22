@@ -13,23 +13,23 @@ type Message struct {
 
 type KafkaProducer struct {
 	producerClient sarama.SyncProducer
-	lineChan       chan *Message
+	MsgChan        chan *Message
 }
-var kafkaProducer *KafkaProducer
+var KafkaProducerObj *KafkaProducer
 
 func NewKafkaProducer(kafkaAddr string) (kafkaProducer *KafkaProducer, err error) {
 	kafkaProducer = &KafkaProducer{
-		lineChan: make(chan *Message, 10000),
+		MsgChan: make(chan *Message, 10000),
 	}
 
 	config := sarama.NewConfig()
-	config.Producer.RequiredAcks = sarama.WaitForAll          // wait kafkaProducer ack
+	config.Producer.RequiredAcks = sarama.WaitForAll          // wait KafkaProducerObj ack
 	config.Producer.Partitioner = sarama.NewRandomPartitioner // random partition
 	config.Producer.Return.Successes = true
 
 	client, err := sarama.NewSyncProducer([]string{kafkaAddr}, config)
 	if err != nil {
-		logs.Error("init kafkaProducer producerClient err: %v", err)
+		logs.Error("init KafkaProducerObj producerClient err: %v", err)
 		return
 	}
 	kafkaProducer.producerClient = client
@@ -39,7 +39,7 @@ func NewKafkaProducer(kafkaAddr string) (kafkaProducer *KafkaProducer, err error
 func (k *KafkaProducer) sendMsgToKfk() {
 	defer waitGroup.Done()
 
-	for v := range k.lineChan {
+	for v := range k.MsgChan {
 		msg := &sarama.ProducerMessage{}
 		msg.Topic = v.topic
 		msg.Value = sarama.StringEncoder(v.line)
@@ -56,18 +56,20 @@ func (k *KafkaProducer) sendMsgToKfk() {
 			return
 		}
 	}
+
+	fmt.Println("生产者退出")
 }
 
 func (k *KafkaProducer) addMessage(line string, topic string) (err error) {
-	k.lineChan <- &Message{line: line, topic: topic}
+	k.MsgChan <- &Message{line: line, topic: topic}
 	return
 }
 
 func StartKafkaProducer(kafkaAddr string, threadNum int) {
 	var err error
-	kafkaProducer, err = NewKafkaProducer(kafkaAddr)
+	KafkaProducerObj, err = NewKafkaProducer(kafkaAddr)
 	fmt.Println("kafka broker 地址=", kafkaAddr)
-	if ( err != nil) {
+	if  err != nil {
 		panic("连接kafka broker错误 ")
 	} else {
 		fmt.Println("成功连接kafka broker")
@@ -75,7 +77,7 @@ func StartKafkaProducer(kafkaAddr string, threadNum int) {
 	for i := 0; i < threadNum; i++ {
 		fmt.Println("启动Kafka发送消息的协程")
 		waitGroup.Add(1)
-		go kafkaProducer.sendMsgToKfk()
+		go KafkaProducerObj.sendMsgToKfk()
 	}
 }
 

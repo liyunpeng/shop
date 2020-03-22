@@ -8,6 +8,7 @@ import (
 	"os/signal"
 	wshandler "shop/handler"
 	"shop/rpc"
+	"shop/util"
 	"sync"
 )
 var Address = []string{}
@@ -43,13 +44,12 @@ func clusterConsumerWebsocket(wg *sync.WaitGroup, brokers, topics []string, grou
 		fmt.Println("消费者成功建立")
 	}
 	defer func(){
-		consumer.Close()
-		fmt.Println("消费者关闭")
+		fmt.Println("消费者 websocket 完全退出")
 	}()
 
 	// trap SIGINT to trigger a shutdown
-	signals := make(chan os.Signal, 1)
-	signal.Notify(signals, os.Interrupt)
+	//signals := make(chan os.Signal, 1)
+	//signal.Notify(signals, os.Interrupt)
 
 	// consume errors
 	go func() {
@@ -82,11 +82,14 @@ Loop:
 				consumer.MarkOffset(msg, "") // mark message as processed
 				successes++
 			}
-		case <-signals:
+		//case <-signals:
+		//	break Loop
+		case <-util.ChanStop:
+			fmt.Fprintf(os.Stdout, "kafka消费者websocket开始执行退出 %s consume %d messages \n", groupId, successes)
+			consumer.Close()
 			break Loop
 		}
 	}
-	fmt.Fprintf(os.Stdout, "%s consume %d messages \n", groupId, successes)
 }
 
 
@@ -107,8 +110,7 @@ func clusterConsumerRpc(wg *sync.WaitGroup, brokers, topics []string, groupId st
 		fmt.Println("消费者成功建立")
 	}
 	defer func(){
-		consumer.Close()
-		fmt.Println("消费者关闭")
+		fmt.Println("消费者rpc 完全退出")
 	}()
 
 	// trap SIGINT to trigger a shutdown
@@ -146,9 +148,12 @@ Loop:
 				consumer.MarkOffset(msg, "") // mark message as processed
 				successes++
 			}
-		case <-signals:
+		//case <-signals:
+		//	break Loop
+		case <-util.ChanStop:
+			fmt.Fprintf(os.Stdout, "kafka消费者rpc开始执行退出， %s consume %d messages \n", groupId, successes)
+			consumer.Close()
 			break Loop
 		}
 	}
-	fmt.Fprintf(os.Stdout, "%s consume %d messages \n", groupId, successes)
 }

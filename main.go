@@ -3,31 +3,38 @@
 package main
 
 import (
+	stdContext "context"
 	"fmt"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
 	"github.com/kataras/iris/v12/sessions"
+	"os"
+	"os/signal"
 	"shop/rpc"
+	"shop/util"
+	"syscall"
 
 	//"github.com/kataras/iris/v12/websocket"
+	//
+	//
 	"net/http"
 	"shop/handler"
 
-
 	gf "github.com/snowlyg/gotransformer"
-	"shop/web/routes"
-	"time"
 	"golang.org/x/net/websocket"
 	"shop/config"
 	"shop/models"
 	"shop/services"
 	"shop/transformer"
+	"shop/web/routes"
+	"time"
 
 	_ "shop/validates"
 	"shop/web/controllers"
 )
 
 var Conf *config.Config
+
 
 func init() {
 	//var _path string
@@ -240,12 +247,12 @@ func main() {
 	// 启动对etcd的监听服务，有新的键值对会被监听到
 	go etcdService.EtcdWatch(etcdKeys)
 
-
 	tailService := services.NewTailService()
 	go tailService.RunServer()
 
-	services.StartKafkaProducer(
+	go services.StartKafkaProducer(
 		transformConfiguration.Kafka.Addr, 1)
+
 
 	go services.StartKafkaConsumer(transformConfiguration.Kafka.Addr)
 	/*
@@ -335,7 +342,7 @@ func main() {
 
 	//setupWebsocket(app)
 	fmt.Println("启动  iris 服务 ")
-	app.Run(
+	go 	app.Run(
 		// Starts the web server at localhost:8080
 		iris.Addr(":8082"),
 		// Ignores err server closed log when CTRL/CMD+C pressed.
@@ -343,8 +350,46 @@ func main() {
 		// Enables faster json serialization and more.
 		//iris.WithOptimizations,
 		iris.WithConfiguration(irisConfiguration),
+		iris.WithoutInterruptHandler,
 	)
 	fmt.Println("启动  iris 服务 1 ")
+
+
+	signals := make(chan os.Signal, 1)
+	//signal.Notify(signals, os.Interrupt)
+
+	signal.Notify(signals,
+		// kill -SIGINT XXXX 或 Ctrl+c
+		os.Interrupt,
+		syscall.SIGINT, // register that too, it should be ok
+		// os.Kill等同于syscall.Kill
+		os.Kill,
+		syscall.SIGKILL, // register that too, it should be ok
+		// kill -SIGTERM XXXX
+		syscall.SIGTERM,
+	)
+	//go func(){
+		for {
+			select {
+				case <- signals:
+					println("shutdown...")
+
+					close(util.ChanStop)
+					close(services.KafkaProducerObj.MsgChan)
+
+					timeout := 5 * time.Second
+					ctx, cancel := stdContext.WithTimeout(stdContext.Background(), timeout)
+					cancel()
+					fmt.Println("关闭iris 服务")
+					app.Shutdown(ctx)
+
+					fmt.Println("关闭grpc 服务")
+					rpc.GrpcSever.Stop()
+
+					return
+			}
+		}
+	//}()
 
 }
 
@@ -376,4 +421,5 @@ func main() {
 //		c.To(websocket.Broadcast).Emit("chat", msg)
 //	})
 //}
+
 

@@ -4,6 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"golang.org/x/net/websocket"
+	"shop/util"
+
+	//"shop/services"
 )
 
 type UserInfo struct {
@@ -68,6 +71,9 @@ func Push(conn *websocket.Conn) {
 				Data: msg,
 			}
 			jsonHandler.Send(conn, res)
+		case <- util.ChanStop:
+			fmt.Println("websocket执行发送的routine结束")
+			return
 		}
 	}
 }

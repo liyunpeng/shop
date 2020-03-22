@@ -89,7 +89,7 @@ func (t *TailWithConf) readLog(fileName string) {
 		}
 		fmt.Println("向kafka生产者数据通道发送消息 消息字符串=",
 			line.Text, "消息的topic=", t.logConf.Topic)
-		kafkaProducer.addMessage(line.Text, t.logConf.Topic)
+		KafkaProducerObj.addMessage(line.Text, t.logConf.Topic)
 		t.secLimit.Add(1)
 		t.secLimit.Wait()
 
