@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"golang.org/x/net/websocket"
 	"shop/util"
-
 	//"shop/services"
 )
 
@@ -20,12 +19,13 @@ type Response struct {
 	Msg  string
 	Data interface{}
 }
-var WebsocketChan chan  string
-func Handle(conn *websocket.Conn) {
+
+var WebsocketChan chan string
+
+func WebSocketHandle(conn *websocket.Conn) {
 	defer conn.Close()
 
-	util.PrintFuncName()
-	//util.WaitGroup.Add(1)
+	util.WaitGroup.Add(1)
 	go sendToClient(conn)
 
 	for {
@@ -42,7 +42,7 @@ func Handle(conn *websocket.Conn) {
 		res := &Response{
 			Code: 1,
 			Msg:  "success",
-			Data:  "from web socket ",
+			Data: "from web socket ",
 		}
 		err = jsonHandler.Send(conn, res)
 		if err != nil {
@@ -50,33 +50,33 @@ func Handle(conn *websocket.Conn) {
 			break
 		}
 
-
 	}
 }
 
 func sendToClient(conn *websocket.Conn) {
-	//defer util.WaitGroup.Done()
+	defer util.WaitGroup.Done()
 	defer util.PrintFuncName()
 
 	jsonHandler := websocket.JSON
 	fmt.Println("sendToClient routine 开启")
 	for {
-		//err := jsonHandler.Send(conn, res)
-		//if err != nil {
-		//	fmt.Println(err)
-		//	break
-		//}
-		//time.Sleep(time.Millisecond * 500)
+
 		select {
-		case msg := <- WebsocketChan:
-			fmt.Println("向前端发送数据=",msg)
+		case msg := <-WebsocketChan:
+			fmt.Println("向前端发送数据=", msg)
 			res := &Response{
 				Code: 1,
 				Msg:  "success",
 				Data: msg,
 			}
-			jsonHandler.Send(conn, res)
-		case <- util.ChanStop:
+			err := jsonHandler.Send(conn, res)
+			if err != nil {
+				fmt.Println(err)
+				panic("websockt 向客户端发送数据错误")
+				break
+			}
+			//time.Sleep(time.Millisecond * 500)
+		case <-util.ChanStop:
 			fmt.Println("websocket执行发送的routine结束")
 			return
 		}

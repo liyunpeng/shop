@@ -9,6 +9,7 @@ import (
 	"os"
 	pb "shop/rpc/proto"
 	"shop/transformer"
+	"shop/util"
 )
 
 // 定义服务端实现约定的接口
@@ -66,6 +67,8 @@ func (u *UserInfoService) destroy(){
 }
 var GrpcSever *grpc.Server
 func GrpcServer(grpcConf transformer.GrpcConf) {
+	defer util.WaitGroup.Done()
+	defer util.PrintFuncName()
 	// 1. 监听
 	addr :=  grpcConf.Addr
 	listenSocket, err := net.Listen("tcp", grpcConf.Addr)

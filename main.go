@@ -333,7 +333,7 @@ func main() {
 	go func() {
 		//defer 0.198()
 		fmt.Println("启动 websocket 服务")
-		http.Handle("/ws", websocket.Handler(handler.Handle))
+		http.Handle("/ws", websocket.Handler(handler.WebSocketHandle))
 		err := http.ListenAndServe(":88", nil)
 		if err != nil {
 			fmt.Println(err)
@@ -343,7 +343,7 @@ func main() {
 		}
 	}()
 
-
+	util.WaitGroup.Add(1)
 	go rpc.GrpcServer(transformConfiguration.Grpc)
 
 	//setupWebsocket(app)

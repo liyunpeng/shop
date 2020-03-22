@@ -50,5 +50,9 @@ models.DB.AutoMigrate(
 7. 信号被一个routine捕获到， 不能在被其他routine捕获到，
 kafka消费者websocket退出 group-1 consume 2536 messages
 kafka消费者rpc退出， group-2 consume 2536 messages
-    主routine 的信号没有走到。
 
+主routine 的信号没有走到。
+
+
+8. http 的serve 的handle方法只有在用户请求的时候才会调用。
+http.Handle("/ws", websocket.Handler(handler.Handle))
