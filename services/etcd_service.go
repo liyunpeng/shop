@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"shop/util"
-	"sync"
 	"time"
 
 	//"github.com/astaxie/beego/logs"
@@ -14,7 +13,6 @@ import (
 
 var (
 	ConfChan  = make(chan string, 10)
-	waitGroup sync.WaitGroup
 )
 
 type EtcdService interface {
@@ -72,8 +70,9 @@ func (e *etcdService) Get(key string) (*client.GetResponse) {
 	return getResp
 }
 func (e *etcdService) EtcdWatch(keys []string) {
-	waitGroup.Add(1)
-	defer waitGroup.Done()
+	defer util.WaitGroup.Done()
+
+	defer util.PrintFuncName()
 
 	var watchChans []client.WatchChan
 	for _, key := range keys {

@@ -24,7 +24,9 @@ var WebsocketChan chan  string
 func Handle(conn *websocket.Conn) {
 	defer conn.Close()
 
-	go Push(conn)
+	util.PrintFuncName()
+	//util.WaitGroup.Add(1)
+	go sendToClient(conn)
 
 	for {
 		jsonHandler := websocket.JSON
@@ -52,9 +54,12 @@ func Handle(conn *websocket.Conn) {
 	}
 }
 
-func Push(conn *websocket.Conn) {
-	jsonHandler := websocket.JSON
+func sendToClient(conn *websocket.Conn) {
+	//defer util.WaitGroup.Done()
+	defer util.PrintFuncName()
 
+	jsonHandler := websocket.JSON
+	fmt.Println("sendToClient routine 开启")
 	for {
 		//err := jsonHandler.Send(conn, res)
 		//if err != nil {

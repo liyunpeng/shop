@@ -245,15 +245,17 @@ func main() {
 	}
 ]` )
 	// 启动对etcd的监听服务，有新的键值对会被监听到
+	util.WaitGroup.Add(1)
 	go etcdService.EtcdWatch(etcdKeys)
 
 	tailService := services.NewTailService()
 	go tailService.RunServer()
 
+	util.WaitGroup.Add(1)
 	go services.StartKafkaProducer(
 		transformConfiguration.Kafka.Addr, 1)
 
-
+	util.WaitGroup.Add(1)
 	go services.StartKafkaConsumer(transformConfiguration.Kafka.Addr)
 	/*
 		创建iris应用的
@@ -325,7 +327,11 @@ func main() {
 
 	//websocket1(app)
 
+
+
+	//util.WaitGroup.Add(1)
 	go func() {
+		//defer 0.198()
 		fmt.Println("启动 websocket 服务")
 		http.Handle("/ws", websocket.Handler(handler.Handle))
 		err := http.ListenAndServe(":88", nil)
@@ -368,6 +374,8 @@ func main() {
 		// kill -SIGTERM XXXX
 		syscall.SIGTERM,
 	)
+
+	Loopa:
 	//go func(){
 		for {
 			select {
@@ -386,10 +394,15 @@ func main() {
 					fmt.Println("关闭grpc 服务")
 					rpc.GrpcSever.Stop()
 
-					return
+					break Loopa
+
 			}
 		}
 	//}()
+
+	fmt.Println("等待所有routine关闭动作完成")
+	util.WaitGroup.Wait()
+	fmt.Println("所有routine的关闭动作已全部完成")
 
 }
 

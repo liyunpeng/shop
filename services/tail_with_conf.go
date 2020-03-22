@@ -74,7 +74,7 @@ type TailWithConf struct {
 }
 
 func (t *TailWithConf) readLog(fileName string) {
-
+	//defer 0.198()
 	for line := range t.tail.Lines {
 		if line.Err != nil {
 			logs.Error("read line error:%v ", line.Err)
@@ -100,5 +100,4 @@ func (t *TailWithConf) readLog(fileName string) {
 		default:
 		}
 	}
-	waitGroup.Done()
 }

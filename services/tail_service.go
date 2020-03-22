@@ -24,7 +24,7 @@ func NewTailService() *tailService{
 func (t *tailService ) RunServer() {
 	tailManager = NewTailManager()
 	tailManager.Process()
-	waitGroup.Wait()
+	//util.WaitGroup.Wait()
 }
 
 var tailManager *TailManager
@@ -89,7 +89,7 @@ func (t *TailManager) reloadConfig(logConfArr []LogConfig) (err error) {
 
 			t.tailWithConfMap[logConfArrValue.LogPath] = tailWithConf
 
-			waitGroup.Add(1)
+			//util.WaitGroup.Add(1)
 
 			fmt.Println("新的监控文件对应一个新的tail对象， ")
 			go tailWithConf.readLog(logConfArrValue.LogPath)

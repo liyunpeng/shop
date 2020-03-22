@@ -14,7 +14,10 @@ import (
 var Address = []string{}
 
 func StartKafkaConsumer(kafkaAdress string) {
+	defer util.WaitGroup.Done()
+	defer util.PrintFuncName()
 	topic := []string{"nginx_log"}
+
 	var wg = &sync.WaitGroup{}
 	wg.Add(2)
 	Address = append(Address, kafkaAdress)
