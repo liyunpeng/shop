@@ -7,6 +7,7 @@ import (
 	"github.com/astaxie/beego/logs"
 	"github.com/hpcloud/tail"
 	"shop/config"
+	"shop/util"
 	"sync"
 )
 
@@ -25,7 +26,7 @@ func NewTailService() *tailService{
 func (t *tailService ) RunServer() {
 	tailManager = NewTailManager()
 	tailManager.Process()
-	//util.WaitGroup.Wait()
+	util.WaitGroup.Wait()
 }
 
 var tailManager *TailManager
@@ -122,15 +123,15 @@ func (t *TailManager) reloadConfig(logConfArr []config.LogConfig) (err error) {
 
 func (t *TailManager) Process() {
 	for etcdConfValue := range ConfChan {
-		logs.Debug("log etcdConfValue: %v", etcdConfValue)
+		fmt.Printf("tail服务从ConfChan通道拿到的配置数据: %v \n", etcdConfValue)
 
 		var logConfArr []config.LogConfig
 
 		err := json.Unmarshal([]byte(etcdConfValue), &logConfArr)
-		fmt.Println("从etcd得到的配置字符串解析出的配置对象: ", logConfArr)
+		fmt.Println("TailManager的Process函数从etcd得到的配置字符串解析出的配置对象: ", logConfArr)
 
 		if err != nil {
-			logs.Error("unmarshal failed, err: %v etcdConfValue :%s", err, etcdConfValue)
+			logs.Error("TailManager的Process函数 解析失败, err: %v etcdConfValue :%s", err, etcdConfValue)
 			fmt.Println("unmarshal failed, err: %v etcdConfValue :%s", err, etcdConfValue)
 			continue
 		}

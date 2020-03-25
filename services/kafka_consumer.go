@@ -44,7 +44,7 @@ func clusterConsumerWebsocket(wg *sync.WaitGroup, brokers, topics []string, grou
 		fmt.Printf("%s: sarama.NewSyncProducer err, message=%s \n", groupId, err)
 		return
 	}else{
-		fmt.Println("消费者成功建立")
+		fmt.Println("消费者websocket 成功建立")
 	}
 	defer func(){
 		fmt.Println("消费者 websocket 完全退出")
@@ -77,7 +77,7 @@ Loop:
 			if ok {
 				wshandler.WebsocketChan <- string(msg.Value)
 
-				fmt.Println("kafka 消费者消费消息")
+				fmt.Println("kafka 消费者 websocket 消费消息")
 				fmt.Fprintf(
 					os.Stdout,
 					"消费组ID=%s，主题=%s，分区=%d，offset=%d，key=%s，value=%s\n",

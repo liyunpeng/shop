@@ -39,8 +39,7 @@ func NewKafkaProducer(kafkaAddr string) (kafkaProducer *KafkaProducer, err error
 
 func (k *KafkaProducer) sendMsgToKfk() {
 	defer util.WaitGroup.Done()
-
-defer util.PrintFuncName()
+	defer util.PrintFuncName()
 
 	for v := range k.MsgChan {
 		msg := &sarama.ProducerMessage{}
@@ -70,8 +69,7 @@ func (k *KafkaProducer) addMessage(line string, topic string) (err error) {
 
 func StartKafkaProducer(kafkaAddr string, threadNum int) {
 	defer util.WaitGroup.Done()
-
-defer util.PrintFuncName()
+	defer util.PrintFuncName()
 	var err error
 	KafkaProducerObj, err = NewKafkaProducer(kafkaAddr)
 	fmt.Println("kafka broker 地址=", kafkaAddr)

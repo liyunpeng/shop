@@ -120,8 +120,8 @@ func GetEtcdKeys() ([]string) {
 	//	//return err
 	//}
 	for _, ip := range ips {
-		key := fmt.Sprintf("/logagent/%s/logconfig", ip)
-		etcdKeys = append(etcdKeys, key)
+		//key := fmt.Sprintf("/logagent/%s/logconfig", ip)
+		etcdKeys = append(etcdKeys, ip)
 	}
 	fmt.Println("从etcd服务器获取到的以IP名为键的键值对: ", etcdKeys)
 	return etcdKeys
@@ -198,22 +198,60 @@ const namespace = "default"
 //	app.Get("/echo", websocket.Handler(websocketServer, idGen))
 //
 //}
-func main() {
-	app := iris.New()
-	app.Logger().SetLevel("debug")
 
-	handler.WebsocketChan = make( chan string, 1000)
-	irisConfiguration := iris.TOML("./config/conf.tml")
-	transformConfiguration := getTransformConfiguration(irisConfiguration)
-	models.Register(transformConfiguration)
-
+func startService(transformConfiguration *transformer.Conf) {
+	etcdKeys := GetEtcdKeys()
 	services.EtcdServiceInsance = services.NewEtcdService(
 		[]string{transformConfiguration.Etcd.Addr}, 5 * time.Second)
-	//[]string{"127.0.0.1:2379"}, 5 * time.Second)
+	go func() {
+		fmt.Println("到etcd服务器，按指定的键遍历键值对")
+		for _, key := range etcdKeys {
+			resp := services.EtcdServiceInsance.Get(key)
+			if resp != nil || resp.Count < 1 {
+				continue
+			}
+			for _, ev := range resp.Kvs {
+				services.ConfChan <- string(ev.Value)
+				fmt.Printf("etcdkey = %s \n etcdvalue = %s \n", ev.Key, ev.Value)
+			}
+		}
+	}()
 
+	// 启动对etcd的监听服务，有新的键值对会被监听到
+	util.WaitGroup.Add(1)
+	go services.EtcdServiceInsance.EtcdWatch(etcdKeys)
 
+	tailService := services.NewTailService()
+	go tailService.RunServer()
 
-	//services.EtcdServiceInsance.PutKV("/logagent/192.168.0.1/logconfig", `
+	util.WaitGroup.Add(1)
+	go services.StartKafkaProducer(
+		transformConfiguration.Kafka.Addr, 1)
+
+	util.WaitGroup.Add(1)
+	go services.StartKafkaConsumer(transformConfiguration.Kafka.Addr)
+
+	//util.WaitGroup.Add(1)
+	go func() {
+		//defer 0.198()
+		fmt.Println("启动 websocket 服务")
+		http.Handle("/ws", websocket.Handler(handler.WebSocketHandle))
+		err := http.ListenAndServe(":88", nil)
+		if err != nil {
+			fmt.Println(err)
+			fmt.Println("websocket 启动异常")
+		}else{
+			fmt.Println("websocket 监听服务")
+		}
+	}()
+
+	util.WaitGroup.Add(1)
+	go rpc.GrpcServer(transformConfiguration.Grpc)
+
+}
+
+func createTestData(transformConfiguration *transformer.Conf){
+
 	services.EtcdServiceInsance.PutKV("192.168.0.1", `
 [
 	{
@@ -237,7 +275,6 @@ func main() {
 		"send_rate":1000
 	}
 ]` )
-	//services.EtcdServiceInsance.PutKV("/logagent/192.168.0.2/logconfig", `
 	services.EtcdServiceInsance.PutKV("192.168.0.2", `
 [
 	{
@@ -247,71 +284,22 @@ func main() {
 		"send_rate":2000
 	}
 ]` )
+}
 
-	etcdKeys := GetEtcdKeys()
-	fmt.Println("到etcd服务器，按指定的键遍历键值对")
-	for _, key := range etcdKeys {
-		resp := services.EtcdServiceInsance.Get(key)
-		for _, ev := range resp.Kvs {
-			services.ConfChan <- string(ev.Value)
-			fmt.Printf("etcdkey = %s \n etcdvalue = %s \n", ev.Key, ev.Value)
-		}
-	}
-
-	// 启动对etcd的监听服务，有新的键值对会被监听到
-	util.WaitGroup.Add(1)
-	go services.EtcdServiceInsance.EtcdWatch(etcdKeys)
-
-	tailService := services.NewTailService()
-	go tailService.RunServer()
-
-	util.WaitGroup.Add(1)
-	go services.StartKafkaProducer(
-		transformConfiguration.Kafka.Addr, 1)
-
-	util.WaitGroup.Add(1)
-	go services.StartKafkaConsumer(transformConfiguration.Kafka.Addr)
-	/*
-		创建iris应用的
-		app.Party得到一个路由对象， party的参数就是一个路径，整个应有都是在这个路径下，
-		mvc.new 由这个路由对象， 创建一个mvc的app对象。
-		这个app就可以做很多事情，
-		注册服务啊，注册控制器
-
-	*/
+func registerControllers( app *iris.Application) {
 	etcdApp := mvc.New(app.Party("/etcd"))
 	etcdApp.Register(services.EtcdServiceInsance)
 	etcdApp.Handle(new(controllers.EtcdController))
-
-	models.DB.AutoMigrate(
-		&models.User{},
-		&models.OauthToken{},
-		&models.Role{},
-		&models.Permission{},
-	)
-
-	tmpl := iris.HTML("./web/views", ".html").
-		Layout("shared/layout.html").
-		Reload(true)
-	app.RegisterView(tmpl)
-
-	app.HandleDir("/public", "./web/public")
-
-	app.OnAnyErrorCode(func(ctx iris.Context) {
-		ctx.ViewData("Message", ctx.Values().
-			GetStringDefault("message", "The page you're looking for doesn't exist"))
-		ctx.View("shared/error.html")
-	})
-
-	sessManager := sessions.New(sessions.Config{
-		Cookie:  "sessioncookiename",
-		Expires: 24 * time.Hour,
-	})
 
 	index := mvc.New(app.Party("/index"))
 	index.Handle(new(controllers.IndexController))
 
 	self := mvc.New(app.Party("/self"))
+
+	sessManager := sessions.New(sessions.Config{
+		Cookie:  "sessioncookiename",
+		Expires: 24 * time.Hour,
+	})
 	self.Register(
 		sessManager.Start,
 	)
@@ -334,34 +322,58 @@ func main() {
 		sessManager.Start,
 	)
 	user.Handle(new(controllers.UserGController))
+}
+
+func main() {
+	app := iris.New()
+	app.Logger().SetLevel("debug")
+
+	handler.WebsocketChan = make( chan string, 10)
+
+	irisConfiguration := iris.TOML("./config/conf.tml")
+	transformConfiguration := getTransformConfiguration(irisConfiguration)
+
+	models.Register(transformConfiguration)
+	models.DB.AutoMigrate(
+		&models.User{},
+		&models.OauthToken{},
+		&models.Role{},
+		&models.Permission{},
+	)
+
+	startService(transformConfiguration)
+
+	/*
+		创建iris应用的
+		app.Party得到一个路由对象， party的参数就是一个路径，整个应有都是在这个路径下，
+		mvc.new 由这个路由对象， 创建一个mvc的app对象。
+		这个app就可以做很多事情，
+		注册服务啊，注册控制器
+
+	*/
+
+	tmpl := iris.HTML("./web/views", ".html").
+		Layout("shared/layout.html").
+		Reload(true)
+	app.RegisterView(tmpl)
+	app.HandleDir("/public", "./web/public")
+	registerControllers(app)
+	app.OnAnyErrorCode(func(ctx iris.Context) {
+		ctx.ViewData("Message", ctx.Values().
+			GetStringDefault("message", "The page you're looking for doesn't exist"))
+		ctx.View("shared/error.html")
+	})
 
 	routes.RegisterApi(app)
+
+
 	apiRoutes := routes.GetRoutes(app)
 	models.CreateSystemData(apiRoutes)
 
+	createTestData(transformConfiguration)
 	//websocket1(app)
 
-
-
-	//util.WaitGroup.Add(1)
-	go func() {
-		//defer 0.198()
-		fmt.Println("启动 websocket 服务")
-		http.Handle("/ws", websocket.Handler(handler.WebSocketHandle))
-		err := http.ListenAndServe(":88", nil)
-		if err != nil {
-			fmt.Println(err)
-			fmt.Println("websocket 启动异常")
-		}else{
-			fmt.Println("websocket 监听服务")
-		}
-	}()
-
-	util.WaitGroup.Add(1)
-	go rpc.GrpcServer(transformConfiguration.Grpc)
-
 	//setupWebsocket(app)
-	fmt.Println("启动  iris 服务 ")
 	go 	app.Run(
 		// Starts the web server at localhost:8080
 		iris.Addr(":8082"),
@@ -372,9 +384,17 @@ func main() {
 		iris.WithConfiguration(irisConfiguration),
 		iris.WithoutInterruptHandler,
 	)
-	fmt.Println("启动  iris 服务 1 ")
+	fmt.Println("启动iris服务完毕")
 
+	control(app)
 
+	fmt.Println("等待所有routine关闭动作完成")
+	util.WaitGroup.Wait()
+	fmt.Println("所有routine的关闭动作已全部完成")
+
+}
+
+func control (app *iris.Application) {
 	signals := make(chan os.Signal, 1)
 	//signal.Notify(signals, os.Interrupt)
 
@@ -389,37 +409,31 @@ func main() {
 		syscall.SIGTERM,
 	)
 
-	Loopa:
+Loopa:
 	//go func(){
-		for {
-			select {
-				case <- signals:
-					println("shutdown...")
+	for {
+		select {
+		case <- signals:
+			println("shutdown...")
 
-					close(util.ChanStop)
-					close(services.KafkaProducerObj.MsgChan)
+			close(util.ChanStop)
+			close(services.KafkaProducerObj.MsgChan)
 
-					timeout := 5 * time.Second
-					ctx, cancel := stdContext.WithTimeout(stdContext.Background(), timeout)
-					cancel()
-					fmt.Println("关闭iris 服务")
-					app.Shutdown(ctx)
+			timeout := 5 * time.Second
+			ctx, cancel := stdContext.WithTimeout(stdContext.Background(), timeout)
+			cancel()
+			fmt.Println("关闭iris 服务")
+			app.Shutdown(ctx)
 
-					fmt.Println("关闭grpc 服务")
-					rpc.GrpcSever.Stop()
+			fmt.Println("关闭grpc 服务")
+			rpc.GrpcSever.Stop()
 
-					break Loopa
+			break Loopa
 
-			}
 		}
+	}
 	//}()
-
-	fmt.Println("等待所有routine关闭动作完成")
-	util.WaitGroup.Wait()
-	fmt.Println("所有routine的关闭动作已全部完成")
-
 }
-
 //func setupWebsocket(app *iris.Application) {
 //	// create our echo websocket server
 //	ws := websocket.New(websocket.Config{
