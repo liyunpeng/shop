@@ -1,13 +1,14 @@
 package controllers
+
 import (
 	"fmt"
 	"github.com/go-playground/validator/v10"
-	"shop/models"
-	"shop/services"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
 	"github.com/kataras/iris/v12/sessions"
 	"net/http"
+	"shop/models"
+	"shop/services"
 	validates "shop/validates"
 )
 
@@ -33,10 +34,10 @@ type UserGController struct {
 	Session *sessions.Session
 }
 
-const usergIDKey = "UserID"
+const SessionUserName = "UserID"
 
 func (c *UserGController) getCurrentUserID() int64 {
-	userID := c.Session.GetInt64Default(usergIDKey, 0)
+	userID := c.Session.GetInt64Default(SessionUserName, 0)
 	return userID
 }
 
@@ -82,7 +83,7 @@ func (c *UserGController) PostRegister() mvc.Result {
 	// set the user's id to this session even if err != nil,
 	// the zero id doesn't matters because .getCurrentUserID() checks for that.
 	// If err != nil then it will be shown, see below on mvc.Response.Err: err.
-	//c.Session.Set(usergIDKey, u.ID)
+	//c.Session.Set(SessionUserName, u.ID)
 
 	return mvc.Response{
 		// if not nil then this error will be shown instead.
@@ -129,7 +130,15 @@ func (c *UserGController) PostLogin() mvc.Result {
 		}
 	}
 	fmt.Println("user.Username=", user.Username)
-	c.Session.Set(usergIDKey, user.Username)
+	fmt.Println("user.id=", user.ID)
+	c.Session.Set(SessionUserName, user.Username)
+	usergIDKey1 := "user id "
+
+	c.Session.Set(usergIDKey1, user.ID)
+	id1 , _ := c.Session.GetInt(usergIDKey1)
+	fmt.Println("c.Session.GetInt(usergIDKey1)=", id1)
+
+
 
 	return mvc.Response{
 		Path: "/self",

@@ -313,6 +313,9 @@ func registerControllers( app *iris.Application) {
 	assort.Handle(new(controllers.AssortController))
 
 	order := mvc.New(app.Party("/order"))
+	order.Register(
+		sessManager.Start,
+	)
 	order.Handle(new(controllers.OrderController))
 
 	user := mvc.New(app.Party("/user"))

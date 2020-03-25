@@ -1,4 +1,5 @@
 package controllers
+
 import (
 	"fmt"
 	"github.com/kataras/iris/v12"
@@ -12,7 +13,7 @@ import (
 )
 
 type SelfController struct {
-	Ctx iris.Context
+	Ctx     iris.Context
 	Session *sessions.Session
 }
 
@@ -23,13 +24,18 @@ var selfStaticView = mvc.View{
 }
 
 func (c *SelfController) Get() mvc.Result {
-	if len(c.Session.GetString("UserID")) > 0 {
-		fmt.Println("session.GetString=", c.Session.GetString("UserID"))
-		c.Ctx.ViewData("Title", c.Session.GetString("UserID"))
+	if len(c.Session.GetString(SessionUserName)) > 0 {
+		fmt.Println("session.GetString=", c.Session.GetString(SessionUserName))
+		c.Ctx.ViewData("Title", c.Session.GetString(SessionUserName))
+		//id1 , _ := c.Session.GetInt(SessionUserName)
+		//if id1 > 0 {
+		//	fmt.Println("c.Session.GetInt(SessionUserName)=", id1)
+		//	//fmt.Println("session.GetString=", c.Session.GetString("UserID"))
+		//	c.Ctx.ViewData("Title", id1)
 
 	} else {
 		fmt.Println("session is nil")
-		c.Ctx.ViewData("Title", "oo")
+		c.Ctx.ViewData("Title", "未登录")
 	}
 	return selfStaticView
 }

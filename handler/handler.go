@@ -26,6 +26,9 @@ func WebSocketHandle(conn *websocket.Conn) {
 	defer conn.Close()
 
 	util.WaitGroup.Add(1)
+
+	fmt.Println("websocket与客户端建立连接，启动接收和发送数据的服务")
+
 	go sendToClient(conn)
 
 	for {
@@ -58,7 +61,7 @@ func sendToClient(conn *websocket.Conn) {
 	defer util.PrintFuncName()
 
 	jsonHandler := websocket.JSON
-	fmt.Println("sendToClient routine 开启")
+
 	for {
 
 		select {
