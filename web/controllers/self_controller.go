@@ -24,6 +24,10 @@ var selfStaticView = mvc.View{
 }
 
 func (c *SelfController) Get() mvc.Result {
+
+	cookie := c.Ctx.GetCookie("username")
+	cookie.
+
 	if len(c.Session.GetString(SessionUserName)) > 0 {
 		fmt.Println("session.GetString=", c.Session.GetString(SessionUserName))
 		c.Ctx.ViewData("Title", c.Session.GetString(SessionUserName))

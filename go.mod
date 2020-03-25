@@ -19,8 +19,10 @@ require (
 	github.com/go-playground/universal-translator v0.17.0
 	github.com/go-playground/validator/v10 v10.2.0
 	github.com/golang/groupcache v0.0.0-20200121045136-8c9f03a8e57e // indirect
+	github.com/golang/protobuf v1.3.2
 	github.com/google/go-querystring v1.0.0 // indirect
 	github.com/google/uuid v1.1.1 // indirect
+	github.com/gorilla/securecookie v1.1.1
 	github.com/grpc-ecosystem/go-grpc-middleware v1.2.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-prometheus v1.2.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway v1.14.3 // indirect
@@ -56,5 +58,6 @@ require (
 	go.etcd.io/etcd v3.3.18+incompatible
 	go.uber.org/zap v1.14.0 // indirect
 	golang.org/x/net v0.0.0-20191209160850-c0dbc17a3553
+	google.golang.org/grpc v1.24.0
 	sigs.k8s.io/yaml v1.2.0 // indirect
 )

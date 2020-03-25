@@ -131,6 +131,22 @@ func (c *UserGController) PostLogin() mvc.Result {
 	}
 	fmt.Println("user.Username=", user.Username)
 	fmt.Println("user.id=", user.ID)
+
+
+	c.Ctx.SetCookieKV("username", user.Username) // <-- 设置一个Cookie
+	// 另外也可以用: ctx.SetCookie(&http.Cookie{...})
+	// 如果要设置自定义存放路径：
+	// ctx.SetCookieKV(name, value, iris.CookiePath("/custom/path/cookie/will/be/stored"))
+
+	//c.Ctx.Request().Cookie("username")
+	//如果您希望仅对当前请求路径可见：
+	//（请注意，如果服务器发送空cookie的路径，所有浏览器都兼容，将会使用客户端自定义路径）
+	// ctx.SetCookieKV(name, value, iris.CookieCleanPath /* or iris.CookiePath("") */)
+	// 学习更多:
+	//                              iris.CookieExpires(time.Duration)
+	//                              iris.CookieHTTPOnly(false)
+
+
 	c.Session.Set(SessionUserName, user.Username)
 	usergIDKey1 := "user id "
 
