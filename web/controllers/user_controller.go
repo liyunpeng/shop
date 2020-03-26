@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"shop/models"
 	"shop/services"
+	"shop/util"
 	validates "shop/validates"
 )
 
@@ -34,10 +35,9 @@ type UserGController struct {
 	Session *sessions.Session
 }
 
-const SessionUserName = "UserID"
 
 func (c *UserGController) getCurrentUserID() int64 {
-	userID := c.Session.GetInt64Default(SessionUserName, 0)
+	userID := c.Session.GetInt64Default(util.SessionUserName, 0)
 	return userID
 }
 
@@ -147,8 +147,8 @@ func (c *UserGController) PostLogin() mvc.Result {
 	//                              iris.CookieHTTPOnly(false)
 
 
-	c.Session.Set(SessionUserName, user.Username)
-	usergIDKey1 := "user id "
+	c.Session.Set(util.SessionUserName, user.Username)
+	usergIDKey1 := "session_user_id"
 
 	c.Session.Set(usergIDKey1, user.ID)
 	id1 , _ := c.Session.GetInt(usergIDKey1)

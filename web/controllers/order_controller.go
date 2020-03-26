@@ -5,6 +5,7 @@ import (
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
 	"github.com/kataras/iris/v12/sessions"
+	"shop/util"
 
 	//"github.com/kataras/iris/v12/sessions"
 )
@@ -21,13 +22,17 @@ var orderStaticView = mvc.View{
 
 func (c *OrderController) Get() mvc.Result {
 
-	if len(c.Session.GetString(SessionUserName)) > 0 {
+	cookieName := c.Ctx.GetCookie(util.COOKEI_NAME)
+	fmt.Println("cookieName=", cookieName)
+
+
+	if len(c.Session.GetString(util.SessionUserName)) > 0 {
 		fmt.Println("用户已经登录")
 		return mvc.View{
 			Name: "order.html",
 			Data: iris.Map{
 				"OrderCount": "10",
-				"UserId": c.Session.GetString(SessionUserName),
+				"UserId": c.Session.GetString(util.SessionUserName),
 			},
 		}
 	} else {
@@ -37,7 +42,7 @@ func (c *OrderController) Get() mvc.Result {
 }
 
 func (c *OrderController) getCurrentUserID() int64 {
-	userID := c.Session.GetInt64Default(SessionUserName, 0)
+	userID := c.Session.GetInt64Default(util.SessionUserName, 0)
 	return userID
 }
 

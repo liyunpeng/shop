@@ -8,6 +8,9 @@ import (
 
 var ChanStop = make( chan bool)
 var WaitGroup sync.WaitGroup
+
+var  COOKEI_NAME = "sessioncookiename"
+const SessionUserName = "serssion_user_name"
 func PrintFuncName() {
 	funcName,file,line,ok := runtime.Caller(1)
 	if(ok){

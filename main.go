@@ -9,6 +9,8 @@ import (
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
 	"github.com/kataras/iris/v12/sessions"
+	//"github.com/kataras/neffos/stackexchange/redis"
+	"github.com/kataras/iris/v12/sessions/sessiondb/redis"
 	"os"
 	"os/signal"
 	"shop/rpc"
@@ -286,20 +288,40 @@ func createTestData(transformConfiguration *transformer.Conf){
 ]` )
 }
 
+
 func registerControllers( app *iris.Application) {
+	sessManager := sessions.New(sessions.Config{
+		Cookie:  util.COOKEI_NAME,
+		Expires: 24 * time.Hour,
+
+		AllowReclaim: true,
+	})
+	db := redis.New(redis.Config{
+		Network:   "tcp",
+		Addr:      "127.0.0.1:6379",
+		Timeout:   time.Duration(30) * time.Second,
+		MaxActive: 10,
+		Password:  "",
+		Database:  "",
+		Prefix:    "",
+		Delim:     "-",
+		Driver:    redis.Redigo(), // redis.Radix() can be used instead.
+	})
+	sessManager.UseDatabase(db)
+
 	etcdApp := mvc.New(app.Party("/etcd"))
 	etcdApp.Register(services.EtcdServiceInsance)
 	etcdApp.Handle(new(controllers.EtcdController))
 
 	index := mvc.New(app.Party("/index"))
+	index.Register(
+		sessManager.Start,
+	)
 	index.Handle(new(controllers.IndexController))
 
 	self := mvc.New(app.Party("/self"))
 
-	sessManager := sessions.New(sessions.Config{
-		Cookie:  "sessioncookiename",
-		Expires: 24 * time.Hour,
-	})
+
 	self.Register(
 		sessManager.Start,
 	)

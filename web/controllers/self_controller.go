@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/sessions"
+	"shop/util"
 
 	//"github.com/kataras/iris/v12/context"
 
@@ -25,12 +26,15 @@ var selfStaticView = mvc.View{
 
 func (c *SelfController) Get() mvc.Result {
 
-	cookie := c.Ctx.GetCookie("username")
-	cookie.
+	//cookie := c.Ctx.GetCookie("username")
 
-	if len(c.Session.GetString(SessionUserName)) > 0 {
-		fmt.Println("session.GetString=", c.Session.GetString(SessionUserName))
-		c.Ctx.ViewData("Title", c.Session.GetString(SessionUserName))
+	if len(c.Session.GetString(util.SessionUserName)) > 0 {
+		fmt.Println("session id = ", c.Session.ID())
+		//c1 := c.Ctx.GetCookie("")
+
+		//c.Session.
+		fmt.Println("session.GetString=", c.Session.GetString(util.SessionUserName))
+		c.Ctx.ViewData("Title", c.Session.GetString(util.SessionUserName))
 		//id1 , _ := c.Session.GetInt(SessionUserName)
 		//if id1 > 0 {
 		//	fmt.Println("c.Session.GetInt(SessionUserName)=", id1)

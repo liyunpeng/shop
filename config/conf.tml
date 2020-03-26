@@ -8,17 +8,17 @@ Charset = "UTF-8"
 [Other]
     [Other.App]
         Name = "IrisAdminApi" #项目名称
-        URl = "http://192.168.0.141"
+        URl = "http://192.168.0.198"
         Port = ":8081"
         LoggerLevel = "debug" # 日志类型 "disable" "fatal" "error" "warn""info" "debug"
         DirverType = "Mysql" # 数据库类型 "Sqlite" "Mysql"
         # CreateSysData = 1 # 是否创建系统数据 true / false
     [Other.Mysql]
         DirverName = "mysql" # 数据库驱动名称
-        Connect ="root:123456@tcp(192.168.0.141:3306)/gotest?charset=utf8&parseTime=True&loc=Local"
+        Connect ="root:123456@tcp(192.168.0.198:3306)/gotest?charset=utf8&parseTime=True&loc=Local"
         Name ="gotest" # 数据库名称
         TName ="gotest_test" # 测试数据库名称
-        CasbinConnect = "root:123456@tcp(192.168.0.141:3306)/"
+        CasbinConnect = "root:123456@tcp(192.168.0.198:3306)/"
         # MaxIdle =1000
         # MaxOpen	=1000
     [Other.Mongodb]
@@ -37,8 +37,8 @@ Charset = "UTF-8"
       Name = "name"  #管理员名称
       Pwd = "password" #管理员密码
     [Other.Kafka]
-      Addr = "192.168.0.141:9092"
+      Addr = "192.168.0.198:9092"
     [Other.Etcd]
-      Addr = "192.168.0.141:2379"
+      Addr = "192.168.0.198:2379"
     [Other.Grpc]
         Addr = "127.0.0.1:8989"
