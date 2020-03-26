@@ -290,10 +290,15 @@ func createTestData(transformConfiguration *transformer.Conf){
 
 
 func registerControllers( app *iris.Application) {
+	hashKey := []byte("the-big-and-secret-fash-key-here")
+	blockKey := []byte("lot-secret-of-characters-big-too")
+	secureCookie := securecookie.New(hashKey, blockKey)
+
 	sessManager := sessions.New(sessions.Config{
 		Cookie:  util.COOKEI_NAME,
 		Expires: 24 * time.Hour,
-
+		Encode:       secureCookie.Encode,
+		Decode:       secureCookie.Decode,
 		AllowReclaim: true,
 	})
 	db := redis.New(redis.Config{
