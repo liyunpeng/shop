@@ -7,7 +7,7 @@ import (
 )
 
 type Hrefs struct{}
-func (s *Hrefs) IndexLinks(ctx context.Context, req bool, rsp *models.User) error {
+func (s *Hrefs) IndexLinks(ctx context.Context, req int, rsp *models.User) error {
 	//items, err := domain.IndexLinks()
 	//rsp.TableName()
 	//if err != nil {
@@ -15,7 +15,7 @@ func (s *Hrefs) IndexLinks(ctx context.Context, req bool, rsp *models.User) erro
 	//}
 
 	rsp.Name = "aa"
-	fmt.Println(" micro为服务响应")
+	fmt.Println(" micro为服务响应, 接收到的请求参数为：",req)
 
 	return nil
 }

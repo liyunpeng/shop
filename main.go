@@ -416,6 +416,7 @@ func main() {
 		//iris.WithOptimizations,
 		iris.WithConfiguration(irisConfiguration),
 		iris.WithoutInterruptHandler,
+		iris.WithCharset("UTF-8"),
 	)
 	fmt.Println("启动iris服务完毕")
 

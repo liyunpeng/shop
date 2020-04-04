@@ -20,11 +20,41 @@ var orderStaticView = mvc.View{
 	Data: iris.Map{"Title": "User Registration"},
 }
 
+type Result struct {
+	Id int	`json:"id"`
+	Title string	`json:"title"`
+
+	Orders []Order
+}
+
+type Order struct {
+	Id int 	`json:"id"`
+	Title string 	`json:"title"`
+}
 func (c *OrderController) Get() mvc.Result {
 
 	cookieName := c.Ctx.GetCookie(util.COOKEI_NAME)
 	fmt.Println("cookieName=", cookieName)
 
+	//var s []string
+	//s = append(s, "ddddd")
+	//s = append(s, "aaaaa")
+	var s []Order
+	result := new( Result)
+	result.Id = 1001
+	s1 := Order{
+		Id:1,
+		Title: "titile1",
+	}
+	s = append(s, s1)
+	s2 := Order{
+		Id:1,
+		Title: "titile2",
+	}
+	s = append(s, s2)
+	result.Orders = s
+	//c.Ctx.ViewData("Result", result)
+	//mvc.View{}.Data = s
 
 	if len(c.Session.GetString(util.SessionUserName)) > 0 {
 		fmt.Println("用户已经登录")
@@ -33,11 +63,23 @@ func (c *OrderController) Get() mvc.Result {
 			Data: iris.Map{
 				"OrderCount": "10",
 				"UserId": c.Session.GetString(util.SessionUserName),
+				"Orders": s,
 			},
 		}
 	} else {
 		fmt.Println("用户没有登录")
-		return orderStaticView
+		return mvc.View{
+			Name: "order.html",
+			Data: iris.Map{
+				"Result": result,
+				"OrderCount": "10002",
+				"UserId": c.Session.GetString(util.SessionUserName),
+			},
+			//Data: map[string] interface{}{
+			//	"Result": result,
+			//},
+		}
+
 	}
 }
 
