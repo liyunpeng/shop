@@ -56,3 +56,6 @@ kafka消费者rpc退出， group-2 consume 2536 messages
 
 8. http 的serve 的handle方法只有在用户请求的时候才会调用。
 http.Handle("/ws", websocket.Handler(handler.Handle))
+
+
+GODEBUG=gctrace=1 go run main.go 2> log_file
