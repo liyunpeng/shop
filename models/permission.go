@@ -105,19 +105,4 @@ func UpdatePermission(pj *validates.PermissionRequest, id uint) (permission *Per
 	return
 }
 
-/**
- * 创建系统权限
- * @return
- */
-func CreateSystemAdminPermission(perms []*validates.PermissionRequest) []uint {
-	var permIds []uint
-	for _, perm := range perms {
-		p := GetPermissionByNameAct(perm.Name, perm.Act)
-		if p.ID != 0 {
-			continue
-		}
-		pp := CreatePermission(perm)
-		permIds = append(permIds, pp.ID)
-	}
-	return permIds
-}
+

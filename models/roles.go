@@ -148,21 +148,4 @@ func RolePermisions(id uint) []*Permission {
 	return ps
 }
 
-/**
-*创建系统管理员
-*@return   *models.AdminRoleTranform api格式化后的数据格式
- */
-func CreateSystemAdminRole(permIds []uint) *Role {
-	aul := &validates.RoleRequest{
-		Name:        "admin",
-		DisplayName: "超级管理员",
-		Description: "超级管理员",
-	}
 
-	role := GetRoleByName(aul.Name)
-	if role.ID == 0 {
-		return CreateRole(aul, permIds)
-	} else {
-		return role
-	}
-}

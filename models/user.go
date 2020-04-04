@@ -194,25 +194,5 @@ func CreateUser(aul *validates.CreateUpdateUserRequest) (user *User) {
 	return
 }
 
-func CreateSystemAdmin(roleId uint ) *User {
-	aul := &validates.CreateUpdateUserRequest{
-		Username: "admin@126.com",
-		Password: "123",
-		Name:    "admin",
-		RoleIds:  []uint{roleId},
-	}
 
-	if ( IsUserExist( aul.Username) == false ) {
-		return CreateUser(aul)
-	}else{
-		user := UserFindByName(aul.Username)
-		return user
-	}
-	//user := UserFindByName(aul.Username)
-	//if user.ID == 0 {
-	//	return CreateUser(aul)
-	//} else {
-	//	return user
-	//}
-}
 

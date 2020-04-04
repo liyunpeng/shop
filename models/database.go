@@ -8,7 +8,6 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "shop/config"
 	"shop/transformer"
-	"shop/validates"
 	"time"
 )
 var Enforcer *casbin.Enforcer
@@ -32,6 +31,7 @@ func Register(rc *transformer.Conf) {
 		//DB.DB().SetMaxIdleConns(mysql.MaxIdle)
 		//DB.DB().SetMaxOpenConns(mysql.MaxOpen)
 		DB.DB().SetConnMaxLifetime(time.Duration(300) * time.Minute)
+		DB.Set("gorm:table_options", "ENGINE=InnoDB DEFAULT CHARSET=utf8")
 		err = DB.DB().Ping()
 		fmt.Println("成功连接数据库")
 	} else {
@@ -87,16 +87,6 @@ func Register(rc *transformer.Conf) {
 
 
 
-func CreateSystemData(perms []*validates.PermissionRequest) {
-	//if rc.App.CreateSysData == 1 {
-	if true {
-		permIds := CreateSystemAdminPermission(perms) //初始化权限
-		role := CreateSystemAdminRole(permIds)        //初始化角色
-		if role.ID != 0 {
-			CreateSystemAdmin(role.ID) //初始化管理员
-		}
-	}
-}
 
 func GetAll(string, orderBy string, offset, limit int) *gorm.DB {
 	if len(orderBy) > 0 {
