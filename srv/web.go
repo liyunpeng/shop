@@ -4,9 +4,25 @@ import (
 	"context"
 	"fmt"
 	"shop/models"
+	"strconv"
 )
 
 type Hrefs struct{}
+
+func (s *Hrefs) GetOrderByUser(ctx context.Context, req int, rsp []*models.Order) error {
+	fmt.Println("微服务请求参数 req=", req)
+	rsp = models.OrderFindByUser(strconv.Itoa(req))
+	fmt.Println("微服务响应： rsp=", rsp)
+	return nil
+}
+
+func (s *Hrefs) GetOrderById(ctx context.Context, req int, rsp *models.Order) error {
+	fmt.Println("微服务请求参数 req=", req)
+	*rsp = *models.OrderFindById(req)
+	fmt.Println("微服务响应： rsp.name=", rsp.Username)
+	return nil
+}
+
 func (s *Hrefs) IndexLinks(ctx context.Context, req int, rsp *models.User) error {
 	//items, err := domain.IndexLinks()
 	//rsp.TableName()
@@ -15,7 +31,7 @@ func (s *Hrefs) IndexLinks(ctx context.Context, req int, rsp *models.User) error
 	//}
 
 	rsp.Name = "aa"
-	fmt.Println(" micro为服务响应, 接收到的请求参数为：",req)
+	fmt.Println("1111111   micro为服务响应, 接收到的请求参数为：",req)
 
 	return nil
 }

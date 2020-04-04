@@ -372,6 +372,7 @@ func main() {
 		&models.OauthToken{},
 		&models.Role{},
 		&models.Permission{},
+		&models.Order{},
 	)
 
 	startService(transformConfiguration)

@@ -5,6 +5,8 @@ import (
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
 	"github.com/kataras/iris/v12/sessions"
+	"shop/cli"
+	"shop/models"
 	"shop/util"
 
 	//"github.com/kataras/iris/v12/sessions"
@@ -24,35 +26,69 @@ type Result struct {
 	Id int	`json:"id"`
 	Title string	`json:"title"`
 
-	Orders []Order
+	Orders []*models.Order
 }
 
-type Order struct {
-	Id int 	`json:"id"`
-	Title string 	`json:"title"`
-}
+//type Order struct {
+//	Id int 	`json:"id"`
+//	Title string 	`json:"title"`
+//}
 func (c *OrderController) Get() mvc.Result {
 
 	cookieName := c.Ctx.GetCookie(util.COOKEI_NAME)
 	fmt.Println("cookieName=", cookieName)
 
-	//var s []string
-	//s = append(s, "ddddd")
-	//s = append(s, "aaaaa")
-	var s []Order
+	//iris.WithCharset("UTF-8")
+
+	rsp1 := new(models.User)
+	err1 := cli.Call("IndexLinks", 10, rsp1)
+	if err1 != nil {
+		fmt.Println("err =",err1 )
+	}else{
+		fmt.Println("客户端调用微服务的结果 =", rsp1.Name )
+	}
+	//rsp := new(models.Order)
+	//err := cli.Call("GetOrderByUser", "aa", rsp)
+	//var s []Order
 	result := new( Result)
-	result.Id = 1001
-	s1 := Order{
-		Id:1,
-		Title: "titile1",
-	}
-	s = append(s, s1)
-	s2 := Order{
-		Id:1,
-		Title: "titile2",
-	}
-	s = append(s, s2)
-	result.Orders = s
+	//rsp :=  result.Orders
+	//rsp :=  new([]models.Order) //iris.WithCharset("UTF-8"))
+	//result.Orders = models.OrderFindByUser("aa")
+	//err := cli.Call("GetOrderByUser", "aa", rsp)
+	go func() {
+		rsp := make([]models.Order, 1)
+		err := cli.Call("GetOrderByUser", 1, rsp)
+
+		//result.Orders = rsp
+		if err != nil {
+			panic(err)
+		}
+		result.Id = 1001
+	} ()
+
+
+	//go func (){
+	//	rsp := new(models.Order)
+	//	err := cli.Call("GetOrderById", 1, rsp)
+	//	fmt.Println("rsp.name=", rsp.Username)
+	//	result.Orders = append(result.Orders, rsp)
+	//
+	//	if err != nil {
+	//		panic(err)
+	//	}
+	//	result.Id = 1001
+	//}()
+
+	//s1 := Order{
+	//	Id:1,
+	//	Title: "titile1",
+	//}
+	//s = append(s, s1)
+	//s2 := Order{
+	//	Id:1,
+	//	Title: "titile2",
+	//}
+	//s = append(s, s2)
 	//c.Ctx.ViewData("Result", result)
 	//mvc.View{}.Data = s
 
@@ -63,7 +99,6 @@ func (c *OrderController) Get() mvc.Result {
 			Data: iris.Map{
 				"OrderCount": "10",
 				"UserId": c.Session.GetString(util.SessionUserName),
-				"Orders": s,
 			},
 		}
 	} else {
