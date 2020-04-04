@@ -55,17 +55,18 @@ func (c *OrderController) Get() mvc.Result {
 	//rsp :=  new([]models.Order) //iris.WithCharset("UTF-8"))
 	//result.Orders = models.OrderFindByUser("aa")
 	//err := cli.Call("GetOrderByUser", "aa", rsp)
-	go func() {
-		rsp := make([]models.Order, 1)
-		err := cli.Call("GetOrderByUser", 1, rsp)
+	//go func() {
+		//rsp := make([]models.Order, 1)
 
-		//result.Orders = rsp
+		orderItems := new( models.OrderItems)
+		err := cli.Call("GetOrderByUser", "aa", orderItems)
+
+		result.Orders = orderItems.Items
 		if err != nil {
 			panic(err)
 		}
 		result.Id = 1001
-	} ()
-
+	//} ()
 
 	//go func (){
 	//	rsp := new(models.Order)

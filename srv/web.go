@@ -4,14 +4,13 @@ import (
 	"context"
 	"fmt"
 	"shop/models"
-	"strconv"
 )
 
 type Hrefs struct{}
 
-func (s *Hrefs) GetOrderByUser(ctx context.Context, req int, rsp []*models.Order) error {
+func (s *Hrefs) GetOrderByUser(ctx context.Context, req string, rsp *models.OrderItems) error {
 	fmt.Println("微服务请求参数 req=", req)
-	rsp = models.OrderFindByUser(strconv.Itoa(req))
+	rsp.Items = models.OrderFindByUser(req)
 	fmt.Println("微服务响应： rsp=", rsp)
 	return nil
 }
