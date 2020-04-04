@@ -1,10 +1,8 @@
+{{range .}}
 <dl>
-    <ul>
-        {{range .}}<li>{{.Title}}</li>{{end}}
-    </ul>
     <dt>
         <time>2015-11-15 22:55:59</time>
-        <span>待发货</span>
+        <span>待发货{{.Title}}</span>
     </dt>
     <ul>
         <a href="detail.html">
@@ -28,4 +26,4 @@
         <input type="button" value="取消订单" />
     </dd>
 </dl>
-
+{{end}}
