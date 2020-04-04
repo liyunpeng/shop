@@ -2,9 +2,11 @@ package srv
 
 import (
 	"context"
+	"fmt"
 	"shop/models"
 )
 
+type Hrefs struct{}
 func (s *Hrefs) IndexLinks(ctx context.Context, req bool, rsp *models.User) error {
 	//items, err := domain.IndexLinks()
 	//rsp.TableName()
@@ -13,6 +15,7 @@ func (s *Hrefs) IndexLinks(ctx context.Context, req bool, rsp *models.User) erro
 	//}
 
 	rsp.Name = "aa"
+	fmt.Println(" micro为服务响应")
 
 	return nil
 }

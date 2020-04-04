@@ -25,7 +25,11 @@ func (c *IndexController) Get() mvc.Result {
 	cookieName := c.Ctx.GetCookie(util.COOKEI_NAME)
 	rsp := new(models.User)
 	err := cli.Call("IndexLinks", true, rsp)
-	fmt.Println("err =",err )
+	if err != nil {
+		fmt.Println("err =",err )
+	}else{
+		fmt.Println("客户端调用微服务的结果 =", rsp.Name )
+	}
 	fmt.Println("cookiename =",cookieName)
 	fmt.Println("session name=", c.Session.Get(util.SessionUserName))
 	return indexStaticView

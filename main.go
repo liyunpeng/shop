@@ -9,6 +9,8 @@ import (
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
 	"github.com/kataras/iris/v12/sessions"
+	"shop/srv"
+
 	//"github.com/kataras/neffos/stackexchange/redis"
 	"github.com/kataras/iris/v12/sessions/sessiondb/redis"
 	"os"
@@ -358,6 +360,7 @@ func main() {
 	app := iris.New()
 	app.Logger().SetLevel("debug")
 
+
 	handler.WebsocketChan = make( chan string, 10)
 
 	irisConfiguration := iris.TOML("./config/conf.tml")
@@ -418,11 +421,14 @@ func main() {
 
 
 	cookieGet(app)
+
+	go srv.Start()
 	control(app)
 
 	fmt.Println("等待所有routine关闭动作完成")
 	util.WaitGroup.Wait()
 	fmt.Println("所有routine的关闭动作已全部完成")
+
 
 }
 
@@ -459,6 +465,9 @@ Loopa:
 
 			fmt.Println("关闭grpc 服务")
 			rpc.GrpcSever.Stop()
+
+			fmt.Println("关闭go-micro 微服务")
+			srv.Stop()
 
 			break Loopa
 
