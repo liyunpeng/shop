@@ -50,7 +50,6 @@ func (c *OrderController) Get() mvc.Result {
 	//rsp := new(models.Order)
 	//err := cli.Call("GetOrderByUser", "aa", rsp)
 	//var s []Order
-	result := new( Result)
 	//rsp :=  result.Orders
 	//rsp :=  new([]models.Order) //iris.WithCharset("UTF-8"))
 	//result.Orders = models.OrderFindByUser("aa")
@@ -58,14 +57,7 @@ func (c *OrderController) Get() mvc.Result {
 	//go func() {
 		//rsp := make([]models.Order, 1)
 
-		orderItems := new( models.OrderItems)
-		err := cli.Call("GetOrderByUser", "aa", orderItems)
 
-		result.Orders = orderItems.Items
-		if err != nil {
-			panic(err)
-		}
-		result.Id = 1001
 	//} ()
 
 	//go func (){
@@ -92,12 +84,22 @@ func (c *OrderController) Get() mvc.Result {
 	//s = append(s, s2)
 	//c.Ctx.ViewData("Result", result)
 	//mvc.View{}.Data = s
-
-	if len(c.Session.GetString(util.SessionUserName)) > 0 {
+	sessionUserName := 	c.Session.GetString(util.SessionUserName)
+	if len(sessionUserName) > 0 {
 		fmt.Println("用户已经登录")
+		result := new( Result)
+		orderItems := new( models.OrderItems)
+		err := cli.Call("GetOrderByUser", sessionUserName, orderItems)
+
+		result.Orders = orderItems.Items
+		if err != nil {
+			panic(err)
+		}
+		result.Id = 1001
 		return mvc.View{
 			Name: "order.html",
 			Data: iris.Map{
+				"Result": result,
 				"OrderCount": "10",
 				"UserId": c.Session.GetString(util.SessionUserName),
 			},
@@ -107,7 +109,6 @@ func (c *OrderController) Get() mvc.Result {
 		return mvc.View{
 			Name: "order.html",
 			Data: iris.Map{
-				"Result": result,
 				"OrderCount": "10002",
 				"UserId": c.Session.GetString(util.SessionUserName),
 			},

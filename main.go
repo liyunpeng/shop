@@ -320,7 +320,7 @@ func registerControllers( app *iris.Application) {
 	etcdApp.Register(services.EtcdServiceInsance)
 	etcdApp.Handle(new(controllers.EtcdController))
 
-	index := mvc.New(app.Party("/index"))
+	index := mvc.New(app.Party("/"))
 	index.Register(
 		sessManager.Start,
 	)

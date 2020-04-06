@@ -19,6 +19,8 @@ func Start() {
 		op.Addrs = urls
 	})
 
+	// TODO: 检测consul服务发现是否正常启动
+
 	service = micro.NewService(
 		micro.Registry(reg),
 		micro.Name(config.Get("srv").String("micro.hrefs.srv")),

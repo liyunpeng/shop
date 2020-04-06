@@ -5,15 +5,35 @@ import (
 )
 
 func CreateOrderTestData() {
+
+	OrderDelete()
 	aul := &validates.CreateOrderRequest{
 		Username: "aa",
-		Title: "title ",
+		Title: "订单标题1",
+		Price: 1000.00,
+		Description: "订单描述1",
+		Status: "待发货",
+		ImagePath: "/public/images/classify-ph03.png",
 	}
 	CreateOrder(aul)
 
 	aul = &validates.CreateOrderRequest{
 		Username: "aa",
-		Title: "title 1  ",
+		Title: "订单标题2",
+		Price: 3000.00,
+		Description: "订单描述2",
+		Status: "已发货",
+		ImagePath: "/public/images/classify-ph01.png",
+	}
+	CreateOrder(aul)
+
+	aul = &validates.CreateOrderRequest{
+		Username: "aa",
+		Title: "订单标题5",
+		Price: 3000.00,
+		Description: "订单描述3",
+		Status: "待接收",
+		ImagePath: "/public/images/classify-ph02.png",
 	}
 	CreateOrder(aul)
 }

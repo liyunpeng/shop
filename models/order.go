@@ -13,27 +13,33 @@ type Order struct {
 	Title    string `gorm:"type:varchar(255)" json:"title"`
 	Username string `gorm:"type:varchar(255)" json:"username"`
 	Description string `gorm:"type:varchar(128);not null" json:"description"`
-	Price       float32  `gorm:"type:int(255)" json:"price"`
+	Price       float32  `gorm:"type:decimal(7,2)" json:"price"`
 	ImagePath 	string `gorm:"type:varchar(255)" json:"imagepath"`
+	Status string `gorm:"type:varchar(255)" json:"status"`
 }
 
 func (o Order) TableName() string {
 	return "gorm_order"
 }
 
-//func CreateUser(aul *validates.CreateUpdateUserRequest) (user *User) {
-func CreateOrder(aul *validates.CreateOrderRequest) {
+func OrderDelete(){
+	DB.Delete(&Order{})
+}
 
+func CreateOrder(aul *validates.CreateOrderRequest) {
 	order := &Order{
 		Username: aul.Username,
 		Title: aul.Title,
+		Price: aul.Price,
+		Status: aul.Status,
+		Description: aul.Description,
+		ImagePath: aul.ImagePath,
+		//created:   time.Now().Format("2006-01-02 15:04:05")
 	}
 
 	if err := DB.Create(order).Error; err != nil {
 		color.Red(fmt.Sprintf("CreateOrderErr:%s \n ", err))
 	}
-
-	//addRoles(aul, user)
 
 	return
 }

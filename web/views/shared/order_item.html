@@ -2,16 +2,16 @@
 <dl>
     <dt>
         <time>{{.CreatedAt}}</time>
-        <span>待发货{{.Title}}</span>
+        <span>{{.Status}}</span>
     </dt>
     <ul>
         <a href="detail.html">
-            <figure><img src="/public/images/classify-ph03.png"/></figure>
+            <figure><img src="{{.ImagePath}}"/></figure>
             <li>
-                <p>超级大品牌服装，现在够级大品牌服装，现在够买只要998</p>
+                <p>{{.Title}}</p>
                 <small>颜色：经典绮丽款</small>
                 <span>尺寸：XL</span>
-                <b>￥32.00</b>
+                <b>￥{{.Price}}</b>
                 <strong>×3</strong>
             </li>
         </a>
