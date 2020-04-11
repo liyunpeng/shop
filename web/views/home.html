@@ -171,36 +171,10 @@
         </div>
     </div> <!--mui-content end-->
 </div>
-   
 
     <footer class="page-footer fixed-footer" id="footer">
-		<ul>
-			<li class="active">
-				<a href="index">
-					<img src="/public/images/footer01.png"/>
-					<p>首页</p>
-				</a>
-			</li>
-			<li>
-				<a href="assort">
-					<img src="/public/images/footer002.png"/>
-					<p>分类</p>
-				</a>
-			</li>
-			<li>
-				<a href="shopcar">
-					<img src="/public/images/footer003.png"/>
-					<p>购物车</p>
-				</a>
-			</li>
-			<li>
-				<a href="self">
-					<img src="/public/images/footer004.png"/>
-					<p>个人中心</p>
-				</a>
-			</li>
-		</ul>
-	</footer>
+        {{template "shared/footer.html" .Result.Orders}}
+    </footer>
 
 </body>
 <script type="text/javascript" src="/public/js/jquery-1.8.3.min.js" ></script>

@@ -10,17 +10,17 @@ import (
 	"shop/util"
 )
 
-type IndexController struct {
+type HomeController struct {
 	Ctx iris.Context
 	Session *sessions.Session
 }
 
 var indexStaticView = mvc.View{
-	Name: "index.html",
+	Name: "home.html",
 	Data: iris.Map{"Title": "User Registration"},
 }
 
-func (c *IndexController) Get() mvc.Result {
+func (c *HomeController) Get() mvc.Result {
 	//cookieName := c.Session.Get(util.COOKEI_NAME)
 	cookieName := c.Ctx.GetCookie(util.COOKEI_NAME)
 	rsp := new(models.User)

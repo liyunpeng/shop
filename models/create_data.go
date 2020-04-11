@@ -37,6 +37,27 @@ func CreateOrderTestData() {
 	}
 	CreateOrder(aul)
 }
+
+func CreateGoodsTestData(){
+	goods := &Goods{
+		Name:        "goods1",
+		Description: "desription1",
+		Price:       10,
+		ImagePath:   "",
+		Stock:       100,
+	}
+	CreateGoods(goods)
+
+	goods = &Goods{
+		Name:        "goods2",
+		Description: "desription2",
+		Price:       100,
+		ImagePath:   "",
+		Stock:       200,
+	}
+	CreateGoods(goods)
+
+}
 /**
  * 创建系统权限
  * @return
@@ -63,8 +84,10 @@ func CreateSystemData(perms []*validates.PermissionRequest) {
 			CreateSystemAdmin(role.ID) //初始化管理员
 		}
 		CreateOrderTestData()
+		CreateGoodsTestData()
 	}
 }
+
 /**
 *创建系统管理员
 *@return   *models.AdminRoleTranform api格式化后的数据格式

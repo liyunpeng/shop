@@ -1,9 +1,8 @@
 1. 批量替换文件
- find  -name "*.go" | xargs  sed -i 's/github.com\/liyunpeng\///g'
+find  -name "*.go" | xargs  sed -i 's/github.com\/liyunpeng\///g'
 
-
- 2. 批量创建数据库表
- 加入如下代码：
+2. 批量创建数据库表
+加入如下代码：
 models.DB.AutoMigrate(
 	&models.User{},
 	&models.OauthToken{},
@@ -11,16 +10,13 @@ models.DB.AutoMigrate(
 	&models.Permission{},
 )
 
- 3.  调试过程， 要反复删除数据库
+3.调试过程， 要反复删除数据库
  
+4。角色表是权限表和用户表的桥梁  创建角色时，同时在casbin表中创建该角色的所有权限列表
 
- 4。 角色表是权限表和用户表的桥梁  创建角色时，同时在casbin表中创建该角色的所有权限列表
-
- 5. 包相互依赖的问题
+5. 包相互依赖的问题
  package A依赖package B,同时 package B 依赖package A
-
  这样就会在编译时报 "import cycle not allowed"。
-
  如何避免重复导入包的问题，就需要在设计时规划好包。
  import cycle not allowed
  package main

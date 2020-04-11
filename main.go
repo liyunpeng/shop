@@ -326,11 +326,11 @@ func registerControllers( app *iris.Application) {
 	etcdApp.Register(services.EtcdServiceInsance)
 	etcdApp.Handle(new(controllers.EtcdController))
 
-	index := mvc.New(app.Party("/"))
-	index.Register(
+	home := mvc.New(app.Party("/"))
+	home.Register(
 		sessManager.Start,
 	)
-	index.Handle(new(controllers.IndexController))
+	home.Handle(new(controllers.HomeController))
 
 	self := mvc.New(app.Party("/self"))
 
@@ -379,6 +379,7 @@ func main() {
 		&models.Role{},
 		&models.Permission{},
 		&models.Order{},
+		&models.Goods{},
 	)
 
 	startService(config.TransformConfiguration)
@@ -389,9 +390,7 @@ func main() {
 		mvc.new 由这个路由对象， 创建一个mvc的app对象。
 		这个app就可以做很多事情，
 		注册服务啊，注册控制器
-
 	*/
-
 	tmpl := iris.HTML("./web/views", ".html").
 		Layout("shared/layout.html").
 		Reload(true)

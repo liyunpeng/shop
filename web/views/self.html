@@ -178,34 +178,7 @@
 	</div>
 	
 	<footer class="page-footer fixed-footer">
-		<ul>
-			<li>
-				<a href="index">
-					<img src="/public/images/footer001.png"/>
-					<p>首页</p>
-				</a>
-			</li>
-			<li>
-				<a href="assort">
-					<img src="/public/images/footer002.png"/>
-					<p>分类</p>
-				</a>
-			</li>
-			<li>
-				<a href="shopcar">
-					<img src="/public/images/footer003.png"/>
-					<p>购物车</p>
-				</a>
-			</li>
-			<li class="active">
-				<a href="self">
-					<img src="/public/images/footer04.png"/>
-					<p>个人中心</p>
-				</a>
-			</li>
-		</ul>
+		{{template "shared/footer.html" .Result.Orders}}
 	</footer>
-	
-	
 </body>
 </html>

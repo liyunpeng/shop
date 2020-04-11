@@ -72,34 +72,7 @@
 			<b>合计：￥108.90</b>
 			<span><a href="buy.html">去结算（2）</a></span>
 		</div>
-		<ul>
-			<li>
-				<a href="index">
-					<img src="/public/images/footer001.png"/>
-					<p>首页</p>
-				</a>
-			</li>
-			<li>
-				<a href="assort">
-					<img src="/public/images/footer002.png"/>
-					<p>分类</p>
-				</a>
-			</li>
-			<li class="active">
-				<a href="shopcar">
-					<img src="/public/images/footer03.png"/>
-					<p>购物车</p>
-				</a>
-			</li>
-			<li>
-				<a href="self">
-					<img src="/public/images/footer004.png"/>
-					<p>个人中心</p>
-				</a>
-			</li>
-		</ul>
+		{{template "shared/footer.html" .Result.Orders}}
 	</footer>
-	
-	
 </body>
 </html>
