@@ -43,7 +43,8 @@ func CreateGoodsTestData(){
 		Name:        "goods1",
 		Description: "desription1",
 		Price:       10,
-		ImagePath:   "",
+		Type:	"营养快线",
+		ImagePath:   "/public/images/classify-ph03.png",
 		Stock:       100,
 	}
 	CreateGoods(goods)
@@ -52,7 +53,8 @@ func CreateGoodsTestData(){
 		Name:        "goods2",
 		Description: "desription2",
 		Price:       100,
-		ImagePath:   "",
+		Type:	"营养快线",
+		ImagePath:   "/public/images/classify-ph03.png",
 		Stock:       200,
 	}
 	CreateGoods(goods)

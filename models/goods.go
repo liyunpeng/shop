@@ -11,6 +11,7 @@ type Goods struct {
 	//Model
 	Name       string  `gorm:"type:varchar(255)" json:"name"`
 	Description string  `gorm:"type:varchar(128);not null" json:"description"`
+	Type string  `gorm:"type:varchar(64);not null" json:"type"`
 	Price       float32 `gorm:"type:decimal(7,2)" json:"price"`
 	ImagePath   string  `gorm:"type:varchar(255)" json:"imagepath"`
 	Stock  int   `gorm:"type:int(10)" json:"stock"`
@@ -33,8 +34,16 @@ func CreateGoods(goods *Goods) {
 
 func GoodsFindByName(name string) []*Goods {
 	var goods []*Goods
-	//DB.Mokel(&Goods{}).Find(&Goodss)
 	tx := DB.Model(&Goods{}).Where("name =?", name).Find(&goods)
+	if tx.Error == nil {
+		return goods
+	} else {
+		return nil
+	}
+}
+func GoodsFindAll() []*Goods {
+	var goods []*Goods
+	tx := DB.Model(&Goods{}).Find(&goods)
 	if tx.Error == nil {
 		return goods
 	} else {
