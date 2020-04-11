@@ -25,8 +25,8 @@ var orderStaticView = mvc.View{
 type Result struct {
 	Id int	`json:"id"`
 	Title string	`json:"title"`
-
 	Orders []*models.Order
+	Item int  `json:"item"`
 }
 
 //type Order struct {

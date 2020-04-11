@@ -15,10 +15,7 @@ type HomeController struct {
 	Session *sessions.Session
 }
 
-var indexStaticView = mvc.View{
-	Name: "home.html",
-	Data: iris.Map{"Title": "User Registration"},
-}
+
 
 func (c *HomeController) Get() mvc.Result {
 	//cookieName := c.Session.Get(util.COOKEI_NAME)
@@ -32,5 +29,16 @@ func (c *HomeController) Get() mvc.Result {
 	}
 	fmt.Println("cookiename =",cookieName)
 	fmt.Println("session name=", c.Session.Get(util.SessionUserName))
+
+	result := Result{
+		Item: 1,
+	}
+	var indexStaticView = mvc.View{
+		Name: "home.html",
+		Data: iris.Map{
+			"Result": result,
+			"Title": "User Registration",
+		},
+	}
 	return indexStaticView
 }

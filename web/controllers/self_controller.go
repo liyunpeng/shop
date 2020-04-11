@@ -45,5 +45,11 @@ func (c *SelfController) Get() mvc.Result {
 		fmt.Println("session is nil")
 		c.Ctx.ViewData("Title", "未登录")
 	}
+
+	result := Result{
+		Item: 4,
+	}
+
+	c.Ctx.ViewData("Result", result)
 	return selfStaticView
 }

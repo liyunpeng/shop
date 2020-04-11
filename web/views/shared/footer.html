@@ -1,23 +1,23 @@
 <ul>
-    <li class="active">
+    <li class="{{if eq . 1}}active{{end}}">
         <a href="/">
             <img src="/public/images/footer01.png"/>
             <p>首页</p>
         </a>
     </li>
-    <li>
+    <li class="{{if eq . 2}}active{{end}}">
         <a href="assort">
             <img src="/public/images/footer002.png"/>
             <p>分类</p>
         </a>
     </li>
-    <li>
+    <li class="{{if eq . 3}}active{{end}}">
         <a href="shopcar">
             <img src="/public/images/footer003.png"/>
             <p>购物车</p>
         </a>
     </li>
-    <li>
+    <li class="{{if eq . 4}}active{{end}}">
         <a href="self">
             <img src="/public/images/footer004.png"/>
             <p>个人中心</p>

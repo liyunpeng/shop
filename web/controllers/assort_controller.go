@@ -13,12 +13,19 @@ type AssortController struct {
 
 }
 
-var assortStaticView = mvc.View{
-	Name: "assort.html",
-	Data: iris.Map{"Title": "User Registration"},
-}
+
 
 func (c *AssortController) Get() mvc.Result {
+	result := Result{
+		Item: 2,
+	}
+	var assortStaticView = mvc.View{
+		Name: "assort.html",
+		Data: iris.Map{
+			"Result": result,
+			"Title": "User Registration",
+		},
+	}
 	return assortStaticView
 }
 

@@ -8,11 +8,16 @@ type ShopCarController struct {
 	Ctx iris.Context
 }
 
-var shopCarStaticView = mvc.View{
-	Name: "shopcar.html",
-	Data: iris.Map{"Title": "User Registration"},
-}
 
 func (c *ShopCarController) Get() mvc.Result {
+	result := new( Result)
+	result.Item = 3
+	shopCarStaticView := mvc.View{
+		Name: "shopcar.html",
+		Data: iris.Map{
+			"Result": result,
+			"Title": "User Registration"},
+	}
+
 	return shopCarStaticView
 }
