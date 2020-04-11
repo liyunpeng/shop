@@ -13,7 +13,7 @@ import (
 )
 
 var service micro.Service
-func Start() {
+func Start(){
 	urls := util.GetConsulUrls()
 	reg := consul.NewRegistry(func(op *registry.Options) {
 		op.Addrs = urls

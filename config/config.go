@@ -1,5 +1,8 @@
 package config
 
+import "shop/transformer"
+
+var TransformConfiguration *transformer.Conf
 type Config struct {
 	Server ServerConf   `yaml:"server"`
 	Mysql  MysqlConf `yaml:"mysql"`

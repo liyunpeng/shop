@@ -14,6 +14,7 @@ type Conf struct {
 	Kafka    Kafka
 	Etcd    EtcdConf
 	Grpc    GrpcConf
+	Consul   ConsulConf
 }
 
 type App struct {
@@ -72,4 +73,8 @@ type GrpcConf struct {
 	Addr     string
 }
 
+type ConsulConf struct {
+	Addr     string
+	Port     string
+}
 

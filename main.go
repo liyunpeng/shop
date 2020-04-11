@@ -98,6 +98,11 @@ func getTransformConfiguration( irisConfiguration iris.Configuration) *transform
 	g.InsertObj = irisConfiguration.Other["Grpc"]
 	_ = g.Transformer()
 
+	consulConf := transformer.ConsulConf{}
+	g.OutputObj = &consulConf
+	g.InsertObj = irisConfiguration.Other["Consul"]
+	_ = g.Transformer()
+
 	cf := &transformer.Conf{
 		App:      app,
 		Mysql:    db,
@@ -108,6 +113,7 @@ func getTransformConfiguration( irisConfiguration iris.Configuration) *transform
 		Kafka: kafkaConf,
 		Etcd: etcdConf,
 		Grpc: grpcConf,
+		Consul: consulConf,
 	}
 
 	return cf
@@ -364,9 +370,9 @@ func main() {
 	handler.WebsocketChan = make( chan string, 10)
 
 	irisConfiguration := iris.TOML("./config/conf.tml")
-	transformConfiguration := getTransformConfiguration(irisConfiguration)
+	config.TransformConfiguration = getTransformConfiguration(irisConfiguration)
 
-	models.Register(transformConfiguration)
+	models.Register(config.TransformConfiguration)
 	models.DB.AutoMigrate(
 		&models.User{},
 		&models.OauthToken{},
@@ -375,7 +381,7 @@ func main() {
 		&models.Order{},
 	)
 
-	startService(transformConfiguration)
+	startService(config.TransformConfiguration)
 
 	/*
 		创建iris应用的
@@ -404,7 +410,7 @@ func main() {
 	apiRoutes := routes.GetRoutes(app)
 	models.CreateSystemData(apiRoutes)
 
-	createTestData(transformConfiguration)
+	createTestData(config.TransformConfiguration)
 	//websocket1(app)
 
 	//setupWebsocket(app)

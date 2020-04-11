@@ -15,9 +15,7 @@ docker run -d --name zookeeper -p 2181:2181 -t wurstmeister/zookeeper
 2). -p 端口映射，把容器的端口和宿主机的端口进行映射
 
 2. 启动kafka
-docker run -d --name kafka -p 9092:9092 -e KAFKA_BROKER_ID=0 -e KAFKA_ZOOKEEPER_CONNECT=192.168.0.198:2181 -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://192.168.0.198:9092 -e KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:9092 -t wurstmeister/kafka
-
-
+docker run -d --name kafka -p 9092:9092 -e KAFKA_BROKER_ID=0 -e KAFKA_ZOOKEEPER_CONNECT=192.168.0.223:2181 -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://192.168.0.223:9092 -e KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:9092 -t wurstmeister/kafka
 
 3. 进入kafka容器，创建主题，生产者向主题发送消息，消费者从主题消费消息，查看主题下消息。
 $ docker exec -it ef0857453b57 /bin/sh
@@ -37,23 +35,23 @@ kafka-consumer-perf-test.sh          kafka-producer-perf-test.sh          kafka-
 kafka-delegation-tokens.sh           kafka-reassign-partitions.sh         kafka-verifiable-producer.sh
 
 创建主题
-/ # kafka-topics.sh --create --zookeeper 192.168.0.198:2181 --replication-factor 1 --partitions 1 --topic MyTopic
+/ # kafka-topics.sh --create --zookeeper 192.168.0.223:2181 --replication-factor 1 --partitions 1 --topic MyTopic
 Created topic MyTopic.
 MyTopic
 
 生产者向主题发消息
-/ # kafka-console-producer.sh --broker-list 192.168.0.198:9092 --topic MyTopic
+/ # kafka-console-producer.sh --broker-list 192.168.0.223:9092 --topic MyTopic
 >1111111111
 >ffffff
 
 打开另一终端，进入容器， 消费者接受消息：
 bogon:shop admin1$ docker exec -it ef0857453b57 /bin/sh
-/ # kafka-console-consumer.sh --bootstrap-server PLAINTEXT://192.168.0.198:9092 --topic MyTopic --from-beginning
+/ # kafka-console-consumer.sh --bootstrap-server PLAINTEXT://192.168.0.223:9092 --topic MyTopic --from-beginning
 1111111111
 ffffff
 
 查看主题下的所有消息：
-/ # kafka-console-consumer.sh --bootstrap-server 192.168.0.198:9092 --topic nginx_log  --from-beginning
+/ # kafka-console-consumer.sh --bootstrap-server 192.168.0.223:9092 --topic nginx_log  --from-beginning
 100
 300
 
