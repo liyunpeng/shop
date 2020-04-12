@@ -50,7 +50,7 @@ func GoodsFindAll() []*Goods {
 		return nil
 	}
 }
-func GoodsFindById(id int) *Goods {
+func GoodsFindById(id int64) *Goods {
 	goods := new(Goods)
 	//DB.Model(&Goods{}).Find(&Goodss)
 	tx := DB.Model(&Goods{}).Where("id =?", id).Find(goods)

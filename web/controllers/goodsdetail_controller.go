@@ -16,9 +16,8 @@ type GoodsDetailController struct {
 }
 
 type GoodsDetailResult struct {
-	Id     int    `json:"id"`
 	Title  string `json:"title"`
-	Orders []*models.Order
+	Goods *models.Goods
 	Item   int `json:"item"`
 }
 
@@ -26,16 +25,17 @@ type GoodsDetailResult struct {
 //	Id int 	`json:"id"`
 //	Title string 	`json:"title"`
 //}
-func (c *GoodsDetailController) Get() mvc.Result {
+func (c *GoodsDetailController) GetBy( id int64) mvc.Result {
 
-	//result := new(Result)
+	result := new(GoodsDetailResult)
 	//orderItems := new(models.OrderItems)
+	result.Goods = 	models.GoodsFindById(id)
 	//result.Orders = orderItems.Items
 	//result.Id = 1001
 	return mvc.View{
 		Name: "goods-detail.html",
 		Data: iris.Map{
-			//"Result":     result,
+			"Result":     result,
 			"OrderCount": "10",
 			//"UserId":     c.Session.GetString(util.SessionUserName),
 		},
