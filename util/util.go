@@ -2,6 +2,7 @@ package util
 
 import (
 	"fmt"
+	"github.com/kataras/iris/v12/sessions"
 	"runtime"
 	"sync"
 )
@@ -18,3 +19,19 @@ func PrintFuncName() {
 		fmt.Printf("file: %s, line: %d\n",file,line)
 	}
 }
+
+
+
+func GetCurrentUserID( session *sessions.Session) int64 {
+	userID := session.GetInt64Default(SessionUserName, 0)
+	return userID
+}
+
+func  IsLoggedIn( session *sessions.Session) bool {
+	return GetCurrentUserID(session) > 0
+}
+
+func Logout(session *sessions.Session) {
+	session.Destroy()
+}
+

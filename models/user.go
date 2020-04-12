@@ -94,7 +94,7 @@ func UserDeleteByName(username string) {
 	DB.Delete(user)
 }
 
-func UserFindById(id uint) *User{
+func UserFindById(id int64) *User{
 	user := new(User)
 	DB.Where("id =?", id).First(user)
 	return  user

@@ -5,8 +5,6 @@ import (
 	"github.com/kataras/iris/v12/mvc"
 	"github.com/kataras/iris/v12/sessions"
 	"shop/models"
-	"shop/util"
-
 	//"github.com/kataras/iris/v12/sessions"
 )
 
@@ -42,15 +40,3 @@ func (c *GoodsDetailController) GetBy( id int64) mvc.Result {
 	}
 }
 
-func (c *GoodsDetailController) getCurrentUserID() int64 {
-	userID := c.Session.GetInt64Default(util.SessionUserName, 0)
-	return userID
-}
-
-func (c *GoodsDetailController) isLoggedIn() bool {
-	return c.getCurrentUserID() > 0
-}
-
-func (c *GoodsDetailController) logout() {
-	c.Session.Destroy()
-}

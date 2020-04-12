@@ -333,12 +333,9 @@ func registerControllers( app *iris.Application) {
 	home.Handle(new(controllers.HomeController))
 
 	self := mvc.New(app.Party("/self"))
-
-
 	self.Register(
 		sessManager.Start,
 	)
-
 	self.Handle(new(controllers.SelfController))
 
 	shopCar := mvc.New(app.Party("/shopcar"))
@@ -350,7 +347,10 @@ func registerControllers( app *iris.Application) {
 	assort := mvc.New(app.Party("/assort"))
 	assort.Handle(new(controllers.AssortController))
 
-	buy := mvc.New(app.Party("/buy"))
+	buy := mvc.New(app.Party("/goodsdetail/buy"))
+	buy.Register(
+		sessManager.Start,
+	)
 	buy.Handle(new(controllers.BuyController))
 
 	order := mvc.New(app.Party("/order"))

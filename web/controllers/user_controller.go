@@ -36,19 +36,6 @@ type UserGController struct {
 }
 
 
-func (c *UserGController) getCurrentUserID() int64 {
-	userID := c.Session.GetInt64Default(util.SessionUserName, 0)
-	return userID
-}
-
-func (c *UserGController) isLoggedIn() bool {
-	return c.getCurrentUserID() > 0
-}
-
-func (c *UserGController) logout() {
-	c.Session.Destroy()
-}
-
 var registerStaticView1 = mvc.View{
 	Name: "register.html",
 	Data: iris.Map{"Title": "User Registration"},
@@ -56,8 +43,8 @@ var registerStaticView1 = mvc.View{
 
 // GetRegister handles GET: http://localhost:8080/user/register.
 func (c *UserGController) GetRegister() mvc.Result {
-	if c.isLoggedIn() {
-		c.logout()
+	if util.IsLoggedIn(c.Session) {
+		util.Logout(c.Session)
 	}
 
 	return registerStaticView1
@@ -188,8 +175,8 @@ func (c *UserGController) GetMe() mvc.Result {
 
 // AnyLogout handles All/Any HTTP Methods for: http://localhost:8080/user/logout.
 func (c *UserGController) AnyLogout() {
-	if c.isLoggedIn() {
-		c.logout()
+	if util.IsLoggedIn( c.Session) {
+		util.Logout(c.Session)
 	}
 
 	c.Ctx.Redirect("/user/login")
@@ -204,7 +191,7 @@ func ApiUserGetAll(c iris.Context) {
 
 
 func ApiUserGetById(ctx iris.Context) {
-	id, _ := ctx.Params().GetUint("id")
+	id, _ := ctx.Params().GetInt64("id")
 	user := models.UserFindById(id)
 	ctx.StatusCode(http.StatusOK)
 	//v1 := []string{"one", "two", "three"}

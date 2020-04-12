@@ -120,15 +120,3 @@ func (c *OrderController) Get() mvc.Result {
 	}
 }
 
-func (c *OrderController) getCurrentUserID() int64 {
-	userID := c.Session.GetInt64Default(util.SessionUserName, 0)
-	return userID
-}
-
-func (c *OrderController) isLoggedIn() bool {
-	return c.getCurrentUserID() > 0
-}
-
-func (c *OrderController) logout() {
-	c.Session.Destroy()
-}
