@@ -70,7 +70,7 @@ func (c *UserGController) PostRegister() mvc.Result {
 	// set the user's id to this session even if err != nil,
 	// the zero id doesn't matters because .getCurrentUserID() checks for that.
 	// If err != nil then it will be shown, see below on mvc.Response.Err: err.
-	//c.Session.Set(SessionUserName, u.ID)
+	//c.Session.Set(SessionUserID, u.ID)
 
 	return mvc.Response{
 		// if not nil then this error will be shown instead.
@@ -132,17 +132,13 @@ func (c *UserGController) PostLogin() mvc.Result {
 	// 学习更多:
 	//                              iris.CookieExpires(time.Duration)
 	//                              iris.CookieHTTPOnly(false)
+	c.Session.Set(util.SessionUserID, user.ID)
+	c.Session.Set(util.SessionUserName, user.Name)
 
-
-	c.Session.Set(util.SessionUserName, user.Username)
-	usergIDKey1 := "session_user_id"
-
-	c.Session.Set(usergIDKey1, user.ID)
-	id1 , _ := c.Session.GetInt(usergIDKey1)
-	fmt.Println("c.Session.GetInt(usergIDKey1)=", id1)
-
-
-
+	//usergIDKey1 := "session_user_id"
+	//c.Session.Set(usergIDKey1, user.ID)
+	//id1 , _ := c.Session.GetInt(usergIDKey1)
+	//fmt.Println("c.Session.GetInt(usergIDKey1)=", id1)
 	return mvc.Response{
 		Path: "/self",
 	}

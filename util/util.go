@@ -11,7 +11,9 @@ var ChanStop = make( chan bool)
 var WaitGroup sync.WaitGroup
 
 var  COOKEI_NAME = "sessioncookiename"
+const SessionUserID = "serssion_user_id"
 const SessionUserName = "serssion_user_name"
+
 func PrintFuncName() {
 	funcName,file,line,ok := runtime.Caller(1)
 	if(ok){
@@ -20,10 +22,8 @@ func PrintFuncName() {
 	}
 }
 
-
-
 func GetCurrentUserID( session *sessions.Session) int64 {
-	userID := session.GetInt64Default(SessionUserName, 0)
+	userID := session.GetInt64Default(SessionUserID, 0)
 	return userID
 }
 

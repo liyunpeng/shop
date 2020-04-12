@@ -84,7 +84,7 @@ func (c *OrderController) Get() mvc.Result {
 	//s = append(s, s2)
 	//c.Ctx.ViewData("Result", result)
 	//mvc.View{}.Data = s
-	sessionUserName := 	c.Session.GetString(util.SessionUserName)
+	sessionUserName := 	c.Session.GetString(util.SessionUserID)
 	if len(sessionUserName) > 0 {
 		fmt.Println("用户已经登录")
 		result := new( Result)
@@ -101,7 +101,7 @@ func (c *OrderController) Get() mvc.Result {
 			Data: iris.Map{
 				"Result": result,
 				"OrderCount": "10",
-				"UserId": c.Session.GetString(util.SessionUserName),
+				"UserId": c.Session.GetString(util.SessionUserID),
 			},
 		}
 	} else {
@@ -110,13 +110,9 @@ func (c *OrderController) Get() mvc.Result {
 			Name: "order.html",
 			Data: iris.Map{
 				"OrderCount": "10002",
-				"UserId": c.Session.GetString(util.SessionUserName),
+				"UserId": c.Session.GetString(util.SessionUserID),
 			},
-			//Data: map[string] interface{}{
-			//	"Result": result,
-			//},
 		}
-
 	}
 }
 

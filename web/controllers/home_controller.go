@@ -28,7 +28,7 @@ func (c *HomeController) Get() mvc.Result {
 		fmt.Println("客户端调用微服务的结果 =", rsp.Name )
 	}
 	fmt.Println("cookiename =",cookieName)
-	fmt.Println("session name=", c.Session.Get(util.SessionUserName))
+	fmt.Println("session name=", c.Session.Get(util.SessionUserID))
 
 	result := Result{
 		Item: 1,

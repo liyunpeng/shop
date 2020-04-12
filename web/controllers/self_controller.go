@@ -28,16 +28,16 @@ func (c *SelfController) Get() mvc.Result {
 
 	//cookie := c.Ctx.GetCookie("username")
 
-	if len(c.Session.GetString(util.SessionUserName)) > 0 {
+	//sessionUserId, _ := 	c.Session.GetInt(util.SessionUserID)
+	if c.Session.GetInt64Default(util.SessionUserID, 0) > 0 {
+	//if sessionUserId  > 0 {
 		fmt.Println("session id = ", c.Session.ID())
 		//c1 := c.Ctx.GetCookie("")
-
-		//c.Session.
-		fmt.Println("session.GetString=", c.Session.GetString(util.SessionUserName))
+		fmt.Println("util.SessionUserID=", c.Session.GetInt64Default(util.SessionUserID, 0))
 		c.Ctx.ViewData("Title", c.Session.GetString(util.SessionUserName))
-		//id1 , _ := c.Session.GetInt(SessionUserName)
+		//id1 , _ := c.Session.GetInt(SessionUserID)
 		//if id1 > 0 {
-		//	fmt.Println("c.Session.GetInt(SessionUserName)=", id1)
+		//	fmt.Println("c.Session.GetInt(SessionUserID)=", id1)
 		//	//fmt.Println("session.GetString=", c.Session.GetString("UserID"))
 		//	c.Ctx.ViewData("Title", id1)
 
