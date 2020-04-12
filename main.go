@@ -350,6 +350,9 @@ func registerControllers( app *iris.Application) {
 	assort := mvc.New(app.Party("/assort"))
 	assort.Handle(new(controllers.AssortController))
 
+	buy := mvc.New(app.Party("/buy"))
+	buy.Handle(new(controllers.BuyController))
+
 	order := mvc.New(app.Party("/order"))
 	order.Register(
 		sessManager.Start,
