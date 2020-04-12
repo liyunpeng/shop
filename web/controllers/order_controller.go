@@ -84,13 +84,12 @@ func (c *OrderController) Get() mvc.Result {
 	//s = append(s, s2)
 	//c.Ctx.ViewData("Result", result)
 	//mvc.View{}.Data = s
-	sessionUserName := 	c.Session.GetString(util.SessionUserID)
+	sessionUserName := 	c.Session.GetString(util.SessionUserName)
 	if len(sessionUserName) > 0 {
 		fmt.Println("用户已经登录")
 		result := new( Result)
 		orderItems := new( models.OrderItems)
 		err := cli.Call("GetOrderByUser", sessionUserName, orderItems)
-
 		result.Orders = orderItems.Items
 		if err != nil {
 			panic(err)

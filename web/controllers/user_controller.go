@@ -57,7 +57,14 @@ func (c *UserGController) PostRegister() mvc.Result {
 		username  = c.Ctx.FormValue("username")
 		password  = c.Ctx.FormValue("password")
 	)
-
+	//user := models.UserFindByName(username)
+	//
+	//if user != nil {
+	//	return mvc.Response{
+	//
+	//	}
+	//}
+	//_, _ = c.Ctx.JSON(ApiResource(true, nil, "成功添加数据行"))
 	// create the new user, the password will be hashed by the service.
 	//  创建一个用户， 密码会被被service通过摘要算法计算出一个哈希值，将此哈希值存入数据库用户表
 	//u, err := c.Service.InsertUserg(datamodels.User{
@@ -106,9 +113,7 @@ func (c *UserGController) PostLogin() mvc.Result {
 		username = c.Ctx.FormValue("username")
 		password = c.Ctx.FormValue("password")
 	)
-
 	user, found := c.Service.GetByUsernameAndPassword(username, password)
-
 	if !found {
 		c.Service.CreateUserTable()
 		fmt.Println("进入注册页面")
@@ -118,8 +123,6 @@ func (c *UserGController) PostLogin() mvc.Result {
 	}
 	fmt.Println("user.Username=", user.Username)
 	fmt.Println("user.id=", user.ID)
-
-
 	c.Ctx.SetCookieKV("username", user.Username) // <-- 设置一个Cookie
 	// 另外也可以用: ctx.SetCookie(&http.Cookie{...})
 	// 如果要设置自定义存放路径：
