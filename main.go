@@ -344,6 +344,9 @@ func registerControllers( app *iris.Application) {
 	shopCar := mvc.New(app.Party("/shopcar"))
 	shopCar.Handle(new(controllers.ShopCarController))
 
+	goodsDetail := mvc.New(app.Party("/goodsdetail"))
+	goodsDetail.Handle(new(controllers.GoodsDetailController))
+
 	assort := mvc.New(app.Party("/assort"))
 	assort.Handle(new(controllers.AssortController))
 
