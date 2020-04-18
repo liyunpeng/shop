@@ -10,6 +10,7 @@ import (
 	"github.com/kataras/iris/v12/mvc"
 	"github.com/kataras/iris/v12/sessions"
 	"shop/srv"
+	"shop/sys"
 
 	//"github.com/kataras/neffos/stackexchange/redis"
 	"github.com/kataras/iris/v12/sessions/sessiondb/redis"
@@ -257,44 +258,8 @@ func startService(transformConfiguration *transformer.Conf) {
 
 	util.WaitGroup.Add(1)
 	go rpc.GrpcServer(transformConfiguration.Grpc)
-
 }
 
-func createTestData(transformConfiguration *transformer.Conf){
-
-	services.EtcdServiceInsance.PutKV("192.168.0.1", `
-[
-	{
-		"topic":"nginx_log",
-		"log_path":"/Users/admin1/goworkspace/shop/log1.txt",
-		"service":"test_service",
-		"send_rate":1000
-	},
-		
-	{
-		"topic":"nginx_log1",
-		"log_path":"/Users/admin1/goworkspace/shop/log2.txt",
-		"service":"test_service1",
-		"send_rate":1000
-	},
-
-	{
-		"topic":"nginx_log",
-		"log_path":"D:\\goworkspace\\shop\\log1.txt",
-		"service":"test_service1",
-		"send_rate":1000
-	}
-]` )
-	services.EtcdServiceInsance.PutKV("192.168.0.2", `
-[
-	{
-		"topic":"nginx_log",
-		"log_path":"/Users/admin1/goworkspace/shop/123.txt",
-		"service":"test_service",
-		"send_rate":2000
-	}
-]` )
-}
 
 
 func registerControllers( app *iris.Application) {
@@ -372,7 +337,6 @@ func main() {
 	app := iris.New()
 	app.Logger().SetLevel("debug")
 
-
 	handler.WebsocketChan = make( chan string, 10)
 
 	irisConfiguration := iris.TOML("./config/conf.tml")
@@ -410,12 +374,9 @@ func main() {
 	})
 
 	routes.RegisterApi(app)
-
-
 	apiRoutes := routes.GetRoutes(app)
-	models.CreateSystemData(apiRoutes)
+	sys.CreateSystemData(apiRoutes)
 
-	createTestData(config.TransformConfiguration)
 	//websocket1(app)
 
 	//setupWebsocket(app)
@@ -441,8 +402,6 @@ func main() {
 	fmt.Println("等待所有routine关闭动作完成")
 	util.WaitGroup.Wait()
 	fmt.Println("所有routine的关闭动作已全部完成")
-
-
 }
 
 func control (app *iris.Application) {
