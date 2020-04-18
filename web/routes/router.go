@@ -37,6 +37,9 @@ func RegisterApi(app *iris.Application){
 	api.PartyFunc("/database", func(party iris.Party){
 		party.Post("/create", controllers.ApiDatabaseCreate).Name = "创建初始数据库"
 	})
+	api.PartyFunc("/mem", func(party iris.Party){
+		party.Post("/redisset", controllers.ApiRedisSet).Name = "redis操作"
+	})
 }
 
 func isPermRoute(s *router.Route) bool {

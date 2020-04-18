@@ -9,6 +9,7 @@ import (
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
 	"github.com/kataras/iris/v12/sessions"
+	_ "net/http/pprof"
 	"shop/srv"
 	"shop/sys"
 
@@ -334,6 +335,36 @@ func registerControllers( app *iris.Application) {
 }
 
 func main() {
+	//defer fmt.Println("主routine完全退出")
+	//defer fmt.Println("主routine内存分析完毕")
+	//defer profile.Start(profile.MemProfile).Stop()
+
+	//cpuf, err := os.Create("cpu_profile")
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
+	//pprof.StartCPUProfile(cpuf)
+	//defer pprof.StopCPUProfile()
+	//
+	//defer func() {
+	//	memf, err := os.Create("mem_profile")
+	//	if err != nil {
+	//		log.Fatal("could not create memory profile: ", err)
+	//	}
+	//	if err := pprof.WriteHeapProfile(memf); err != nil {
+	//		log.Fatal("could not write memory profile: ", err)
+	//	}
+	//	memf.Close()
+	//}()
+
+
+	go func () {
+		err := http.ListenAndServe(":9909", nil )
+		if err != nil {
+			panic(err)
+		}
+	}()
+
 	app := iris.New()
 	app.Logger().SetLevel("debug")
 

@@ -7,12 +7,13 @@ import (
 	"github.com/kataras/iris/v12/mvc"
 	"shop/config"
 	"shop/services"
+	"shop/util"
 	"shop/validates"
 	"strings"
 )
 
 type EtcdController struct {
-	Ctx iris.Context
+	Ctx     iris.Context
 	Service services.EtcdService
 }
 
@@ -25,22 +26,22 @@ func (e *EtcdController) Get() mvc.Result {
 }
 
 type MonitorFile struct {
-	FileName string `json:"filename"`
-	FileSize int  `json:"filesize"`
+	FileName     string `json:"filename"`
+	FileSize     int    `json:"filesize"`
 	FileKeyWords string `json:"filekeywords"`
 }
 
 func ApiEtcdGetKV(ctx iris.Context) {
 	keya := ctx.Params().Get("key")
-	fmt.Println("api调用 ApiEtcdGetKV ,请求参数为",keya)
+	fmt.Println("api调用 ApiEtcdGetKV ,请求参数为", keya)
 	var ss []config.LogConfig
 	//resp :=	services.EtcdServiceInsance.Get("/logagent/192.168.0.142/logconfig")
-	resp :=	services.EtcdServiceInsance.Get(keya)
+	resp := services.EtcdServiceInsance.Get(keya)
 	if resp == nil {
-		ctx.JSON(ApiResource(true, nil,  "请求出错"))
+		ctx.JSON(ApiResource(true, nil, "请求出错"))
 		return
 	} else if resp.Count < 1 {
-		ctx.JSON(ApiResource(true, nil,  "请求的 key 不存在"))
+		ctx.JSON(ApiResource(true, nil, "请求的 key 不存在"))
 		return
 	}
 	for _, ev := range resp.Kvs {
@@ -65,38 +66,39 @@ func ApiEtcdGetKV(ctx iris.Context) {
 	//		FileKeyWords: "edf",
 	//	},
 	//}
-	ctx.JSON(ApiResource(true, ss,  "获取etcdkvcheng"))
+	ctx.JSON(ApiResource(true, ss, "获取etcdkvcheng"))
 }
 
 type EtcdOption struct {
-	Label string `json:"label"`
-	Etcdkey string `json:"etcdkey"`
+	Label     string `json:"label"`
+	Etcdkey   string `json:"etcdkey"`
 	EtcdValue string `json:"etcdvalue"`
 }
+
 func ApiEtcdListAllKV(ctx iris.Context) {
 	fmt.Println(" Apiectcd list all kv ")
 	s := []EtcdOption{
 		{
 			//Label:"/logagent/192.168.0.1/logconfig",
-			Label:"192.168.0.1",
-			Etcdkey: "1000",
+			Label:     "192.168.0.1",
+			Etcdkey:   "1000",
 			EtcdValue: "abfffc",
 		},
 		{
 			//Label:"/logagent/192.168.0.2/logconfig",
-			Label:"192.168.0.2",
-			Etcdkey: "1000",
+			Label:     "192.168.0.2",
+			Etcdkey:   "1000",
 			EtcdValue: "affbc",
 		},
 		{
 			//Label:"/logagent/192.168.0.3/logconfig",
-			Label:"192.168.0.3",
-			Etcdkey: "10l00",
+			Label:     "192.168.0.3",
+			Etcdkey:   "10l00",
 			EtcdValue: "abc",
 		},
 	}
 
-	ctx.JSON(ApiResource(true, s,  "获取etcdkvcheng"))
+	ctx.JSON(ApiResource(true, s, "获取etcdkvcheng"))
 }
 
 //func (e *EtcdController) Post() mvc.Response {
@@ -131,8 +133,6 @@ func (e *EtcdController) GetAll() {
 
 	var v strings.Builder
 
-
-
 	m := make(map[string]interface{}, 100)
 	for _, ev := range resp.Kvs {
 		v.WriteString(string(ev.Value))
@@ -142,8 +142,6 @@ func (e *EtcdController) GetAll() {
 
 	_, _ = e.Ctx.JSON(ApiResource(true, v.String(), "成功添加etcd键值对"))
 }
-
-
 
 //func ApiEtcdPost(ctx context2.Context) {
 //	fmt.Println("ApiUserPost is called")
@@ -182,3 +180,10 @@ func (e *EtcdController) GetKv() string {
 //		Err: err,
 //	}
 //}
+
+func ApiRedisSet(ctx iris.Context) {
+	fmt.Println("redis 操作")
+	util.StringTest()
+	ctx.JSON(ApiResource(true, nil, "redis操作"))
+	return
+}
