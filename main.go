@@ -357,6 +357,7 @@ func main() {
 	//	memf.Close()
 	//}()
 
+	util.InitRedis()
 
 	go func () {
 		err := http.ListenAndServe(":9909", nil )

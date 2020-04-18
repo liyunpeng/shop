@@ -85,19 +85,21 @@ func RedisGet(key string) ([]byte, error) {
 
 func StringTest() {
 
-	_, err := Conn.Do("SET", "mykey", "superWang", "EX", "5")
+	var err error
+	_, err = Conn.Do("SET", "mykey", "superWang", "EX", "5")
 	if err != nil {
 		fmt.Println("redis set failed:", err)
 	}
 
-	username, err := redis.String(Conn.Do("GET", "mykey"))
+	var username string
+	username, err = redis.String(Conn.Do("GET", "mykey"))
 	if err != nil {
 		fmt.Println("redis get failed:", err)
 	} else {
 		fmt.Printf("Get mykey: %v \n", username)
 	}
 
-	time.Sleep(8 * time.Second)
+	//time.Sleep(8 * time.Second)
 
 	username, err = redis.String(Conn.Do("GET", "mykey"))
 	if err != nil {
