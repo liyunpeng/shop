@@ -136,7 +136,7 @@ func (c *UserGController) PostLogin() mvc.Result {
 	//                              iris.CookieExpires(time.Duration)
 	//                              iris.CookieHTTPOnly(false)
 	c.Session.Set(util.SessionUserID, user.ID)
-	c.Session.Set(util.SessionUserName, user.Name)
+	c.Session.Set(util.SessionUserName, user.Username)
 
 	//usergIDKey1 := "session_user_id"
 	//c.Session.Set(usergIDKey1, user.ID)

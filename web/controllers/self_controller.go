@@ -30,9 +30,8 @@ func (c *SelfController) Get() mvc.Result {
 
 	//sessionUserId, _ := 	c.Session.GetInt(util.SessionUserID)
 	if c.Session.GetInt64Default(util.SessionUserID, 0) > 0 {
-	//if sessionUserId  > 0 {
 		fmt.Println("session id = ", c.Session.ID())
-		//c1 := c.Ctx.GetCookie("")
+		fmt.Println("session username = ", c.Session.GetString(util.SessionUserName))
 		fmt.Println("util.SessionUserID=", c.Session.GetInt64Default(util.SessionUserID, 0))
 		c.Ctx.ViewData("Title", c.Session.GetString(util.SessionUserName))
 		//id1 , _ := c.Session.GetInt(SessionUserID)
