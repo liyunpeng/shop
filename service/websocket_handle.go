@@ -70,7 +70,9 @@ func sendToClient(conn *websocket.Conn) {
 			err := jsonHandler.Send(conn, res)
 			if err != nil {
 				fmt.Println(err)
-				panic("websockt 向客户端发送数据错误")
+
+				go StartWebSocketService()
+				//panic("websockt 向客户端发送数据错误")
 				break
 			}
 			//time.Sleep(time.Millisecond * 500)

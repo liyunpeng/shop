@@ -240,6 +240,8 @@ func startService(transformConfiguration *transformer.Conf) {
 
 	util.WaitGroup.Add(1)
 	go service.StartGrpcService(transformConfiguration.Grpc)
+
+	go service.StartMicroService()
 }
 
 
@@ -338,7 +340,6 @@ func main() {
 
 	cookieGet(app)
 
-	go service.StartMicroService()
 	control(app)
 
 	fmt.Println("等待所有routine关闭动作完成")
