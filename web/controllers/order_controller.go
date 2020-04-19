@@ -5,7 +5,7 @@ import (
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
 	"github.com/kataras/iris/v12/sessions"
-	"shop/cli"
+	"shop/client"
 	"shop/models"
 	"shop/util"
 
@@ -41,19 +41,19 @@ func (c *OrderController) Get() mvc.Result {
 	//iris.WithCharset("UTF-8")
 
 	rsp1 := new(models.User)
-	err1 := cli.Call("IndexLinks", 10, rsp1)
+	err1 := client.MicroCall("IndexLinks", 10, rsp1)
 	if err1 != nil {
 		fmt.Println("err =",err1 )
 	}else{
 		fmt.Println("客户端调用微服务的结果 =", rsp1.Name )
 	}
 	//rsp := new(models.Order)
-	//err := cli.Call("GetOrderByUser", "aa", rsp)
+	//err := cli.MicroCall("GetOrderByUser", "aa", rsp)
 	//var s []Order
 	//rsp :=  result.Orders
 	//rsp :=  new([]models.Order) //iris.WithCharset("UTF-8"))
 	//result.Orders = models.OrderFindByUser("aa")
-	//err := cli.Call("GetOrderByUser", "aa", rsp)
+	//err := cli.MicroCall("GetOrderByUser", "aa", rsp)
 	//go func() {
 		//rsp := make([]models.Order, 1)
 
@@ -62,7 +62,7 @@ func (c *OrderController) Get() mvc.Result {
 
 	//go func (){
 	//	rsp := new(models.Order)
-	//	err := cli.Call("GetOrderById", 1, rsp)
+	//	err := cli.MicroCall("GetOrderById", 1, rsp)
 	//	fmt.Println("rsp.name=", rsp.Username)
 	//	result.Orders = append(result.Orders, rsp)
 	//
@@ -89,7 +89,7 @@ func (c *OrderController) Get() mvc.Result {
 		fmt.Println("用户已经登录")
 		result := new( Result)
 		orderItems := new( models.OrderItems)
-		err := cli.Call("GetOrderByUser", sessionUserName, orderItems)
+		err := client.MicroCall("GetOrderByUser", sessionUserName, orderItems)
 		result.Orders = orderItems.Items
 		if err != nil {
 			panic(err)

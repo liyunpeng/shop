@@ -6,7 +6,7 @@ import (
 	cluster "github.com/bsm/sarama-cluster"
 	"os"
 	"os/signal"
-	wshandler "shop/handler"
+	wshandler "shop/service"
 	"shop/util"
 	"sync"
 )

@@ -20,10 +20,8 @@ import (
 	//
 	//
 	"net/http"
-	"shop/handler"
 
 	gf "github.com/snowlyg/gotransformer"
-	"golang.org/x/net/websocket"
 	"shop/client"
 	"shop/config"
 	"shop/models"
@@ -238,18 +236,7 @@ func startService(transformConfiguration *transformer.Conf) {
 	util.WaitGroup.Add(1)
 	go client.StartKafkaConsumer(transformConfiguration.Kafka.Addr)
 
-	//util.WaitGroup.Add(1)
-	go func() {
-		fmt.Println("启动 websocket 服务")
-		http.Handle("/ws", websocket.Handler(handler.WebSocketHandle))
-		err := http.ListenAndServe(":88", nil)
-		if err != nil {
-			fmt.Println(err)
-			fmt.Println("websocket 启动异常")
-		}else{
-			fmt.Println("websocket 监听服务")
-		}
-	}()
+	go service.StartWebSocketService()
 
 	util.WaitGroup.Add(1)
 	go service.StartGrpcService(transformConfiguration.Grpc)
@@ -293,7 +280,7 @@ func main() {
 	app := iris.New()
 	app.Logger().SetLevel("debug")
 
-	handler.WebsocketChan = make( chan string, 10)
+	service.WebsocketChan = make( chan string, 10)
 
 	irisConfiguration := iris.TOML("./config/conf.tml")
 	config.TransformConfiguration = getTransformConfiguration(irisConfiguration)

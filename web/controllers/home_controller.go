@@ -5,7 +5,7 @@ import (
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
 	"github.com/kataras/iris/v12/sessions"
-	"shop/cli"
+	"shop/client"
 	"shop/models"
 	"shop/util"
 )
@@ -15,13 +15,11 @@ type HomeController struct {
 	Session *sessions.Session
 }
 
-
-
 func (c *HomeController) Get() mvc.Result {
 	//cookieName := c.Session.Get(util.COOKEI_NAME)
 	cookieName := c.Ctx.GetCookie(util.COOKEI_NAME)
 	rsp := new(models.User)
-	err := cli.Call("IndexLinks", 10, rsp)
+	err := client.MicroCall("IndexLinks", 10, rsp)
 	if err != nil {
 		fmt.Println("err =",err )
 	}else{
