@@ -19,7 +19,7 @@ type EtcdController struct {
 }
 
 var v = mvc.View{
-	Name: "conf_manager.html",
+	Name: "etcd/etcd_manager.html",
 }
 
 func (e *EtcdController) Get() mvc.Result {
@@ -102,18 +102,19 @@ func ApiEtcdListAllKV(ctx iris.Context) {
 	ctx.JSON(ApiResource(true, s, "获取etcdkvcheng"))
 }
 
-//func (e *EtcdController) Post() mvc.Response {
-//	fmt.Println("ApiUserPost is called")
-//	k := e.Ctx.FormValue("key")
-//	v := e.Ctx.FormValue("value")
-//
-//	e.Service.PutKV(k, v)
-//	return mvc.Response{
-//		Text: "ok",
-//	}
-//}
-func (e *EtcdController) Post() {
+func (e *EtcdController) Post() mvc.Response {
 	fmt.Println("ApiUserPost is called")
+	k := e.Ctx.FormValue("key")
+	v := e.Ctx.FormValue("value")
+
+	e.Service.PutKV(k, v)
+	return mvc.Response{
+		Text: "ok",
+	}
+}
+
+func (e *EtcdController) PostKV() {
+	fmt.Println("ApiUserPostKV is called")
 	//var i interface{}
 	//i = new()
 	aul := new(validates.CreateEtcdKVRequest)
@@ -158,12 +159,10 @@ func (e *EtcdController) GetAll() {
 //}
 
 func (e *EtcdController) GetKv() string {
+	util.PrintFuncName()
 	k := e.Ctx.FormValue("keya")
-
 	resp := e.Service.Get(k)
-
 	var v strings.Builder
-
 	for _, ev := range resp.Kvs {
 		v.WriteString(string(ev.Value))
 		fmt.Printf("etcd key = %s , etcd value = %s", ev.Key, ev.Value)

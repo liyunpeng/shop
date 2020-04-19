@@ -85,7 +85,7 @@ func RedisUserHSet( userid string, k string , v string) { //userid string,  name
 		fmt.Printf("Hash result: \n %v \n", value)
 	}
 }
-func RedisUserHMSet( user *RedisUser) { //userid string,  name string, ad0dress string, priority string ){
+func RedisUserHMSet( user *RedisUser) {
 	hashName := "user:" + user.Id
 	value, err := redis.String(Conn.Do("hmset", hashName,
 		"Name", user.Name,
