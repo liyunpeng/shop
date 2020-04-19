@@ -1,4 +1,4 @@
-package rpc
+package client
 
 import (
 	"context"
@@ -7,7 +7,7 @@ import (
 	pb "shop/rpc/proto"
 )
 
-func Client( msg string) {
+func GrpcClient( msg string) {
 	// 1. 创建与gRPC服务端的连接
 	conn, err := grpc.Dial("127.0.0.1:8989", grpc.WithInsecure())
 	if err != nil {

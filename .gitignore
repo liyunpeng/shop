@@ -1,4 +1,5 @@
 *.exe
+aaa*
 *.exe~
 log
 *.idea

@@ -1,4 +1,4 @@
-package services
+package client
 
 import (
 	"fmt"
@@ -7,7 +7,6 @@ import (
 	"os"
 	"os/signal"
 	wshandler "shop/handler"
-	"shop/rpc"
 	"shop/util"
 	"sync"
 )
@@ -141,7 +140,7 @@ Loop:
 		select {
 		case msg, ok := <-consumer.Messages():
 			if ok {
-				rpc.Client(string(msg.Value))
+				GrpcClient(string(msg.Value))
 
 				fmt.Println("kafka 消费者消费消息")
 				fmt.Fprintf(

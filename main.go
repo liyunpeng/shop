@@ -7,17 +7,13 @@ import (
 	"fmt"
 	"github.com/gorilla/securecookie"
 	"github.com/kataras/iris/v12"
-	"github.com/kataras/iris/v12/mvc"
-	"github.com/kataras/iris/v12/sessions"
 	_ "net/http/pprof"
-	"shop/srv"
+	"shop/service"
 	"shop/sys"
+	"shop/web/controllers"
 
-	//"github.com/kataras/neffos/stackexchange/redis"
-	"github.com/kataras/iris/v12/sessions/sessiondb/redis"
 	"os"
 	"os/signal"
-	"shop/rpc"
 	"shop/util"
 	"syscall"
 	//"github.com/kataras/iris/v12/websocket"
@@ -28,15 +24,14 @@ import (
 
 	gf "github.com/snowlyg/gotransformer"
 	"golang.org/x/net/websocket"
+	"shop/client"
 	"shop/config"
 	"shop/models"
-	"shop/services"
 	"shop/transformer"
 	"shop/web/routes"
 	"time"
 
 	_ "shop/validates"
-	"shop/web/controllers"
 )
 
 var Conf *config.Config
@@ -167,7 +162,7 @@ const namespace = "default"
 //			// Write message back to the client message owner with:
 //			// nsConn.Emit("chat", msg)
 //			// Write message to all except this client with:
-//			nsConn.Conn.GrpcServer().Broadcast(nsConn, msg)
+//			nsConn.Conn.StartGrpcService().Broadcast(nsConn, msg)
 //			return nil
 //		},
 //	},
@@ -213,17 +208,17 @@ const namespace = "default"
 
 func startService(transformConfiguration *transformer.Conf) {
 	etcdKeys := GetEtcdKeys()
-	services.EtcdServiceInsance = services.NewEtcdService(
+	client.EtcdServiceInsance = client.NewEtcdService(
 		[]string{transformConfiguration.Etcd.Addr}, 5 * time.Second)
 	go func() {
 		fmt.Println("到etcd服务器，按指定的键遍历键值对")
 		for _, key := range etcdKeys {
-			resp := services.EtcdServiceInsance.Get(key)
+			resp := client.EtcdServiceInsance.Get(key)
 			if resp != nil || resp.Count < 1 {
 				continue
 			}
 			for _, ev := range resp.Kvs {
-				services.ConfChan <- string(ev.Value)
+				client.ConfChan <- string(ev.Value)
 				fmt.Printf("etcdkey = %s \n etcdvalue = %s \n", ev.Key, ev.Value)
 			}
 		}
@@ -231,21 +226,20 @@ func startService(transformConfiguration *transformer.Conf) {
 
 	// 启动对etcd的监听服务，有新的键值对会被监听到
 	util.WaitGroup.Add(1)
-	go services.EtcdServiceInsance.EtcdWatch(etcdKeys)
+	go client.EtcdServiceInsance.EtcdWatch(etcdKeys)
 
-	tailService := services.NewTailService()
+	tailService := client.NewTailService()
 	go tailService.RunServer()
 
 	util.WaitGroup.Add(1)
-	go services.StartKafkaProducer(
+	go client.StartKafkaProducer(
 		transformConfiguration.Kafka.Addr, 1)
 
 	util.WaitGroup.Add(1)
-	go services.StartKafkaConsumer(transformConfiguration.Kafka.Addr)
+	go client.StartKafkaConsumer(transformConfiguration.Kafka.Addr)
 
 	//util.WaitGroup.Add(1)
 	go func() {
-		//defer 0.198()
 		fmt.Println("启动 websocket 服务")
 		http.Handle("/ws", websocket.Handler(handler.WebSocketHandle))
 		err := http.ListenAndServe(":88", nil)
@@ -258,86 +252,16 @@ func startService(transformConfiguration *transformer.Conf) {
 	}()
 
 	util.WaitGroup.Add(1)
-	go rpc.GrpcServer(transformConfiguration.Grpc)
+	go service.StartGrpcService(transformConfiguration.Grpc)
 }
 
 
 
-func registerControllers( app *iris.Application) {
-	hashKey := []byte("the-big-and-secret-fash-key-here")
-	blockKey := []byte("lot-secret-of-characters-big-too")
-	secureCookie := securecookie.New(hashKey, blockKey)
-
-	sessManager := sessions.New(sessions.Config{
-		Cookie:  util.COOKEI_NAME,
-		Expires: 24 * time.Hour,
-		Encode:       secureCookie.Encode,
-		Decode:       secureCookie.Decode,
-		AllowReclaim: true,
-	})
-	db := redis.New(redis.Config{
-		Network:   "tcp",
-		Addr:      "127.0.0.1:6379",
-		Timeout:   time.Duration(30) * time.Second,
-		MaxActive: 10,
-		Password:  "",
-		Database:  "",
-		Prefix:    "",
-		Delim:     "-",
-		Driver:    redis.Redigo(), // redis.Radix() can be used instead.
-	})
-	sessManager.UseDatabase(db)
-
-	etcdApp := mvc.New(app.Party("/etcd"))
-	etcdApp.Register(services.EtcdServiceInsance)
-	etcdApp.Handle(new(controllers.EtcdController))
-
-	home := mvc.New(app.Party("/"))
-	home.Register(
-		sessManager.Start,
-	)
-	home.Handle(new(controllers.HomeController))
-
-	self := mvc.New(app.Party("/self"))
-	self.Register(
-		sessManager.Start,
-	)
-	self.Handle(new(controllers.SelfController))
-
-	shopCar := mvc.New(app.Party("/shopcar"))
-	shopCar.Handle(new(controllers.ShopCarController))
-
-	goodsDetail := mvc.New(app.Party("/goodsdetail"))
-	goodsDetail.Handle(new(controllers.GoodsDetailController))
-
-	assort := mvc.New(app.Party("/assort"))
-	assort.Handle(new(controllers.AssortController))
-
-	buy := mvc.New(app.Party("/goodsdetail/buy"))
-	buy.Register(
-		sessManager.Start,
-	)
-	buy.Handle(new(controllers.BuyController))
-
-	order := mvc.New(app.Party("/order"))
-	order.Register(
-		sessManager.Start,
-	)
-	order.Handle(new(controllers.OrderController))
-
-	user := mvc.New(app.Party("/user"))
-	userService := services.NewUserService()
-	user.Register(
-		userService,
-		sessManager.Start,
-	)
-	user.Handle(new(controllers.UserGController))
-}
 
 func main() {
 	//defer fmt.Println("主routine完全退出")
 	//defer fmt.Println("主routine内存分析完毕")
-	//defer profile.Start(profile.MemProfile).Stop()
+	//defer profile.StartMicroService(profile.MemProfile).Stop()
 
 	//cpuf, err := os.Create("cpu_profile")
 	//if err != nil {
@@ -357,7 +281,7 @@ func main() {
 	//	memf.Close()
 	//}()
 
-	util.InitRedis()
+	client.InitRedis()
 
 	go func () {
 		err := http.ListenAndServe(":9909", nil )
@@ -398,16 +322,15 @@ func main() {
 		Reload(true)
 	app.RegisterView(tmpl)
 	app.HandleDir("/public", "./web/public")
-	registerControllers(app)
 	app.OnAnyErrorCode(func(ctx iris.Context) {
 		ctx.ViewData("Message", ctx.Values().
 			GetStringDefault("message", "The page you're looking for doesn't exist"))
 		ctx.View("shared/error.html")
 	})
 
+	controllers.RegisterControllers(app)
 	routes.RegisterApi(app)
-	apiRoutes := routes.GetRoutes(app)
-	sys.CreateSystemData(apiRoutes)
+	sys.CreateSystemData(app)  //apiRoutes)
 
 	//websocket1(app)
 
@@ -428,7 +351,7 @@ func main() {
 
 	cookieGet(app)
 
-	go srv.Start()
+	go service.StartMicroService()
 	control(app)
 
 	fmt.Println("等待所有routine关闭动作完成")
@@ -459,7 +382,7 @@ Loopa:
 			println("shutdown...")
 
 			close(util.ChanStop)
-			close(services.KafkaProducerObj.MsgChan)
+			close(client.KafkaProducerObj.MsgChan)
 
 			timeout := 5 * time.Second
 			ctx, cancel := stdContext.WithTimeout(stdContext.Background(), timeout)
@@ -468,10 +391,10 @@ Loopa:
 			app.Shutdown(ctx)
 
 			fmt.Println("关闭grpc 服务")
-			rpc.GrpcSever.Stop()
+			service.GrpcSever.Stop()
 
 			fmt.Println("关闭go-micro 微服务")
-			srv.Stop()
+			service.Stop()
 
 			break Loopa
 

@@ -49,7 +49,7 @@ func (c *Casbin) ServeHTTP(ctx context.Context) {
 	ctx.Next()
 }
 
-// Casbin is the auth services which contains the casbin enforcer.
+// Casbin is the auth client which contains the casbin enforcer.
 type Casbin struct {
 	enforcer *casbin.Enforcer
 }

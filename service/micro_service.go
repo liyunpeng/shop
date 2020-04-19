@@ -1,4 +1,4 @@
-package srv
+package service
 
 import (
 	"context"
@@ -13,7 +13,7 @@ import (
 )
 
 var service micro.Service
-func Start(){
+func StartMicroService(){
 	urls := util.GetConsulUrls()
 	reg := consul.NewRegistry(func(op *registry.Options) {
 		op.Addrs = urls

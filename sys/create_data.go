@@ -1,11 +1,13 @@
 package sys
 
 import (
+	"github.com/kataras/iris/v12"
+	"shop/client"
 	"shop/config"
 	"shop/models"
-	"shop/services"
 	"shop/transformer"
 	"shop/validates"
+	"shop/web/routes"
 )
 
 func createEtcdKv(transformConfiguration *transformer.Conf) {
@@ -43,7 +45,7 @@ func createEtcdKv(transformConfiguration *transformer.Conf) {
 	}
 ]`
 	for k, v := range etcdKV {
-		services.EtcdServiceInsance.PutKV(k, v)
+		client.EtcdServiceInsance.PutKV(k, v)
 	}
 }
 
@@ -121,10 +123,11 @@ func CreateSystemAdminPermission(perms []*validates.PermissionRequest) []uint {
 	return permIds
 }
 
-func CreateSystemData(perms []*validates.PermissionRequest) {
+func CreateSystemData(app *iris.Application) {
 	//if rc.App.CreateSysData == 1 {
 	if true {
-		permIds := CreateSystemAdminPermission(perms) //初始化权限
+		apiRoutes := routes.GetRoutes(app)
+		permIds := CreateSystemAdminPermission(apiRoutes) //初始化权限
 		role := CreateSystemAdminRole(permIds)        //初始化角色
 		if role.ID != 0 {
 			CreateSystemAdmin(role.ID) //初始化管理员

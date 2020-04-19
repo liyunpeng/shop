@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"golang.org/x/net/websocket"
 	"shop/util"
-	//"shop/services"
+	//"shop/client"
 )
 
 type UserInfo struct {
@@ -24,13 +24,10 @@ var WebsocketChan chan string
 
 func WebSocketHandle(conn *websocket.Conn) {
 	defer conn.Close()
-
 	util.WaitGroup.Add(1)
 
 	fmt.Println("websocket与客户端建立连接，启动接收和发送数据的服务")
-
 	go sendToClient(conn)
-
 	for {
 		jsonHandler := websocket.JSON
 		userInfo := &UserInfo{}
@@ -59,11 +56,9 @@ func WebSocketHandle(conn *websocket.Conn) {
 func sendToClient(conn *websocket.Conn) {
 	defer util.WaitGroup.Done()
 	defer util.PrintFuncName()
-
 	jsonHandler := websocket.JSON
 
 	for {
-
 		select {
 		case msg := <-WebsocketChan:
 			fmt.Println("向前端发送数据=", msg)

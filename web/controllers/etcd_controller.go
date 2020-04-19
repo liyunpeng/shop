@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
+	"shop/client"
 	"shop/config"
-	"shop/services"
 	"shop/util"
 	"shop/validates"
 	"strconv"
@@ -15,7 +15,7 @@ import (
 
 type EtcdController struct {
 	Ctx     iris.Context
-	Service services.EtcdService
+	Service client.EtcdService
 }
 
 var v = mvc.View{
@@ -36,8 +36,8 @@ func ApiEtcdGetKV(ctx iris.Context) {
 	keya := ctx.Params().Get("key")
 	fmt.Println("api调用 ApiEtcdGetKV ,请求参数为", keya)
 	var ss []config.LogConfig
-	//resp :=	services.EtcdServiceInsance.Get("/logagent/192.168.0.142/logconfig")
-	resp := services.EtcdServiceInsance.Get(keya)
+	//resp :=	client.EtcdServiceInsance.Get("/logagent/192.168.0.142/logconfig")
+	resp := client.EtcdServiceInsance.Get(keya)
 	if resp == nil {
 		ctx.JSON(ApiResource(true, nil, "请求出错"))
 		return
@@ -184,7 +184,7 @@ func (e *EtcdController) GetKv() string {
 func ApiRedisSet(ctx iris.Context) {
 	fmt.Println("redis 操作")
 	for i :=0; i< 100; i++ {
-		util.RedisSetString( strconv.Itoa(i), "aaaaaaaa")
+		client.RedisSetString( strconv.Itoa(i), "aaaaaaaa")
 	}
 	ctx.JSON(ApiResource(true, nil, "redis操作"))
 	return

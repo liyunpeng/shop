@@ -7,8 +7,8 @@ import (
 	"github.com/kataras/iris/v12/mvc"
 	"github.com/kataras/iris/v12/sessions"
 	"net/http"
+	"shop/client"
 	"shop/models"
-	"shop/services"
 	"shop/util"
 	validates "shop/validates"
 	"strconv"
@@ -29,7 +29,7 @@ type UserGController struct {
 	// Our UserService, it's an interface which
 	// is binded from the main application.
 	// 服务是主程序绑定过来的
-	Service services.UserService
+	Service client.UserService
 
 	// Session, binded using dependency injection from the main.go.
 	// 使用main.go里的依赖注入， 将session绑定到该控制器
@@ -139,12 +139,12 @@ func (c *UserGController) PostLogin() mvc.Result {
 	c.Session.Set(util.SessionUserID, user.ID)
 	c.Session.Set(util.SessionUserName, user.Username)
 
-	redisUser := &util.RedisUser{
+	redisUser := &client.RedisUser{
 		Id: strconv.FormatUint(uint64(user.ID), 10),
 		Name: user.Username,
 		Address: user.Address,
 	}
-	util.RedisUserHMSet(redisUser)
+	client.RedisUserHMSet(redisUser)
 
 	//usergIDKey1 := "session_user_id"
 	//c.Session.Set(usergIDKey1, user.ID)

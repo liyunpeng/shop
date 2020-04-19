@@ -55,3 +55,12 @@ http.Handle("/ws", websocket.Handler(handler.Handle))
 
 
 GODEBUG=gctrace=1 go run main.go 2> log_file
+o
+
+9.
+write tcp 127.0.0.1:88->127.0.0.1:64632: use of closed network connection
+func name: runtime.gopanic
+file: /usr/local/go/src/runtime/panic.go, line: 679
+file: /usr/local/go/src/runtime/panic.go, line: 679
+panic: websockt 向客户端发送数据错误
+
