@@ -19,6 +19,7 @@ type User struct {
 	Salt      string `gorm:"type:varchar(255)" json:"salt"`
 	Username  string `gorm:"unique_index" json:"username"`
 	Name     string `gorm:"not null VARCHAR(191)"`
+	Address     string `gorm:"type:varchar(191)"`
 	Password  string `gorm:"type:varchar(200);column:password" json:"-"`
 	Phonenumber  string `gorm:"type:varchar(200);column:phonenumber" json:"phonenumber"`
 	Level string `gorm:"type:varchar(200);column:level" json:"level"`

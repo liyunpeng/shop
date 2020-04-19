@@ -9,6 +9,7 @@ import (
 	"shop/services"
 	"shop/util"
 	"shop/validates"
+	"strconv"
 	"strings"
 )
 
@@ -183,7 +184,9 @@ func (e *EtcdController) GetKv() string {
 
 func ApiRedisSet(ctx iris.Context) {
 	fmt.Println("redis 操作")
-	util.StringTest()
+	for i :=0; i< 100; i++ {
+		util.RedisSetString( strconv.Itoa(i), "aaaaaaaa")
+	}
 	ctx.JSON(ApiResource(true, nil, "redis操作"))
 	return
 }

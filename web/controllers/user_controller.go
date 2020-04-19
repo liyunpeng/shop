@@ -11,6 +11,7 @@ import (
 	"shop/services"
 	"shop/util"
 	validates "shop/validates"
+	"strconv"
 )
 
 type UserGController struct {
@@ -137,6 +138,13 @@ func (c *UserGController) PostLogin() mvc.Result {
 	//                              iris.CookieHTTPOnly(false)
 	c.Session.Set(util.SessionUserID, user.ID)
 	c.Session.Set(util.SessionUserName, user.Username)
+
+	redisUser := &util.RedisUser{
+		Id: strconv.FormatUint(uint64(user.ID), 10),
+		Name: user.Username,
+		Address: user.Address,
+	}
+	util.RedisUserHMSet(redisUser)
 
 	//usergIDKey1 := "session_user_id"
 	//c.Session.Set(usergIDKey1, user.ID)
@@ -271,7 +279,7 @@ func  ApiDatabaseCreate(ctx iris.Context) {
 
 }
 
-func UserLogin(ctx iris.Context) {
+func ApiUserLogin(ctx iris.Context) {
 	aul := new(validates.LoginRequest)
 
 	if err := ctx.ReadJSON(aul); err != nil {  //{"username":"username", "password","passrd"}

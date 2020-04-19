@@ -13,7 +13,7 @@ import (
 func RegisterApi(app *iris.Application){
 	api := app.Party("/api", middleware.CorsAuth()).AllowMethods(iris.MethodOptions)
 
-	api.Post("/login", controllers.UserLogin).Name = "登录"
+	api.Post("/login", controllers.ApiUserLogin).Name = "登录"
 	api.PartyFunc("/user", func(party iris.Party){
 		casbinMiddleware := middleware.New(models.Enforcer)                  //casbin for gorm                                                   // <- IMPORTANT, register the middleware.
 		party.Use(middleware.JwtHandler().Serve) //登录验证

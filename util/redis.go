@@ -25,7 +25,6 @@ func newPool(server string) *redis.Pool {
 	return &redis.Pool{
 		MaxIdle:     3,
 		IdleTimeout: 240 * time.Second,
-
 		Dial: func() (redis.Conn, error) {
 			c, err := redis.Dial("tcp", server)
 			fmt.Println("TCP REDIS 建立连接")
@@ -37,7 +36,6 @@ func newPool(server string) *redis.Pool {
 				return c, err
 			}
 		},
-
 		TestOnBorrow: func(c redis.Conn, t time.Time) error {
 			_, err := c.Do("PING")
 			fmt.Println("tcp redis 连接测试 err=", err)
@@ -59,7 +57,6 @@ func RedisPoolclose() {
 }
 
 func RedisSet(key string, value string) error {
-
 	var data []byte
 	data, err := redis.Bytes(Conn.Do("SET", key, value))
 	if err != nil {
@@ -68,11 +65,43 @@ func RedisSet(key string, value string) error {
 	fmt.Println("redis set data :", string(data))
 	return nil
 }
+type RedisUser struct {
+	Id	string
+	Name	string
+ 	Address		string
+	Order	string
+	ShopCar	string
+}
+
+func RedisUserHSet( userid string, k string , v string) { //userid string,  name string, ad0dress string, priority string ){
+	hashName := "user:" + userid
+	value, err := redis.String(Conn.Do("hmset", hashName,
+		k, v,
+	))
+
+	if err != nil {
+		fmt.Println("Hash failed:", err)
+	} else {
+		fmt.Printf("Hash result: \n %v \n", value)
+	}
+}
+func RedisUserHMSet( user *RedisUser) { //userid string,  name string, ad0dress string, priority string ){
+	hashName := "user:" + user.Id
+	value, err := redis.String(Conn.Do("hmset", hashName,
+		"Name", user.Name,
+		"Address", user.Address,
+		"Order", user.Order,
+		"Shopcar", user.ShopCar,
+	))
+
+	if err != nil {
+		fmt.Println("Hash failed:", err)
+	} else {
+		fmt.Printf("Hash result: \n %v \n", value)
+	}
+}
 
 func RedisGet(key string) ([]byte, error) {
-
-	//fmt.Println("从redis连接池获取到的连接=", Conn)
-
 	var data []byte
 	data, err := redis.Bytes(Conn.Do("GET", key))
 	if err != nil {
@@ -83,8 +112,20 @@ func RedisGet(key string) ([]byte, error) {
 	return data, err
 }
 
-func StringTest() {
+func RedisSetString(k string, v string) {
+	_, err := Conn.Do("SET", k, v)
+	if err != nil {
+		fmt.Println("redis set failed:", err)
+	}
+}
+func RedisDelString(k string, v string) {
+	_, err := Conn.Do("DEL", k, v)
+	if err != nil {
+		fmt.Println("redis set failed:", err)
+	}
+}
 
+func StringTest(k string, v string) {
 	var err error
 	_, err = Conn.Do("SET", "mykey", "superWang", "EX", "5")
 	if err != nil {
@@ -265,7 +306,7 @@ func Info() {
 }
 
 func TestAll() {
-	StringTest()
+	//StringTest()
 	Lua()
 	Info()
 	Lpush()
