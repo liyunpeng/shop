@@ -38,7 +38,7 @@ func RegisterControllers( app *iris.Application) {
 	sessManager.UseDatabase(db)
 
 	etcdApp := mvc.New(app.Party("/etcd"))
-	etcdApp.Register(client.EtcdServiceInsance)
+	etcdApp.Register(client.EtcdClientInsance)
 	etcdApp.Handle(new(EtcdController))
 
 	home := mvc.New(app.Party("/"))

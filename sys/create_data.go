@@ -45,7 +45,7 @@ func createEtcdKv(transformConfiguration *transformer.Conf) {
 	}
 ]`
 	for k, v := range etcdKV {
-		client.EtcdServiceInsance.PutKV(k, v)
+		client.EtcdClientInsance.PutKV(k, v)
 	}
 }
 

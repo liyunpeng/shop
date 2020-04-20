@@ -15,7 +15,7 @@ import (
 
 type EtcdController struct {
 	Ctx     iris.Context
-	Service client.EtcdService
+	Service client.EtcdClientWrap
 }
 
 var v = mvc.View{
@@ -36,8 +36,8 @@ func ApiEtcdGetKV(ctx iris.Context) {
 	keya := ctx.Params().Get("key")
 	fmt.Println("api调用 ApiEtcdGetKV ,请求参数为", keya)
 	var ss []config.LogConfig
-	//resp :=	client.EtcdServiceInsance.Get("/logagent/192.168.0.142/logconfig")
-	resp := client.EtcdServiceInsance.Get(keya)
+	//resp :=	client.EtcdClientInsance.Get("/logagent/192.168.0.142/logconfig")
+	resp := client.EtcdClientInsance.Get(keya)
 	if resp == nil {
 		ctx.JSON(ApiResource(true, nil, "请求出错"))
 		return

@@ -60,8 +60,6 @@ func (k *KafkaProducer) sendMsgToKfk() {
 	fmt.Println("生产者退出")
 }
 
-
-
 func StartKafkaProducer(kafkaAddr string, threadNum int) {
 	defer util.WaitGroup.Done()
 	defer util.PrintFuncName()

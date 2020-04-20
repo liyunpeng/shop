@@ -14,20 +14,20 @@ import (
 
 var (
 
-	EtcdServiceInsance *etcdService
+	EtcdClientInsance *etcdClientWrap
 )
 
-type EtcdService interface {
+type EtcdClientWrap interface {
 	PutKV(key string, value string)
 	Get(key string) (*client.GetResponse)
 }
 
-type etcdService struct {
+type etcdClientWrap struct {
 	EtcdClient *client.Client
 	EtcdKV client.KV
 }
 
-func NewEtcdService(addrs []string, timeout time.Duration) *etcdService {
+func NewEtcdClientWrap(addrs []string, timeout time.Duration) *etcdClientWrap {
 	etcdClient, err := client.New(client.Config{
 		Endpoints:   addrs,
 		DialTimeout: timeout,
@@ -39,15 +39,14 @@ func NewEtcdService(addrs []string, timeout time.Duration) *etcdService {
 	}
 	kv := client.NewKV(etcdClient)
 
-	e := &etcdService{
+	e := &etcdClientWrap{
 		EtcdClient: etcdClient,
-		EtcdKV:     kv,
+		EtcdKV:         kv,
 	}
-
 	return e
 }
 
-func (e *etcdService) PutKV(key string, value string) {
+func (e *etcdClientWrap) PutKV(key string, value string) {
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 
@@ -63,7 +62,7 @@ func (e *etcdService) PutKV(key string, value string) {
 }
 
 
-func (e *etcdService) Get(key string) (*client.GetResponse) {
+func (e *etcdClientWrap) Get(key string) (*client.GetResponse) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	getResp, err := e.EtcdKV.Get(ctx, key) //withPrefix()是未了获取该key为前缀的所有key-value
 	if err != nil {
@@ -73,7 +72,7 @@ func (e *etcdService) Get(key string) (*client.GetResponse) {
 	cancel()
 	return getResp
 }
-func (e *etcdService) EtcdWatch(keys []string) {
+func (e *etcdClientWrap) EtcdWatch(keys []string) {
 	defer util.WaitGroup.Done()
 
 	defer util.PrintFuncName()
@@ -104,6 +103,6 @@ func (e *etcdService) EtcdWatch(keys []string) {
 }
 
 //GetEtcdConfChan is func get etcd conf add to chan
-func (e *etcdService) GetEtcdConfChan() chan string {
+func (e *etcdClientWrap) GetEtcdConfChan() chan string {
 	return custchan.ConfChan
 }

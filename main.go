@@ -219,12 +219,12 @@ func startService(transformConfiguration *transformer.Conf) {
 
 func startClient(transformConfiguration *transformer.Conf) {
 	etcdKeys := GetEtcdKeys()
-	client.EtcdServiceInsance = client.NewEtcdService(
+	client.EtcdClientInsance = client.NewEtcdClientWrap(
 		[]string{transformConfiguration.Etcd.Addr}, 5 * time.Second)
 	go func() {
 		fmt.Println("到etcd服务器，按指定的键遍历键值对")
 		for _, key := range etcdKeys {
-			resp := client.EtcdServiceInsance.Get(key)
+			resp := client.EtcdClientInsance.Get(key)
 			if resp != nil || resp.Count < 1 {
 				continue
 			}
@@ -237,7 +237,7 @@ func startClient(transformConfiguration *transformer.Conf) {
 
 	// 启动对etcd的监听服务，有新的键值对会被监听到
 	util.WaitGroup.Add(1)
-	go client.EtcdServiceInsance.EtcdWatch(etcdKeys)
+	go client.EtcdClientInsance.EtcdWatch(etcdKeys)
 
 	util.WaitGroup.Add(1)
 	go client.StartKafkaProducer(
