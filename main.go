@@ -213,6 +213,8 @@ func startService(transformConfiguration *transformer.Conf) {
 	go service.StartGrpcService(transformConfiguration.Grpc)
 
 	go service.StartMicroService()
+
+	go service.StartOauth2Service()
 }
 
 func startClient(transformConfiguration *transformer.Conf) {
@@ -243,6 +245,8 @@ func startClient(transformConfiguration *transformer.Conf) {
 
 	util.WaitGroup.Add(1)
 	go client.StartKafkaConsumer(transformConfiguration.Kafka.Addr)
+
+	go client.StartOauth2Client()
 
 }
 
