@@ -301,6 +301,7 @@ func main() {
 
 	startService(config.TransformConfiguration)
 
+	startClient(config.TransformConfiguration)
 	/*
 		创建iris应用的
 		app.Party得到一个路由对象， party的参数就是一个路径，整个应有都是在这个路径下，
