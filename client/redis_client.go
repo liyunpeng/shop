@@ -15,7 +15,7 @@ var (
 )
 
 func InitRedis() {
-	redisHost := "192.168.0.141:6379"
+	redisHost := "192.168.0.223:6379"
 	fmt.Println("redis连接池初始化")
 	Pool = newPool(redisHost)
 	Conn = Pool.Get()

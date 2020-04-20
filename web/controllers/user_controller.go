@@ -18,7 +18,7 @@ type UserGController struct {
 	// context is auto-binded by Iris on each request,
 	// remember that on each incoming request iris creates a new UserGController each time,
 	// so all fields are request-scoped by-default, only dependency injection is able to set
-	// custom fields like the Service which is the same for all requests (static binding)
+	// custom fields like the Service which is the same for all requests (oauth2 binding)
 	// and the Session which depends on the current context (dynamic binding).
 	// iris会为每一个request请求自动绑定到iris.context
 	// 每一个请求的用户都会为之创建一个新的UserGController 控制器

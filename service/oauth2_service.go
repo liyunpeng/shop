@@ -160,7 +160,7 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusFound)
 		return
 	}
-	outputHTML(w, r, "static/login.html")
+	outputHTML(w, r, "web/views/oauth2/login.html")
 }
 
 // 生成授权页面
@@ -178,7 +178,7 @@ func authHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	outputHTML(w, r, "static/auth.html")
+	outputHTML(w, r, "web/views/oauth2/auth.html")
 }
 
 func outputHTML(w http.ResponseWriter, req *http.Request, filename string) {
