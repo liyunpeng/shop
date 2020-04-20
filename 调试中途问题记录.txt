@@ -11,7 +11,7 @@ models.DB.AutoMigrate(
 )
 
 3.调试过程， 要反复删除数据库
- 
+
 4。角色表是权限表和用户表的桥梁  创建角色时，同时在casbin表中创建该角色的所有权限列表
 
 5. 包相互依赖的问题
@@ -62,3 +62,14 @@ file: /usr/local/go/src/runtime/panic.go, line: 679
 file: /usr/local/go/src/runtime/panic.go, line: 679
 panic: websockt 向客户端发送数据错误
 原因：浏览器F5刷新，tcp 127.0.0.1:88->127.0.0.1:64632 这个tcp连接就断了。
+
+
+10. kafak容器起不来；
+docker logs kafka容器id看到：
+ Will not attempt to authenticate using SASL Will not attempt to authenticate using SASL
+
+解决办法：
+关闭防火墙， 或修改IPtables 规则
+ systemctl stop firewalld.service
+
+   docker restart 63693fc078fd

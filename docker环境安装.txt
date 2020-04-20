@@ -1,0 +1,81 @@
+[user1@141-node ~]$ docker run -itd --name zookeeper -p 2181:2181 wurstmeister/zookeeper
+63af67f663d275cf8b243c51c115d6fe49f5713bd41b51d6c5141c539e7e18e2
+
+[user1@141-node ~]$ docker run -d --name kafka -p 9092:9092 -e KAFKA_BROKER_ID=0 -e KAFKA_ZOOKEEPER_CONNECT=192.168.0.141:2181 -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://192.168.0.141:9092 -e KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:9092 -t wurstmeister/kafka
+63693fc078fda632402c190e5fd06bb897b430e6507ca44d43397be0e5213f28
+
+[user1@141-node ~]$ docker run -p 3306:3306 --name mysql -e MYSQL_ROOT_PASSWORD=root -d mysql:5.7
+39660d08778df871c42620d24b728d16c04e1bb962a2939523bc92fd7122711c
+
+---
+安装consul
+[user1@141-node ~]$ docker run -d -p 8500:8500 -v ~/consul:/consul/data -e CONSUL_BIND_INTERFACE='eth0' --name=consul1 consul agent -server -bootstrap -ui -client='0.0.0.0'
+Unable to find image 'consul:latest' locally
+latest: Pulling from library/consul
+9123ac7c32f7: Pull complete
+f3e53a83f220: Pull complete
+b64aa8d4cc8e: Pull complete
+82481eff66f7: Pull complete
+79aba2a452b6: Pull complete
+fe81d1cfdb25: Pull complete
+Digest: sha256:c84237fba5681416f903c22ad5830cbbc26aabe8f9eef466f7ec45b0c70e69f9
+Status: Downloaded newer image for consul:latest
+528cf25df5d119623599d80c562afd70cd9d34af72f9bfd2898723f6ec788796
+
+agent: 表示启动 agent 进程
+server: 表示 consul 为 server 模式
+client: 表示 consul 为 client 模式
+bootstrap: 表示这个节点是 Server-Leader
+ui: 启动 Web UI, 默认端口 8500
+node: 指定节点名称, 集群中节点名称唯一
+client: 绑定客户端接口地址, 0.0.0.0 表示所有地址都可以访问
+一般第一个容器的ip地址是 172.17.0.2，可以通过下面的命令查询容器ip：
+
+docker inspect --format '{{ .NetworkSettings.IPAddress }}' consul1
+
+docker inspect --format '{{ .NetworkSettings.IPAddress }}' consul1
+往集群插入其他节点
+
+docker run -d --name=consul2 -e CONSUL_BIND_INTERFACE=eth0 consul agent --server=true --client=0.0.0.0 --join 172.17.0.2;
+docker run -d --name=consul3 -e CONSUL_BIND_INTERFACE=eth0 consul agent --server=true --client=0.0.0.0 --join 172.17.0.2;
+docker run -d --name=consul4 -e CONSUL_BIND_INTERFACE=eth0 consul agent --server=false --client=0.0.0.0 --join 172.17.0.2;
+join: 表示加入到指定集群中
+查看集群下面的节点
+
+docker exec -it consul1 consul members
+至此 consul 的部署已经完成。
+
+上述只搭建了dc1，下面开始搭建dc2，并将dc1和dc2关联起来
+
+docker run -d --name=consul5 -e CONSUL_BIND_INTERFACE='eth0' consul agent -server -bootstrap-expect 3 -datacenter=dc2
+往dc2添加节点
+
+docker run -d --name=consul6 -e CONSUL_BIND_INTERFACE=eth0 consul agent --datacenter=dc2 --server=true --client=0.0.0.0 --join 172.17.0.6;
+docker run -d --name=consul7 -e CONSUL_BIND_INTERFACE=eth0 consul agent --datacenter=dc2 --server=true --client=0.0.0.0 --join 172.17.0.6;
+docker run -d --name=consul8 -e CONSUL_BIND_INTERFACE=eth0 consul agent --datacenter=dc2 --server=false --client=0.0.0.0 --join 172.17.0.6;
+关联dc1和dc2
+
+docker exec -it consul6 consul join -wan 172.17.0.2
+至此可以在web ui看到dc1和dc2辣！
+
+
+------------
+安装etcd
+1. 设置HostIP
+$ export HostIP=192.168.0.198
+
+2. 执行etcd安装启动命令
+docker run -d -v /usr/share/ca-certificates/:/etc/ssl/certs -p 4001:4001 -p 2380:2380 -p 2379:2379 \
+ --restart=always \
+ --name etcd registry.cn-hangzhou.aliyuncs.com/coreos_etcd/etcd:v3 \
+ /usr/local/bin/etcd \
+ -name etcd0 \
+ -advertise-client-urls http://${HostIP}:2379,http://${HostIP}:4001 \
+ -listen-client-urls http://0.0.0.0:2379,http://0.0.0.0:4001 \
+ -initial-advertise-peer-urls http://${HostIP}:2380 \
+ -listen-peer-urls http://0.0.0.0:2380 \
+ -initial-cluster-token etcd-cluster-1 \
+ -initial-cluster etcd0=http://${HostIP}:2380 \
+ -initial-cluster-state new
+
+mysql> create database gotest default character set=utf8;

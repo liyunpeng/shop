@@ -8,6 +8,7 @@ import (
 	"github.com/gorilla/securecookie"
 	"github.com/kataras/iris/v12"
 	_ "net/http/pprof"
+	"shop/custchan"
 	"shop/service"
 	"shop/sys"
 	"shop/web/controllers"
@@ -203,8 +204,18 @@ const namespace = "default"
 //	app.Get("/echo", websocket.Handler(websocketServer, idGen))
 //
 //}
-
 func startService(transformConfiguration *transformer.Conf) {
+	go service.StartTailService()
+
+	go service.StartWebSocketService()
+
+	util.WaitGroup.Add(1)
+	go service.StartGrpcService(transformConfiguration.Grpc)
+
+	go service.StartMicroService()
+}
+
+func startClient(transformConfiguration *transformer.Conf) {
 	etcdKeys := GetEtcdKeys()
 	client.EtcdServiceInsance = client.NewEtcdService(
 		[]string{transformConfiguration.Etcd.Addr}, 5 * time.Second)
@@ -216,7 +227,7 @@ func startService(transformConfiguration *transformer.Conf) {
 				continue
 			}
 			for _, ev := range resp.Kvs {
-				client.ConfChan <- string(ev.Value)
+				custchan.ConfChan <- string(ev.Value)
 				fmt.Printf("etcdkey = %s \n etcdvalue = %s \n", ev.Key, ev.Value)
 			}
 		}
@@ -226,9 +237,6 @@ func startService(transformConfiguration *transformer.Conf) {
 	util.WaitGroup.Add(1)
 	go client.EtcdServiceInsance.EtcdWatch(etcdKeys)
 
-	tailService := client.NewTailService()
-	go tailService.RunServer()
-
 	util.WaitGroup.Add(1)
 	go client.StartKafkaProducer(
 		transformConfiguration.Kafka.Addr, 1)
@@ -236,12 +244,6 @@ func startService(transformConfiguration *transformer.Conf) {
 	util.WaitGroup.Add(1)
 	go client.StartKafkaConsumer(transformConfiguration.Kafka.Addr)
 
-	go service.StartWebSocketService()
-
-	util.WaitGroup.Add(1)
-	go service.StartGrpcService(transformConfiguration.Grpc)
-
-	go service.StartMicroService()
 }
 
 
@@ -370,7 +372,7 @@ Loopa:
 			println("shutdown...")
 
 			close(util.ChanStop)
-			close(client.KafkaProducerObj.MsgChan)
+			close(custchan.KafkaProducerMsgChan)
 
 			timeout := 5 * time.Second
 			ctx, cancel := stdContext.WithTimeout(stdContext.Background(), timeout)

@@ -3,6 +3,7 @@ package client
 import (
 	"context"
 	"fmt"
+	"shop/custchan"
 	"shop/util"
 	"time"
 
@@ -12,8 +13,8 @@ import (
 )
 
 var (
-	ConfChan  = make(chan string, 10)
-	EtcdServiceInsance  *etcdService
+
+	EtcdServiceInsance *etcdService
 )
 
 type EtcdService interface {
@@ -27,10 +28,15 @@ type etcdService struct {
 }
 
 func NewEtcdService(addrs []string, timeout time.Duration) *etcdService {
-	etcdClient, _ := client.New(client.Config{
+	etcdClient, err := client.New(client.Config{
 		Endpoints:   addrs,
 		DialTimeout: timeout,
 	})
+	if err != nil {
+		fmt.Println("etcd 连接失败， err=", err)
+	}else {
+		fmt.Println("etcd 连接成功")
+	}
 	kv := client.NewKV(etcdClient)
 
 	e := &etcdService{
@@ -87,7 +93,7 @@ func (e *etcdService) EtcdWatch(keys []string) {
 				return
 			case wresp := <-watchC:
 				for _, ev := range wresp.Events {
-					ConfChan <- string(ev.Kv.Value)
+					custchan.ConfChan <- string(ev.Kv.Value)
 					fmt.Printf("etcd服务watch到新的键值对： etcd key = %s , etcd value = %s \n", ev.Kv.Key, ev.Kv.Value)
 				}
 			default:
@@ -99,5 +105,5 @@ func (e *etcdService) EtcdWatch(keys []string) {
 
 //GetEtcdConfChan is func get etcd conf add to chan
 func (e *etcdService) GetEtcdConfChan() chan string {
-	return ConfChan
+	return custchan.ConfChan
 }

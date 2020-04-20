@@ -4,23 +4,21 @@ import (
 	"fmt"
 		"github.com/Shopify/sarama"
 	"github.com/astaxie/beego/logs"
+	"shop/custchan"
 	"shop/util"
 )
 
-type Message struct {
-	line  string
-	topic string
-}
+
 
 type KafkaProducer struct {
-	producerClient sarama.SyncProducer
-	MsgChan        chan *Message
+	producerClient       sarama.SyncProducer
+
 }
 var KafkaProducerObj *KafkaProducer
 
 func NewKafkaProducer(kafkaAddr string) (kafkaProducer *KafkaProducer, err error) {
 	kafkaProducer = &KafkaProducer{
-		MsgChan: make(chan *Message, 10000),
+
 	}
 
 	config := sarama.NewConfig()
@@ -41,10 +39,10 @@ func (k *KafkaProducer) sendMsgToKfk() {
 	defer util.WaitGroup.Done()
 	defer util.PrintFuncName()
 
-	for v := range k.MsgChan {
+	for v := range custchan.KafkaProducerMsgChan {
 		msg := &sarama.ProducerMessage{}
-		msg.Topic = v.topic
-		msg.Value = sarama.StringEncoder(v.line)
+		msg.Topic = v.Topic
+		msg.Value = sarama.StringEncoder(v.Line)
 
 		fmt.Println("kafka生产者向kafka broker发送消息，消息字符串=",
 			msg.Value, ", 消息主题=", msg.Topic)
@@ -62,10 +60,7 @@ func (k *KafkaProducer) sendMsgToKfk() {
 	fmt.Println("生产者退出")
 }
 
-func (k *KafkaProducer) addMessage(line string, topic string) (err error) {
-	k.MsgChan <- &Message{line: line, topic: topic}
-	return
-}
+
 
 func StartKafkaProducer(kafkaAddr string, threadNum int) {
 	defer util.WaitGroup.Done()

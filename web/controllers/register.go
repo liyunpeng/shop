@@ -25,7 +25,8 @@ func RegisterControllers( app *iris.Application) {
 	})
 	db := redis.New(redis.Config{
 		Network:   "tcp",
-		Addr:      "127.0.0.1:6379",
+		//Addr:      "127.0.0.1:6379",
+		Addr:      "192.168.0.141:6379",
 		Timeout:   time.Duration(30) * time.Second,
 		MaxActive: 10,
 		Password:  "",

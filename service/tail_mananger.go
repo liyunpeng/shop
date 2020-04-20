@@ -1,4 +1,4 @@
-package client
+package service
 
 import (
 	"encoding/json"
@@ -7,29 +7,21 @@ import (
 	"github.com/astaxie/beego/logs"
 	"github.com/hpcloud/tail"
 	"shop/config"
+	"shop/custchan"
 	"shop/util"
 	"sync"
 )
 
-type TailService interface {
-	RunServer()
-}
+var tailManager *TailManager
 
-type tailService struct {
-
-}
-
-func NewTailService() *tailService{
-	return &tailService{}
-}
-
-func (t *tailService ) RunServer() {
-	tailManager = NewTailManager()
-	tailManager.Process()
+func StartTailService() {
+	tailManager.MonitorConfChan()
 	util.WaitGroup.Wait()
 }
 
-var tailManager *TailManager
+func init (){
+	tailManager = NewTailManager()
+}
 
 type TailManager struct {
 	tailWithConfMap map[string]*TailWithConf
@@ -121,8 +113,8 @@ func (t *TailManager) reloadConfig(logConfArr []config.LogConfig) (err error) {
 	return
 }
 
-func (t *TailManager) Process() {
-	for etcdConfValue := range ConfChan {
+func (t *TailManager) MonitorConfChan() {
+	for etcdConfValue := range custchan.ConfChan {
 		fmt.Printf("tail服务从ConfChan通道拿到的配置数据: %v \n", etcdConfValue)
 
 		var logConfArr []config.LogConfig
