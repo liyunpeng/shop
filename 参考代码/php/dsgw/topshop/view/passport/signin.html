@@ -1,0 +1,135 @@
+<style>
+    .ground-glass::before {
+        /* url动态加载 */
+        background: url(<{$backgroundImgUrl}>) 0 / cover fixed;
+    }
+</style>
+<div class="form-box ground-glass" id="login-box">
+    <div class="login-content">
+        <div class="header">
+            <div class="logo">
+                <span>请使用富连网提供的账号登录</span>
+            </div>
+        </div>
+    </div>
+    <form action="<{url action=topshop_ctl_passport@login}>" method="post" data-validate-onsuccess="ajaxSubmit" data-validate-icons="{valid:''}">
+        <div class="body">
+            <div class="form-group relative">
+                <label for="userid" class="sr-only"><{t}>邮箱<{/t}>：</label>
+                <input type="text" name="login_account" id="userid" class="form-control h42 pad-l-35 input-focus-color" placeholder="<{t}>邮箱<{/t}>" style="padding-left: 35px;">
+                <i class="glyphicon glyphicon-user"></i>
+            </div>
+            <div class="form-group relative">
+                <label for="password" class="sr-only"><{t}>密码<{/t}>：</label>
+                <input type="password" name="login_password" id="password" class="form-control h42 pad-l-35 input-focus-color" placeholder="<{t}>密码<{/t}>" style="padding-left: 35px;">
+                <i class="glyphicon glyphicon-lock"></i>
+            </div>
+            <{if $isShowVcode}>
+            <div class="form-group relative">
+                <label for="imgcode" class="sr-only"><{t}>验证码<{/t}>：</label>
+                <input type="text" name="imgcode" id="img-code" class="form-control h42 input-focus-color" placeholder="<{t}>验证码<{/t}>">
+                <!-- <div class="col-xs-7" style="padding:0px;">
+                </div> -->
+                <!-- <div class="pull-right"> -->
+                <img align="absmiddle" class="auto-change-verify-handle" id="membervocde" src="<{url action=toputil_ctl_vcode@gen_vcode key=topshop_bind}>" alt="验证码" width="100" height="40" title="点击图片刷新验证码">
+                <!-- <p class="auto-change-verify-handle"><i class="glyphicon glyphicon-repeat"></i></p> -->
+                <input type="hidden" name="imagevcodekey" value="topshop_bind" />
+                <!-- </div> -->
+                <div class="clearfix"></div>
+            </div>
+            <{/if}>
+            <div>
+                <label><input type="checkbox" name="remember_me"> <{t}>记住我<{/t}></label>
+            </div>
+        </div>
+        <div class="footer">
+            <p>
+                <button type="submit" class="btn bg-teal btn-block btn-lg"><{t}>登录<{/t}></button>
+            </p>
+            <p>
+                <a href="<{url action=topshop_ctl_find@index}>" class="text-center"><{t}>忘记密码？<{/t}></a>
+            </p>
+            <!-- <div class="fr"> -->
+            <!--  <label><input type="checkbox" name="remember_me"> <{t}>记住我<{/t}></label>-->
+
+            <!-- </div> -->
+            <div class="cl"></div>
+        </div>
+    </form>
+</div>
+<div class="other-option">
+    <a style='margin-left:65px;margin-right:65px' href="<{url action=topshop_ctl_register@signCheckPhonePage}>" class="text-center"><span><i class="glyphicon glyphicon-register"></i></span>注册</a>
+    <a style='margin-right:0px' href="<{url action=topc_ctl_default@index}>"><span><i class="glyphicon glyphicon-index"></i></span>商城首页</a>
+</div>
+<script>
+    // $('#login-box').parent().css('height', 1);
+    function ajaxSubmit(e) {
+        var form = e.target;
+        e.preventDefault();
+        $.post(form.action, $(form).serialize(), function (rs) {
+
+            if (rs.error) {
+                $('#messagebox').message(rs.message, 'error');
+            }
+            if (rs.success) {
+                $('#messagebox').message(rs.message, 'success');
+            }
+            if (rs.redirect) {
+                setTimeout(function (){location.href=rs.redirect;}, 1000);
+            }
+        });
+    }
+
+    function delCookie(name) {
+        var exp = new Date();
+        exp.setTime(exp.getTime() - 1);
+        var cval = getCookie(name);
+        if (cval != null)
+            document.cookie = name + "=" + cval + "; path=/; expires=" + exp.toGMTString();
+    }
+    function getCookie(name) {
+        var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+        if (arr = document.cookie.match(reg))
+            return unescape(arr[2]);
+        else
+            return null;
+    }
+    delCookie("authNotice");
+
+    //更换图形验证码
+    $('.auto-change-verify-handle').on('click', function () {
+        getImgCode();
+    })
+    function getImgCode() {
+        var url = $('#membervocde').attr('src');
+        var random = +new Date;
+        var urlrandom = url.match(/\b_=([\d]+)\b/);
+        if (urlrandom) {
+            url = url.replace(urlrandom[1], random);
+        }
+        else {
+            url += (url.indexOf('?') > -1 ? '&' : '?') + '_=' + random;
+        }
+        $('#membervocde').attr('src', url);
+        return false;
+    }
+
+    $('input[name="login_account"]').on('focus', function () {
+        toggleClass(true, $('.glyphicon-user'), 'focus-color');
+    }).on('blur', function () {
+        toggleClass(false, $('.glyphicon-user'), 'focus-color');
+    });
+    $('input[name="login_password"]').on('focus', function () {
+        toggleClass(true, $('.glyphicon-lock'), 'focus-color');
+    }).on('blur', function () {
+        toggleClass(false, $('.glyphicon-lock'), 'focus-color');
+    });
+
+    function toggleClass(flag, ele, className) {
+        if (flag) {
+            ele.addClass(className);
+        } else {
+            ele.removeClass(className);
+        }
+    }
+</script>

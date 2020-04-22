@@ -1,0 +1,77 @@
+<style>
+    .ground-glass::before {
+        background: url('<{$backgroundImgUrl}>') 0 / cover fixed;
+    }
+</style>
+<div class="form-box ground-glass" id="login-box">
+    <div class="header">
+        <p>欢迎激活富连网大屏购物平台帐号</p>
+        <p>请在下方设置您的帐号密码</p>
+        <p>后续将使用邮箱和密码登录本平台</p>
+    </div>
+    <form action="<{if $status != 'error'}><{url action=topshop_ctl_passport@replace}><{/if}>" method="post" data-validate-onsuccess="ajaxSubmit" data-validate-icons="{valid:''}">
+        <input type="hidden" name="seller_id" value="<{$account.seller_id}>">
+        <div class="body">
+            <div class="form-group">
+                <label for="userid" class="sr-only"><{t}>用户名<{/t}>：</label>
+                <input type="text" class="form-control" placeholder="<{t}>用户名:<{$account.login_account}><{/t}>" readonly disabled>
+            </div>
+            <div class="form-group">
+                <label for="userid" class="sr-only"><{t}>邮箱<{/t}>：</label>
+                <input type="text" class="form-control" placeholder="<{t}>邮箱:<{$account.email}><{/t}>" readonly disabled>
+            </div>
+            <div class="form-group">
+                <label for="password" class="sr-only"><{t}>密码<{/t}>：</label>
+                <input type="password" name="login_password" id="login_password" class="form-control" placeholder="密码，6-20个字符，不能纯数字、字母" required maxlength="20" data-validate-length-min="6" pattern="^(?!\d+$|[a-zA-Z]+$)[^\u4e00-\u9fa5]*$" data-validate-regexp-message="不能纯数字、字母">
+            </div>
+            <div class="form-group">
+                <label for="password" class="sr-only"><{t}>确认密码<{/t}>：</label>
+                <input type="password" name="psw_confirm" id="psw_confirm" class="form-control" placeholder="请再次输入密码" required maxlength="20" data-validate-equalto-field="login_password" data-validate-equalto-message="两次密码输入不一致">
+            </div>
+        </div>
+        <div class="footer">
+            <p>
+                <button type="submit" class="btn bg-teal btn-block btn-lg"><{t}>确认<{/t}></button>
+            </p>
+        </div>
+    </form>
+</div>
+
+<div class="dialog-error-tip" style="display:none;">
+    <div class="agreement clearfix">
+        <{$msg}>
+    </div>
+</div>
+
+<script src="/app/site/statics/scripts/tools.js"></script>
+<script src="/app/site/statics/scripts/dialog.js"></script>
+<script>
+
+    function ajaxSubmit(e) {
+        var form = e.target;
+        e.preventDefault();
+        $.post(form.action, $(form).serialize(), function (rs) {
+
+            if (rs.error) {
+                $('#messagebox').message(rs.message, 'error');
+            }
+            if (rs.success) {
+                $('#messagebox').message(rs.message, 'success');
+            }
+            if (rs.redirect) {
+                setTimeout(function (){location.href=rs.redirect;}, 1000);
+            }
+        });
+    }
+
+    <{if $status == 'error'}>
+    $('.dialog-error-tip').dialog({
+        width: 300,
+        height: 200,
+        title: '提示',
+        close: function () {
+            location.href = '/';
+        }
+    });
+    <{/if}>
+</script>

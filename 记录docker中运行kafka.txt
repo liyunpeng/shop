@@ -34,7 +34,7 @@ kafka-consumer-groups.sh             kafka-preferred-replica-election.sh  kafka-
 kafka-consumer-perf-test.sh          kafka-producer-perf-test.sh          kafka-verifiable-consumer.sh
 kafka-delegation-tokens.sh           kafka-reassign-partitions.sh         kafka-verifiable-producer.sh
 
-创建主题
+创建主题， zookeeper地址， 要指定分区数，副本数，主题的名字
 / # kafka-topics.sh --create --zookeeper 192.168.0.223:2181 --replication-factor 1 --partitions 1 --topic MyTopic
 Created topic MyTopic.
 MyTopic

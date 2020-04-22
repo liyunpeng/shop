@@ -1,0 +1,143 @@
+<div class="panel panel-default">
+    <div class="panel-heading">优惠券名称</div>
+    <div class="panel-body">
+        <p>
+            <span>优惠券名称：</span>
+            <span><{$coupon_name}></span>
+        </p>
+        <p>
+            <span>优惠券描述：</span>
+            <span><{$coupon_desc}></span>
+        </p>
+        <p>
+            <span>优惠券图片（首页）：</span>
+            <span><img src="<{$image_id|default:$image_default_id.S.default_image|storager:t}>" alt=""></span>
+        </p>
+        <p>
+            <span>详情页图片：</span>
+            <span><img src="<{$detail_image_id|default:$image_default_id.S.default_image|storager:t}>" alt=""></span>
+        </p>
+        <p>
+            <span>详情页图片（已领取）：</span>
+            <span><img src="<{$detail_received_image_id|default:$image_default_id.S.default_image|storager:t}>" alt=""></span>
+        </p>
+        <p>
+            <span>购物管理图片：</span>
+            <span><img src="<{$other_image_id|default:$image_default_id.S.default_image|storager:t}>" alt=""></span>
+        </p>
+        <p>
+            <span>购物管理图片（已领取）：</span>
+            <span><img src="<{$received_image_id|default:$image_default_id.S.default_image|storager:t}>" alt=""></span>
+        </p>
+    </div>
+</div>
+<div class="panel panel-default select-goods-panel">
+    <div class="panel-heading">
+        已选择适用商品
+    </div>
+    <div class="panel-body">
+        <div class="selected-goods-list">
+            <table wdith="100%" class="table table-primary table-hover table-goods">
+                <{foreach from=$itemsList item=itemslist}>
+                <tr>
+                    <td>
+                        <div class="goods">
+                            <a href="<{url action=topc_ctl_item@index item_id=$itemslist.item_id}>" target="_blank">
+                                <img src="<{$itemslist.image_default_id|default:$image_default_id.S.default_image|storager:t}>" alt="">
+                                <{$itemslist.title}>
+                            </a>
+                        </div>
+                    </td>
+                    <td>
+                        <{if $itemslist.sku_ids}>
+                        <a href="#" data-remote="<{url action=topshop_ctl_selector_item@showSkuByitemId itemId=$itemslist.item_id sku_id=$itemslist.sku_ids}>" data-toggle="modal" data-target="#show_sku_madal" class="show-sku">查看SKU</a>
+                        <{/if}>
+                    </td>
+                    <td>
+                        商品金额:<{$itemslist.price|cur}>
+                    </td>
+                </tr>
+                <{/foreach}>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="show_sku_madal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-skuids="">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">设置规则</div>
+    <div class="panel-body">
+        <p>
+            <span>使用平台：</span>
+            <span>
+        <{if $used_platform=='0' || !$used_platform}>
+        全平台(pc+wap+app)
+        <{elseif $used_platform=='1'}>
+        pc端
+        <{elseif $used_platform=='2'}>
+        wap端
+        <{elseif $used_platform=='3'}>
+        app端
+        <{/if}>
+      </span>
+        </p>
+        <p>
+            <span>适用会员：</span>
+            <span>
+        <{$grade_str}>
+      </span>
+        </p>
+        <p>
+            <span>优惠券金额：</span>
+            <span>
+        满<{$limit_money}>减<{$deduct_money}>
+      </span>
+        </p>
+        <p>
+            <span>优惠券总数量：</span>
+            <span><{$max_gen_quantity}></span>
+        </p>
+        <p>
+            <span>用户可领取数量：</span>
+            <span><{$userlimit_quantity}></span>
+        </p>
+        <p>
+            <span>领取时间段：</span>
+            <span><{$send_time}></span>
+        </p>
+        <p>
+            <span>有效期：</span>
+            <span><{$valid_time}></span>
+        </p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+
+    </div>
+    <div class="col-md-2">
+        <a href="<{url action="topshop_ctl_promotion_coupon@list_coupon"}>">
+            <button type="submit" class="btn btn-primary btn-lg btn-block action-save">返回</button>
+        </a>
+    </div>
+    <div class="col-md-4">
+
+    </div>
+</div>
+<script>
+    $('.show-sku').click(function (event) {
+        var url = $(this).data('remote');
+        $('#show_sku_madal .modal-content').load(url);
+    });
+
+    $('#show_sku_madal').on('show.bs.modal', function (event) {
+        _this = event.relatedTarget;
+        var thisSku = $($($(_this).parents('tr')).find('input[name="item_sku[]"]')).val();
+        $('#show_sku_madal').data('skuids', thisSku);
+    });
+</script>

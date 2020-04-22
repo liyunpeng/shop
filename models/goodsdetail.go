@@ -25,7 +25,8 @@ func (o OrderDetail) TableName() string {
 func CreaterrderDetail(orderDetail *OrderDetail) {
 
 	if err := DB.Create(orderDetail).Error; err != nil {
-		color.Red(fmt.Sprintf("CreateOrderDetailErr:%s \n ", err))
+		color.Red(fmt.
+			Sprintf("CreateOrderDetailErr:%s \n ", err))
 	}
 }
 

@@ -1,0 +1,123 @@
+<div class="membercenter-box coupon-box">
+  <div class="membercenter-box-hd">
+    <div class="membercenter-box-left">我的优惠券</div>
+    <!-- <div class="membercenter-box-right">
+      <span class="num">共<em><{$count}></em>条记录</span>
+      <{pagers data=$pagers type="mini"}>
+    </div> -->
+  </div>
+  <div class="membercenter-box-bd">
+    <div class="coupon-toolbar">
+      <div class="c-sort">
+        <ul>
+          <li>
+            <div class="c-type">
+              <div class="dt"><a href="<{url action=topc_ctl_member_coupon@couponList status=$status}>" class="curr" data-location="show"><span><{if $status=='1'}>未使用(<{$num[1]}>)<{elseif $status=='0'}>已使用(<{$num[0]}>)<{elseif $status=='2'}>已过期(<{$num[2]}>)<{/if}></span><i class="icon icon-arrow-down"></i><i class="icon icon-arrow-up"></i></a></div>
+              <div class="dd">
+                <a href="<{url action=topc_ctl_member_coupon@couponList status=1}>" <{if $status==1}>class="curr"<{/if}>>未使用(<{$num[1]}>)</a>
+                <a href="<{url action=topc_ctl_member_coupon@couponList status=0}>" <{if $status==0}>class="curr"<{/if}>>已使用(<{$num[0]}>)</a>
+                <a href="<{url action=topc_ctl_member_coupon@couponList status=2}>" <{if $status==2}>class="curr"<{/if}>>已过期(<{$num[2]}>)</a>
+              </div>
+            </div>
+          </li>
+          <li>
+            <a href="<{url action=topc_ctl_member_coupon@couponList status=$status timesort=$timesort|default:'end_time desc'}>" <{if $timesort_click}>class="curr"<{/if}>>
+            过期时间
+            <{if $timesort=='end_time asc'}><i class="icon icon-arrow-down-a"></i><{/if}>
+            <{if $timesort=='end_time desc'}><i class="icon icon-arrow-up-a"></i><{/if}>
+            </a>
+          </li>
+          <li>
+            <a href="<{url action=topc_ctl_member_coupon@couponList status=$status pricesort=$pricesort|default:'price desc'}>" <{if $pricesort_click}>class="curr"<{/if}>>
+            优惠金额
+            <{if $pricesort=='price asc'}><i class="icon icon-arrow-down-a"></i><{/if}>
+            <{if $pricesort=='price desc'}><i class="icon icon-arrow-up-a"></i><{/if}>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="extra-r">
+        <a href="#none" class="lump-icon curr" data-show-type="lump" title="块列"></a>
+        <a href="#none" class="list-icon" data-show-type="list" title="列表"></a>
+      </div>
+    </div>
+    <{if !$count }>
+      <div class="no-content">暂无优惠券</div>
+    <{else}>
+    <div class="coupon-items">
+    <{foreach from=$couponList item=item}>
+      <div class="coupon-item  <{if $item.is_valid==1}>coupon-item-d<{else}>coupon-item-gray<{/if}>">
+        <div class="c-type">
+          <div class="c-price"><!-- <span>￥</span> --><strong><{$item.deduct_money|cur}></strong></div>
+          <div class="c-limit">【<{$item.coupon_desc}>】</div>
+          <div class="c-time"><{$item.canuse_start_time|cdate:'FDATE'}>至<{$item.canuse_end_time|cdate:'FDATE'}></div>
+          <div class="c-type-left"></div>
+          <div class="c-type-right"></div>
+          <div class="c-type-bottom"></div>
+          <div class="c-type-bottom-circle"></div>
+          <{if $item.end_time-$now<3600*24 && $item.canuse_end_time>$now && $item.is_valid==1}>
+          <div class="c-type-remind-bg">
+          </div>
+          <div class="c-type-remind-txt">即将过期</div>
+          <{/if}>
+          <!-- <i class="icon icon-close"></i> -->
+        </div>
+        <div class="c-msg">
+          <div class="c-range">
+            <div class="range-item">
+              <span class="dt">券编号：</span>
+              <span class="txt"><{$item.coupon_code}></span>
+            </div>
+            <div class="range-item">
+              <span class="dt">店铺名称：</span>
+              <span class="txt" title="<{$item.shop_id|shopname}>"><a href="<{url subdomain=$item.subdomain action=topc_ctl_shopcenter@index shop_id=$item.shop_id}>" ><{$item.shop_id|shopname}></a></span>
+            </div>
+            <div class="range-item">
+              <span class="dt">平台限制：</span>
+              <span class="txt"><{$item.used_platform|json2value:'{"0":"手机、电脑端通用","1":"电脑端","2":"手机端"}'}></span>
+            </div>
+          </div>
+          <div class="op-btn">
+            <{if $status==1}>
+            <a href="<{url action=topc_ctl_promotion@getCouponItem coupon_id=$item.coupon_id}>" class="btn">立即使用</a>
+            <{/if}>
+          </div>
+        </div>
+      </div>
+    <{/foreach}>
+    </div>
+    <{/if}>
+  </div>
+  <{pagers data=$pagers}>
+</div>
+<script>
+  if($.cookie('c_show_type')=='list'){
+    $('.coupon-items').addClass('coupon-items02');
+    $('.extra-r').find('.list-icon').addClass('curr');
+    $('.extra-r').find('.lump-icon').removeClass('curr');
+  }else{
+    $('.coupon-items').removeClass('coupon-items02');
+    $('.extra-r').find('.lump-icon').addClass('curr');
+    $('.extra-r').find('.list-icon').removeClass('curr');
+  }
+  $('.c-sort li>a').on('click', function() {
+    $('.c-sort li>a').removeClass('curr');
+    $(this).addClass('curr');
+  });
+  $('.c-type a').on('click', function() {
+    $('.c-type a').removeClass('curr');
+    $(this).addClass('curr');
+    if($(this).attr('data-location')) return;
+    $('.c-type .dt').find('span').html($(this).html());
+  });
+  $('.extra-r').on('click', 'a', function() {
+    $(this).addClass('curr').siblings('a').removeClass('curr');
+    if($(this).attr('data-show-type') == 'lump') {
+      $.cookie('c_show_type', 'lump');
+      $('.coupon-items').removeClass('coupon-items02');
+    } else {
+      $.cookie('c_show_type', 'list');
+      $('.coupon-items').addClass('coupon-items02');
+    }
+  });
+</script>

@@ -1,0 +1,135 @@
+<form action="<{url action=topshop_ctl_trade_phoneorder@save}>" method="post"  data-validate-onsuccess="ajaxSubmit" role="form">
+<table class="gridtable">
+  <tbody>
+	  <{foreach from=$sku_info item=item}>
+	  <tr>
+	    <td style="width:40%">
+	      <div>
+	        <input  name="title" class="input-text" readonly unselectable="on" value='<{$item.title}>' type="text"/>
+	      </div>
+	      <div>
+	        <div class="div_flex_start">
+	          <div style="width:18%">
+	            货号：
+	          </div>
+	          <div >
+	            <input name="bn" class="input-text" readonly unselectable="on" value='<{$item.bn}>' type="text"  />
+	          </div>
+	          <div style="width:18%">
+	              价格：
+	          </div>
+	          <div>
+	            <input name="price" class="input-text" readonly unselectable="on" value='<{$item.price}>' type="text" />
+	          </div>
+	        </div>
+	      </div>
+	  	</td>
+
+		  <td style="width:20%" >
+		    <input name="quantity" value='<{$item.quantity}>' class="input-text" value='<{$item.quantity}>' readonly unselectable="on" type="text" />
+		  </td>
+
+		  <td style="width:10%">
+		    <input name="subtotal_price" class="input-text" value='<{$item.subtotal_price}>' readonly unselectable="on" type="text"  />
+		  </td>
+
+		  <td style="width:10%">
+		    <input name="delivery_fee" class="input-text"  readonly unselectable="on" value='<{$item.delivery_fee}>' type="text" {/>
+		  </td>
+
+		  <td style="width:20%">
+		    <input name="subtotal_payment" value='<{$item.subtotal_payment}>' class="input-text"  readonly unselectable="on" type="text" />
+		  </td>
+		</tr>
+		<{/foreach}>
+	</tbody>
+</table>
+
+<table class="gridtable">
+  <tr>
+		<td style="width:40%">
+			<div class="div_flex_start">
+				<div style="width:20%" >
+					收货地址:
+				</div>
+				<div  style="width:80%" >
+				 	<input name="address_addr" value='<{$area_addr}>' class="input-text" readonly unselectable="on" type="text"/>
+				</div>
+			</div>
+		</td>
+
+		<td style="width:20%;border-right:0px;">
+			<div class="div_flex_start">
+				<div style="width:45%">
+					收件人:
+				</div>
+				<div>
+				 	<input name="address_name" value='<{$name}>' class="input-text" readonly unselectable="on" type="text"/>
+				</div>
+			</div>
+		</td>
+
+		<td style="width:20%">
+			<div class="div_flex_start">
+				<div style="width:40%">
+					联系方式:
+				</div>
+				<div style="width:60%">
+					<input name="address_mobile" value='<{$mobile}>' class="input-text" readonly unselectable="on" type="text" />
+				</div>
+			</div>
+		</td>
+
+		<td style="width:20%">
+			<div class="div_flex_start">
+				<div style="width:50%">
+					货款:
+				</div>
+				<div>
+					 <input class="input-text" value='<{$total_price}>' readonly unselectable="on" type="text" name="huokuan" />
+				</div>
+			</div>
+		</td>	
+	</tr>
+</table>
+
+<table class="gridtable" style="border-bottom:solid 1px #666666">
+	<tr>
+		<td style="width:80%">
+			<div class="div_flex_start">
+				<div>
+					客户留言：
+				</div>
+				<div>
+				 	<input name="person_comment" class="input-text" readonly unselectable="on" value='<{$mark}>' type="text" />
+				</div>
+			</div>
+		</td>
+		<td style="width:20%">
+			<div class="div_flex_start">
+				<div style="width:50%">
+					总运费:
+				</div>
+				<div>
+					 <input class="input-text" value='<{$total_delivery_fee}>' readonly unselectable="on" type="text" name="total_delivery_fee" />
+				</div>
+			</div>
+		</td>	
+	</tr>
+
+	<tr>
+		<td style="width:80%">	
+		</td>
+		<td style="width:20%">
+			<div class="div_flex_start">
+				<div style="width:50%">
+					实付款:
+				</div>
+				<div>
+					 <input class="input-text" value='<{$total_real_payment}>' readonly unselectable="on" type="text" name="real_payment" />
+				</div>
+			</div>
+		</td>	
+	</tr>
+</table>
+</form>

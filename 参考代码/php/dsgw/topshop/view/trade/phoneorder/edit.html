@@ -1,0 +1,688 @@
+<style type="text/css">
+.div_flex_start{
+    display: flex;
+    justify-content: flex-start;
+}
+.input-text {
+  border: none;
+  width: 100%;
+}
+
+select{
+    position:relative;
+    display:inline-block;
+    text-decoration: none;
+    padding:0;
+    height:32px;
+    font-size:15px
+}
+
+table.gridtable {
+  font-family: verdana, arial, sans-serif;
+  font-size: 12px;
+  color: #333333;
+  border-width: 1px;
+  border-color: #666666;
+  border-collapse: collapse;
+  border-bottom:0px;
+  width: 100%;
+  height: 100%;
+  table-layout: fixed;
+  word-break: break-all;
+}
+
+table.gridtable th {
+  border-width: 1px;
+  padding: 8px;
+  border-style: solid;
+  border-color: #666666;
+  background-color: #dedede;
+  text-align: center;
+  vertical-align: middle;
+  border-bottom:0px;
+}
+
+table.gridtable td {
+  border-width: 1px;
+  padding: 8px;
+  border-style: solid;
+  border-color: #666666;
+  background-color: #ffffff;
+  border-bottom:0px;
+}
+
+.form-act .area {
+  margin: 0 1em 1em;
+  display: block;
+  padding-top: 1em;
+  overflow: hidden;
+  border-top: 1px dashed #ddd;
+  border-bottom: 1px dashed #ddd;
+}
+
+.has-error .caution {
+  display: inline-block;
+  vertical-align: middle;
+  background-color: #fbf0ef;
+  border: 1px solid #eeb5b0;
+  color: #D23F33;
+  line-height: 30px;
+  padding: 2px 10px;
+}
+
+</style>
+<form id="form1"  method="post" class="form-horizontal clearfix" role="form">
+  <div class="panel panel-default">
+    <div class="panel-heading">用户信息</div>
+    <div class="panel-body">
+      <div class="form-group">
+        <li class="form-row">
+          <label for="" class="col-sm-2 control-label">
+            <{t}>用户名
+            <{/t}>：</label>
+          <div class="col-sm-4">
+            <input type="text" name="person_name"    class="form-control" placeholder="" maxlength="50"  required>
+          </div>
+        </li>
+      </div>
+
+      <div class="form-group">
+        <li class="form-row">
+          <label for="" class="col-sm-2 control-label">
+            <{t}>电话
+            <{/t}>：</label>
+          <div class="col-sm-4">
+            <input class="form-control" type="text" name="accountPhone" data-validate="mobile" data-caution="手机格式不正确"  required  data-validate-mobile>
+          </div>
+        </li>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel panel-default select-goods-panel">
+    <div class="panel-heading">订单商品</div>
+    <div class="panel-body">
+
+      <div class="form-group">
+        <label for="" class="col-sm-2 control-label">
+          <{t}>商品
+          <{/t}>：
+        </label>
+        <div class="col-sm-10">
+          <div>
+            <button id="addGiftRule" type="button" class="btn btn-default text-blue select-goods w-auto" data-remote="<{url action=topshop_ctl_selector_sku@loadSelectSkuModal}>" data-modal="#sku_modal" data-item_id="<{$notEndSku}>" data-textcol="title,price" data-view="topshop/promotion/gift/setting.html" data-values='<{$selectorExtendsDataSku}>' data-target="#sku_modal" data-fetchgoods="<{url action=topshop_ctl_selector_sku@phoneOrderformatSelectedSkusRow}>" data-limit="10" data-phone="true">
+              <i class="glyphicon glyphicon-plus"></i>
+              选择商品
+            </button> 
+          </div>
+
+          <div class="selected-goods-list sku-list col-sm-12">
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+ 
+  <div class="panel panel-default form-horizontal"  id="address_edit">
+    <div class="panel-heading">收货地址</div>
+    <div class="panel-body">
+      <div class="form-group">
+        <li class="form-row">
+          <label for="" class="col-sm-2 control-label">
+            <{t}>所在地区
+            <{/t}>：</label>
+          <div class="col-sm-4">
+            <span class="form-act">
+                <span id="area" data-validate="area"></span>
+            </span>
+          </div>
+        </li>
+      </div>
+
+      <div class="form-group">
+        <li class="form-row">
+          <label for="" class="col-sm-2 control-label">
+            <{t}>*街道地址
+            <{/t}>：</label>
+          <div class="col-sm-4">
+            <span class="form-act">
+              <input class="form-control" type="text"  name="addr"  maxlength="100" value="<{$addrInfo.addr}>" id="addr" required>
+            </span>
+          </div>
+        </li>
+      </div>
+
+      <div class="form-group">
+        <li class="form-row">
+          <label for="" class="col-sm-2 control-label">
+            <{t}>*收货人姓名
+            <{/t}>：</label>
+          <div class="col-sm-4">
+              <span class="form-act">
+                <input class="form-control" type="text"  name="name" value="<{$addrInfo.name}>" maxlength="25" id="name" required>
+              </span>
+          </div>
+        </li>
+      </div>
+
+        <div class="form-group">
+          <li class="form-row">
+            <label for="" class="col-sm-2 control-label">
+              <{t}>*收货人手机号
+              <{/t}>：</label>
+            <div class="col-sm-4">
+                <span class="form-act">
+                  <input class="form-control" type="text" name="mobile" data-validate="mobile" data-caution="手机格式不正确" id="mobile" required data-validate-mobile>
+                </span>
+            </div>
+          </li>
+        </div>
+
+    </div>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">优惠券</div>
+    <div class="panel-body">
+      <div class="form-group">
+        <label for="" class="col-sm-2 control-label">
+          <{t}>优惠券
+          <{/t}>：</label>
+        <div class="col-sm-4">
+          <div id="couponId" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">支付</div>
+    <div class="panel-body">
+      <div class="form-group">
+        <label for="" class="col-sm-2 control-label">
+          <{t}>支付方式
+          <{/t}>：</label>
+        <div class="col-sm-4">
+          <input type="text" name="peyment"  value="货到付款"  class="shadow" readonly=true required >
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">其他</div>
+    <div class="panel-body">
+      <div class="form-group">
+        <label for="" class="col-sm-2 control-label">
+          <{t}>用户留言
+          <{/t}>：</label>
+        <div class="col-sm-4">
+          <input name="mark" rows="4" style="resize: none;" class="form-control" placeholder="评论和留言"/>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="confirm_modal" tabindex="-1" role="dialog">
+    <div class="panel panel-default modal-dialog modal-lg">
+      <div class="modal-content"></div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4">
+    </div>
+
+    <div class="col-md-2">
+      <button type="submit" class="btn btn-primary btn-lg btn-block btn_confirm" data-remote="<{url action=topshop_ctl_trade_phoneorder@loadConfirmModal}>" data-fetch-modal-content="<{url action=topshop_ctl_trade_phoneorder@loadModalContent}>" data-modal="#confirm_modal"  data-target="#confirm_modal">确认</button> 
+    </div>
+    <div class="col-md-2">
+      <a href="<{url action=topshop_ctl_trade_phoneorder@index}>">
+        <button type="button" class="btn btn-default btn-lg btn-block action-cancel">取消</button>
+      </a>
+    </div>
+  </div>
+</form>
+
+<{script src="area_select.js" app="topc"}>
+<script>0
+$('input[name="accountPhone"]').on('blur', function(){
+  var url = "<{url action=topshop_ctl_trade_phoneorder@loadAddress}>";
+  var data  =  "accountPhone="+$(this).val();
+  $.post(url, data, function(rs) {
+    if( rs != 'error'){
+      $('#addr').val(rs.addr);
+      $('#zip').val(rs.zip);
+      $('#name').val(rs.name);
+      $('#mobile').val(rs.mobile);
+      $('#tel').val(rs.tel);
+      var area = new AreaWidget({
+          dataUrl: '<{$env.base_url}>/app/ectools/statics/scripts/region.json',
+          select: $('#area'),
+          initData:rs.region_id
+      });
+    }else{
+      $('#addr').val('');
+      $('#zip').val('');
+      $('#name').val('');
+      $('#mobile').val('');
+      $('#tel').val('');
+      var area = new AreaWidget({
+        dataUrl: '<{$env.base_url}>/app/ectools/statics/scripts/region.json',
+        select: $('#area')
+      });
+    }
+
+    $('#couponId').html(rs.couponView);
+
+    return true;
+  });
+
+
+  url = "<{url action=topshop_ctl_trade_phoneorder@loadCoupon}>";
+  data  =  "accountPhone="+$(this).val();
+  $.post(url, data, function(rs) {
+    if( rs != 'error'){
+      $('#couponId').html(rs);
+    }else{
+      $('#couponId').html('error1');
+    }
+
+    return true;
+  });
+
+
+
+
+});
+
+// 确认对话框
+;var order_confirm = function(options) {
+  var options = {
+      insertWhere:'#modal_inner_content',
+      modalDom: '#confirm_modal',
+      handle: '.btn_confirm',
+      phoneorderSubmitBtn: '.phone_confirm_save'
+  };
+
+  var modalUrl, getModalContentUrl, saveUrl; 
+
+  $(options.handle).each(function() {+
+      var that = $(this);
+      $($(this).attr('data-modal') || options.modalDom).on('show.bs.modal', function() {
+          url = that.attr('data-remote') || options.url;
+          $(this).find('.modal-content').load(url);
+      }).on('shown.bs.modal', function() {
+          getModalContentUrl = that.attr('data-fetch-modal-content')|| options.getModalContentUrl;
+          $.ajax({
+              url: getModalContentUrl,
+              type: 'POST',
+              dataType: 'html',
+              data: $('#form1').serialize(),
+              success: function(rs) {
+                  $(options.insertWhere).html(rs);
+              }
+          });
+      }).on('hide.bs.modal', function() {
+          var insertDom = '#modal_inner_content';
+          $(insertDom).html('');
+      });
+  });
+
+  $(options.modalDom).on('click', options.phoneorderSubmitBtn, function(){
+    saveUrl = $(this).attr('data-save');
+    $.post(saveUrl, $('#form1').serialize(), function(rs) {
+      if (rs.error) {
+        $('#messagebox').message(rs.message);
+        return;
+      }
+
+      if (rs.success) {
+          $(options.modalDom).modal('hide');
+          $('#messagebox').message(rs.message, 'success');
+      }
+
+      if (rs.redirect) {
+          location.href = rs.redirect;
+      }
+
+      return; 
+    });
+  }); 
+}
+$(function(){
+    order_confirm();
+});
+
+//  地区
+new AreaWidget({
+    dataUrl:"<{$env.base_url}>/app/ectools/statics/scripts/region.json",
+    select:$('#area')
+});
+
+// 载入的sku响应
+$('.sku-list').on('click', '.sku-remove', function() {
+  $(this).parent().parent().remove();
+});
+
+// 输入校验
+var validatorMap = {
+    'required': ['此项必填', function(element, v, type) {
+        if (type == 'select') {
+            var index = element.selectedIndex;
+            v = element.options[index].value;
+            return index >= 0 && (v != '' && v != '_NULL_');
+        }
+        return v !== null && v.length !== 0;
+    }],
+    'minlength': [function(element, v, props) {
+        if ($.type(props) != 'null') {
+            return '输入不正确，至少' + props + '个字符';
+        }
+        return '';
+    }, function(element, v, type, parent, props) {
+        return v === null || v === '' || ($.type(props) != 'null' ? v.length >= +props : true);
+    }],
+    'maxlength': [function(element, v, props) {
+        if ($.type(props) != 'null') {
+            return '输入不正确，最多' + props + '个字符';
+        }
+        return '';
+    }, function(element, v, type, parent, props) {
+        return v === null || v === '' || ($.type(props) != 'null' ? v.length <= +props : true);
+    }],
+    'mobile': ['请填写正确的手机号码', function(element, v) {
+        return v === null || v == '' || /^0?1[34578]\d{9}$/.test(v);
+    }],
+    'landline': ['请填写正确的座机号码', function(element, v) {
+        return v === null || v == '' || /^(0\d{2,3}-?)?[2-9]\d{5,7}(-\d{1,5})?$/.test(v);
+    }],
+    'zip': ['请填写正确的邮编', function(element, v) {
+        return v === null || v == '' || /^\d{6}$/.test(v);
+    }],
+    'area': ['请选择完整的地区', function(element, v) {
+        return $(element).find('select').every(function(sel) {
+            var selValue = sel.value;
+            if(!$(sel).is(':visible')) return true;
+            return selValue != '' && selValue != '_NULL_';
+        });
+    }],
+};
+
+var Tips = new Class({
+    options: {
+        form: 'inline',
+        target: '.form-row',
+        type: 'error',
+        'class': 'caution'
+    },
+    init: function(options) {
+        this.setOptions(options);
+        this.target = $(this.options.target);
+        return this.build();
+    },
+    build: function(options) {
+        if(options) this.setOptions(options);
+        options = this.options;
+        var tag = options.form == 'inline' ? '<span>' : '<div>';
+        this.element = this.target.data('tipInstance') || $(tag, {
+            'style': 'display: none;',
+            'class': 'icon-' + (options.type === 'success' ? 'checkmark-c' : 'alert') + ' ' + options['class']
+        });
+        this.target.data('tipInstance', this.element);
+        this.element[options.where || 'appendTo'](this.target);
+        this.trigger('load');
+        return this;
+    },
+    show: function(msg, type, options) {
+        options = options || {};
+        if(type) options.type = type;
+        if(!this.element) this.build(options);
+        else {
+            this.element.attr('class', this.element.attr('class').replace(/\b(icon-)[\w-]+\b/, '$1' + ((options.type || this.options.type) === 'success' ? 'checkmark-c' : 'alert')));
+        }
+        this.element.html(msg || '').css('display', '');
+        this.trigger('show');
+        return this;
+    },
+    hide: function(destroy) {
+        this.element = this.target.data('tipInstance');
+        if(!this.element) return;
+        if(destroy) this.element.remove();
+        else this.element.css('display', 'none');
+        this.trigger('hide');
+        return this;
+    },
+    success: function(msg, options) {
+        return this.show(msg, 'success', options);
+    },
+    error: function(msg, options) {
+        return this.show(msg, 'error', options);
+    }
+});
+
+$.fn.every = function(fn, thisArg) {
+    return Array.prototype.slice.call(this).every(fn, thisArg);
+};
+
+
+function dataOptions(element, prefix){
+    if(!prefi·x) throw new Error('dataOptions：请传入prefix参数');
+    var data = $(element).data(),
+        out = {}, inkey,
+        replace = new RegExp('^' + prefix.toLowerCase() + '([A-Z])');
+
+    prefix = new RegExp('^' + prefix.toLowerCase());
+    for (var key in data) {
+        if (prefix.test(key)){
+            inkey = key.replace(replace, function(_, a){
+                return a.toLowerCase();
+            });
+            out[inkey] = data[key];
+        }
+    }
+    return out;
+}
+
+var validation = function(container, options) {
+    if(typeof options === 'string') {
+        options = {
+            range: options
+        };
+    }
+    options = $.extend({
+        group: '.form-row',
+        tips: {
+            form: 'inline',
+            'class': 'caution'
+        }
+    }, options || {});
+
+    var ATTR = 'data-validate';
+    var AllAttr = '[' + ATTR + '], [pattern], [type=number], [type=email], [type=tel], [type=url], [type=date], [required], [minlength], [maxlength], [data-equalto], [data-oneoftwo]';
+
+    container = container ? $(container) : null;
+    if (!container) return true;
+
+    var config = container.data('validateConfig');
+    var dataopts = dataOptions(container, 'validate');
+    if(typeof config === 'string') {
+        config = $.parseJSON(config);
+    }
+    options = $.extend(options, config || {}, dataopts);
+
+    if(container.is('form')) container.attr('novalidate', 'novalidate');
+    var formElements = (container.is('form') || options.range === 'all') ? container.find(AllAttr) : $(container);
+    var errElements = [];
+    formElements.each(function(i) {
+        var element = $(this);
+        if(!element.is(':visible')) return true;
+
+        var vtypes = [];
+
+        if(element.attr(ATTR)) {
+            vtypes = element.attr(ATTR).split(' ');
+        }
+        if (element.attr('required')) {
+            vtypes.unshift('required');
+          
+        }
+
+        var msg = element.attr('data-caution') || '';
+        var pattern = element.attr('pattern');
+        var re = new RegExp('^(?:' + pattern + ')$');
+        var ckey = 'custom_' + $.guid ++;
+        if(msg) {
+            msg = msg.split(/&&|&amp;&amp;/);
+        }
+        else {
+            msg = [];
+        }
+        if(pattern) {
+            if(!validatorMap[ckey]) {
+                validatorMap[ckey] = [msg[msg.length - 1] || '', function(element, v){
+                    return v === null || v === '' || re.test(v);
+                }];
+            }
+            vtypes.push(ckey);
+        }
+
+        $.each(['number', 'url', 'email', 'tel', 'date'], function(i, type) {
+            if(element.attr('type') === type) {
+                vtypes.push(type);
+            }
+        });
+
+        $.each(['minlength', 'maxlength', 'data-equalto', 'data-oneoftwo'], function(i, type) {
+            if(element.attr(type)) {
+                vtypes.push(type);
+            }
+        });
+
+        if (!vtypes.length) return true;
+
+        var flag = false;
+        for(var k = 0, l = vtypes.length; k < l; k ++) {
+            var key = vtypes[k];
+            var props = element.attr(key);
+            key = key.replace(/^data-/, '');
+            var validator = validatorMap[key];
+            if (!validator) {
+                flag = true;
+                continue;
+            }
+            validator = validator instanceof Array ? validator : ['', validator];
+            var feedback = element.closest(options.group);
+            options.tips.target = feedback;
+            var caution = {
+                tips: new Tips(options.tips),
+                msg: msg[k] || (typeof(validator[0]) === 'function' ? validator[0](element[0], element.val(), props) : validator[0])
+            };
+
+            validator = validator[1] || function(){return true;};
+            var isInput = element.is('input','select','textarea');
+
+            if (validator(element[0], element.val(), element.attr('type'), (container.is(AllAttr)) ? options.parent || container.parents('form')[0] || container.parent()[0] : container[0], props)) {
+                caution.tips.hide();
+                feedback.removeClass('has-error');
+
+                flag = true;
+                continue;
+            } else {
+                if (caution.msg) {
+                    caution.tips.error(caution.msg);
+                    feedback.addClass('has-error');
+                }
+                if (element[0].bindEvent !== false) {
+                    //修复ff下select移到下拉菜单后焦点消失bug
+                    var evt = isInput ? 'onchange' : 'onmouseout';
+                    element[0][evt] = function(event) {
+                        var e = event || window.event;
+                        var el = $(this);
+                        if(!(/mouseout$/i.test(e.type) && el.is(e.target || e.srcElement))) {
+                            validation(el[0], $.extend(true, {parent: container.is(AllAttr) ? container.parents('form')[0] || container.parent()[0] : container[0]}, options));
+                        }
+                        this[evt] = null;
+                    };
+                }
+                flag = false;
+                break;
+            }
+        };
+        if(!flag) errElements.push(element);
+    });
+    if(errElements.length){
+        errElements.shift().focus();
+        return false;
+    }
+    return true;
+};
+
+$.fn.validation = function (options) {
+    return validation(this, options);
+};
+
+$(document).on('click', '.btn_confirm', function(e) {
+    var ATTR = 'rel';
+        target = $(e.target),
+        elem = target.closest('[type=submit]');
+    elem = elem.length ? elem : target.closest('[' + ATTR + ']');
+    if (!elem[0] || elem[0].nodeType === 9 || elem[0].disabled) return;
+    var form = elem.parents('form'),
+        type = elem.attr(ATTR),
+        eventType = Event_Group[type],
+        fn,
+        loader;
+    if (form[0] && form.attr('data-async') === 'false') return validation(form);
+    if (elem[0].type === 'submit' && form[0] && form.attr('target')) {
+      return async(elem, form, {async: false});
+    }
+
+    if (elem[0].type === 'submit' && type !== '_request') {
+        e.preventDefault();
+        return async(elem, form);
+    }
+
+    if (eventType) {
+        fn = eventType['fn'];
+        loader = eventType['loader'];
+
+        e.preventDefault();
+        if (elem.attr(type)) return elem;
+
+        if (loader) {
+            $LAB.script(loader).wait(function() {
+                fn && fn(elem, form);
+            });
+        }
+        else {
+            fn && fn(elem, form);
+        }
+    }
+});
+
+(function() {
+  this.async = function(elem, form, options) {
+    if (elem.hasClass('disabled')) return false;
+    if (!validation(form, options)) {
+      elem.removeClass('disabled');
+      return false;
+    }else{
+      if ($('.sku-item').length == 0){
+        $('#messagebox').message('未选择商品','error');
+        return false;
+      }else{
+        $('#confirm_modal').modal('show');
+        return true;
+      }          
+    }
+  };
+
+  this.Event_Group = {
+      _request: {
+          fn: async
+      }
+  };
+})();
+</script>

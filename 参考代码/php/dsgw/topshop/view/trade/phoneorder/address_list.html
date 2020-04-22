@@ -1,0 +1,47 @@
+  <div class="membercenter-address-title">已保存的有效地址</div>
+  <table class="item-table table-address table-valign-middle">
+    <colgroup>
+      <col style="width:10%">
+      <col style="width:55%">
+      <col style="width:5%">
+      <col style="width:15%">
+      <col style="width:15%">
+    </colgroup>
+    <thead>
+      <tr>
+        <td>收货人</td>
+        <td>地址</td>
+        <td>邮编</td>
+        <td>手机</td>
+        <td>操作</td>
+      </tr>
+    </thead>
+    <tbody>
+      <{foreach from=$userAddrList item=addr}>
+      <tr>
+        <td>
+          <{$addr.name}>
+        </td>
+        <td>
+          <{$addr.area}><{$addr.addr}>
+        </td>
+        <td>
+           <{$addr.zip}>
+        </td>
+        <td>
+           <{$addr.mobile}>
+        </td>
+        <td class="col-operate">
+          <a href="#" data-ajax-url="<{url action=topshop_ctl_trade_phoneorder@ajaxAddrUpdate}>" data-ajax-data="addr_id=<{$addr.addr_id}>&acountPhone=<{$acountPhone}>"  class="address-edit">编辑 </a>
+
+          <span class="op-default text-danger address-default-text" <{if !$addr.def_addr}>style="display:none;"<{/if}>>默认地址</span>
+
+          <a href="#" data-ajax-url="<{url action=topshop_ctl_trade_phoneorder@ajaxAddrDef}>" data-ajax-type="post"  data-ajax-data="addr_id=<{$addr.addr_id}>&acountPhone=<{$acountPhone}>"  class="address-default-set" <{if $addr.def_addr}>style="display:none;"<{/if}>>设为默认</a>
+
+          <a href="#" data-ajax-url="<{url action=topshop_ctl_trade_phoneorder@ajaxDelAddr}>" data-ajax-data="addr_id=<{$addr.addr_id}>&acountPhone=<{$acountPhone}>"  class="address-remove">删除 </a>
+        </td>
+      </tr>
+    <{/foreach}>
+    </div>
+  </table>
+</div>

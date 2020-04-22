@@ -12,6 +12,7 @@ import (
 
 func createEtcdKv(transformConfiguration *transformer.Conf) {
 	etcdKV := make(map[string]string, 2)
+
 	etcdKV["192.168.0.1"] = `
 [
 	{

@@ -1,0 +1,27 @@
+<{foreach from=$_input.skusList item=sku key=key}>
+<div class="sku-item col-sm-5" date-itemid="<{$sku.sku_id}>">
+  <input type="hidden" name="sku_id[]" value="<{$sku.sku_id}>" />
+  <div class="sku-img col-sm-3">
+    <a href="<{url action=topc_ctl_item@index item_id=$sku.item_id}>">
+      <{if $sku.image_default_id}>
+      <img src="<{$sku.image_default_id|storager:'s'}>">
+      <{else}>
+      <img src="<{$image_default_id.S.default_image}>">
+      <{/if}>
+
+    </a>
+    <span class="glyphicon glyphicon-remove-circle sku-remove"></span>
+  </div>
+  <div class="sku-info col-sm-9">
+    <a href="" title=""><{$sku.title}></a>
+    <span class="text-gray"><{if $sku.spec_info}>[<{$sku.spec_info}>]<{/if}></span>
+    <div class="text-red"><{$sku.price|cur}></div>
+    <div>
+    <{if $_input.view}>
+      <{include file=$_input.view}>&nbsp;
+    <{/if}>
+    </div>
+   
+  </div>
+</div>
+<{/foreach}>
