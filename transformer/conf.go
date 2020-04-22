@@ -77,4 +77,3 @@ type ConsulConf struct {
 	Addr     string
 	Port     string
 }
-

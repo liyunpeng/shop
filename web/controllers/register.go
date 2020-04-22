@@ -7,6 +7,7 @@ import (
 	"github.com/kataras/iris/v12/sessions"
 	"github.com/kataras/iris/v12/sessions/sessiondb/redis"
 	"shop/client"
+	"shop/config"
 	"shop/util"
 	"time"
 )
@@ -26,7 +27,7 @@ func RegisterControllers( app *iris.Application) {
 	db := redis.New(redis.Config{
 		Network:   "tcp",
 		//Addr:      "127.0.0.1:6379",
-		Addr:      "192.168.0.223:6379",
+		Addr:      config.TransformConfiguration.Redis.Addr,
 		Timeout:   time.Duration(30) * time.Second,
 		MaxActive: 10,
 		Password:  "",

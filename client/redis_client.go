@@ -5,6 +5,7 @@ import (
 	"github.com/garyburd/redigo/redis"
 	"os"
 	"os/signal"
+	"shop/config"
 	"syscall"
 	"time"
 )
@@ -15,7 +16,7 @@ var (
 )
 
 func InitRedis() {
-	redisHost := "192.168.0.223:6379"
+	redisHost := config.TransformConfiguration.Redis.Addr
 	fmt.Println("redis连接池初始化")
 	Pool = newPool(redisHost)
 	Conn = Pool.Get()

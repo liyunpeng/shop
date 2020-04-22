@@ -24,6 +24,7 @@ func Register(rc *transformer.Conf) {
 
 	//DBConn := "root:123456@/gotest?charset=utf8&parseTime=True&loc=Local"
 	mysql := rc.Mysql // "root:123456@/gotest?charset=utf8&parseTime=True&loc=Local"
+	fmt.Println("mysql conf =", mysql)
 	DB, err = gorm.Open(
 		"mysql",  mysql.Connect)
 	//"mysql", "root:password@tcp(192.168.0.220:31111)/gotest?charset=utf8&parseTime=True&loc=Local")

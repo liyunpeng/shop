@@ -1,16 +1,13 @@
 package config
 
-import "shop/transformer"
-
-var TransformConfiguration *transformer.Conf
 type Config struct {
-	Server ServerConf   `yaml:"server"`
-	Mysql  MysqlConf `yaml:"mysql"`
-	Redis  RedisConf `yaml:"redis"`
+	Server ServerConf `yaml:"server"`
+	Mysql  MysqlConf  `yaml:"mysql"`
+	Redis  RedisConf  `yaml:"redis"`
 }
 
 type ServerConf struct {
-	Port int `yaml:"port"`
+	Port int      `yaml:"port"`
 	List []string `yaml:"list,flow"`
 }
 
@@ -19,15 +16,14 @@ type RedisConf struct {
 }
 
 type MysqlConf struct {
-	MaxIdle int `yaml:"maxidle"`
-	MaxOpen int `yaml:"maxopen"`
-	User string `yaml:"user"`
-	Host string `yaml:"host"`
+	MaxIdle  int    `yaml:"maxidle"`
+	MaxOpen  int    `yaml:"maxopen"`
+	User     string `yaml:"user"`
+	Host     string `yaml:"host"`
 	Password string `yaml:"password"`
-	Port string `yaml:"port"`
-	Name string `yaml:"name"`
+	Port     string `yaml:"port"`
+	Name     string `yaml:"name"`
 }
-
 
 type LogConfig struct {
 	Topic    string `json:"topic"`

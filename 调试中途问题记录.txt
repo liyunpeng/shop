@@ -73,3 +73,9 @@ docker logs kafka容器id看到：
  systemctl stop firewalld.service
 
    docker restart 63693fc078fd
+
+11.
+没有连接到数据库 err=  Error 1045: Access denied for user 'root'@'192.168.0.1' (using password: YES)
+原因： 数据库用户名密码错误， 但error并没有显示具体的mysql连接参数。
+
+
