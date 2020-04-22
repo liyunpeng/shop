@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	pb "shop/rpc/proto"
+	"shop/util"
 )
 
 // 定义服务端实现约定的接口
@@ -24,6 +25,16 @@ func (u *UserInfoService) bufioWriteFile(s string) {
 		fmt.Println(err)
 	}
 	fmt.Println("write file successful")
+}
+
+type WorkerPoolJob struct {
+	Paraeter string
+}
+
+func (w *WorkerPoolJob) Do() {
+	util.PrintFuncName()
+
+	fmt.Println("Do parameter=", w.Paraeter)
 }
 
 // 实现服务端需要首先的接口
@@ -47,6 +58,11 @@ func (s *UserInfoService) GetUserInfo(ctx context.Context, req *pb.UserRequest) 
 	}
 	s.bufioWriteFile(name)
 	err = nil
+
+	w := & WorkerPoolJob{
+		Paraeter: name,
+	}
+	GrpcWorkerPool.JobQueue  <- w
 	return
 }
 func (u *UserInfoService) init() {

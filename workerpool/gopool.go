@@ -1,4 +1,4 @@
-package gopoll
+package workerpool
 
 import (
 	"fmt"

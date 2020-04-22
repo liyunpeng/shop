@@ -7,9 +7,13 @@ import (
 	pb "shop/rpc/proto"
 	"shop/transformer"
 	"shop/util"
+	"shop/workerpool"
 )
 
 var GrpcSever *grpc.Server
+
+var GrpcWorkerPool *workerpool.WorkerPool
+
 func StartGrpcService(grpcConf transformer.GrpcConf) {
 	defer util.WaitGroup.Done()
 	defer util.PrintFuncName()
@@ -22,6 +26,10 @@ func StartGrpcService(grpcConf transformer.GrpcConf) {
 	fmt.Printf("grpc 服务开始监听的地址和端口：%GrpcSever\n", addr)
 	// 2.实例化gRPC
 	GrpcSever = grpc.NewServer()
+
+	num := 2
+	GrpcWorkerPool = workerpool.NewWorkerPool(num)
+	GrpcWorkerPool.Run()
 
 	var u = UserInfoService{}
 	u.init()

@@ -1,4 +1,4 @@
-package gopoll
+package workerpool
 
 type Job interface {
 	// 一个数据接口，所有的数据都要实现该接口，才能被传递进来

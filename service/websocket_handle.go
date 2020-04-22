@@ -71,7 +71,7 @@ func sendToClient(conn *websocket.Conn) {
 			if err != nil {
 				fmt.Println(err)
 
-				go StartWebSocketService()
+				//go StartWebSocketService()
 				//panic("websockt 向客户端发送数据错误")
 				break
 			}

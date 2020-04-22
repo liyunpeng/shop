@@ -1,4 +1,4 @@
-package gopoll
+package workerpool
 
 import "fmt"
 
@@ -19,10 +19,10 @@ func (w Worker) Run(wq chan Worker) {
 	go func() {
 		for {
 			fmt.Println("worker阻塞读取自己的JobQueue")
-
+			// 向worker通道里增加一个worker, 因为这个时间点， 是worker已经干完活了， 手上没有活了，所以把这个worke放到worker池里面
 			wq <- w
 			select {
-
+			// 阻塞在取job, 即是worker待命的时候， 只要来job， 立即干活
 			case job := <-w.JobQueue:
 				fmt.Println("读到一个Job就执行Job对象的Do()方法")
 				job.Do()
