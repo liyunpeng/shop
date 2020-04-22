@@ -194,8 +194,12 @@ mysql> select * from casbin_rule;
 14. 消息队列，消费的消息延迟消费问题，
 
 
-15。浏览器f5, token expired.
+15。手动修改vue文件中的请求header的authorization, 浏览器f5, token expired.
 [DBUG] 2020/04/22 12:34 Token extracted: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODc1MjkxODAsImlhdCI6MTU4NzUyNTU4MH0.z7bcAu5bv4c5QRbb02ED8LI_1CUGUyrtqjbnmjtz-EI
 [DBUG] 2020/04/22 12:34 Error parsing token: Token is expired
 [DBUG] 2020/04/22 12:35 Token extracted: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODc1MjkxODAsImlhdCI6MTU4NzUyNTU4MH0.z7bcAu5bv4c5QRbb02ED8LI_1CUGUyrtqjbnmjtz-EI
-[DBUG] 2020/04/22 12:35 Error parsing token: Token is expired
+[DBUG] 2020/0c4/22 12:35 Error parsing token: Token is expired
+
+16.
+http://localhost:9096/authorize
+invalid_request

@@ -11,6 +11,7 @@ var TransformConfiguration *transformer.Conf
 
 func GetTransformConfiguration( irisConfiguration iris.Configuration) *transformer.Conf {
 	app := transformer.App{}
+
 	g := gf.NewTransform(&app, irisConfiguration.Other["App"], time.RFC3339)
 	_ = g.Transformer()
 

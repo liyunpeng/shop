@@ -124,22 +124,6 @@ func CreateSystemAdminPermission(perms []*validates.PermissionRequest) []uint {
 	return permIds
 }
 
-func CreateSystemData(app *iris.Application) {
-	//if rc.App.CreateSysData == 1 {
-	if true {
-		apiRoutes := routes.GetRoutes(app)
-		permIds := CreateSystemAdminPermission(apiRoutes) //初始化权限
-		role := CreateSystemAdminRole(permIds)        //初始化角色
-		if role.ID != 0 {
-			CreateSystemAdmin(role.ID) //初始化管理员
-		}
-		CreateOrderTestData()
-		CreateGoodsTestData()
-		createEtcdKv(config.TransformConfiguration)
-	}
-
-}
-
 /**
 *创建系统管理员
 *@return   *models.AdminRoleTranform api格式化后的数据格式
@@ -184,4 +168,20 @@ func CreateSystemAdmin(roleId uint) *models.User {
 	//} else {
 	//	return user
 	//}
+}
+
+func CreateSystemData(app *iris.Application) {
+	//if rc.App.CreateSysData == 1 {
+	if true {
+		apiRoutes := routes.GetRoutes(app)
+		permIds := CreateSystemAdminPermission(apiRoutes) //初始化权限
+		role := CreateSystemAdminRole(permIds)        //初始化角色
+		if role.ID != 0 {
+			CreateSystemAdmin(role.ID) //初始化管理员
+		}
+		CreateOrderTestData()
+		CreateGoodsTestData()
+		createEtcdKv(config.TransformConfiguration)
+	}
+
 }
