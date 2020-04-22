@@ -74,8 +74,128 @@ docker logs kafka容器id看到：
 
    docker restart 63693fc078fd
 
-11.
+11. 数据库连接参数错误问题
 没有连接到数据库 err=  Error 1045: Access denied for user 'root'@'192.168.0.1' (using password: YES)
 原因： 数据库用户名密码错误， 但error并没有显示具体的mysql连接参数。
 
 
+12.  user权限错误问题
+http://localhost:8080/#/index/userlist
+networkt调试，
+xhr 类型中
+user api请求， 报403错误， 即虽然身份认证通过， 但没有权限获取资源，
+
+查casbin:
+goland 连接数据库：
+use casbin;
+show tables ;
+select * from casbin_rule;
+
+g	1	1	""	""	""	""
+果然没有权限。
+
+
+use gotest;
+show tables ;
+auth_token
+gorm_goods
+gorm_order
+gorm_user
+permissions
+roles
+
+select * from permissons;
+1	2020-04-20 14:02:30	2020-04-20 14:02:30		/user/logout	DELETE/user/logout	DELETE/user/logout	DELETE
+2	2020-04-20 14:02:30	2020-04-20 14:02:30		/user/logout	CONNECT/user/logout	CONNECT/user/logout	CONNECT
+3	2020-04-20 14:02:30	2020-04-20 14:02:30		/user/logout	TRACE/user/logout	TRACE/user/logout	TRACE
+4	2020-04-20 14:02:30	2020-04-20 14:02:30		/api/login	登录	登录	POST
+5	2020-04-20 14:02:30	2020-04-20 14:02:30		/api/user	获取所有用户	获取所有用户	GET
+6	2020-04-20 14:02:30	2020-04-20 14:02:30		/api/user/*	获取指定用户	获取指定用户	GET
+7	2020-04-20 14:02:30	2020-04-20 14:02:30		/api/user	创建用户	创建用户	POST
+8	2020-04-20 14:02:30	2020-04-20 14:02:30		/api/user	修改用户	修改用户	PUT
+9	2020-04-20 14:02:30	2020-04-20 14:02:30		/api/user/insertOrUpdate	创建或修改用户	创建或修改用户	POST
+10	2020-04-20 14:02:30	2020-04-20 14:02:30		/api/etcd/:key	获取etcdkeyValue	获取etcdkeyValue	GET
+11	2020-04-20 14:02:30	2020-04-20 14:02:30		/api/etcd/listallkeys	获取etcdkeyValue	获取etcdkeyValue	GET
+12	2020-04-20 14:02:30	2020-04-20 14:02:30		/api/database/create	创建初始数据库	创建初始数据库	POST
+13	2020-04-20 14:02:30	2020-04-20 14:02:30		/api/mem/redisset	redis操作	redis操作	POST
+
+
+select * from roles;
+1	2020-04-20 14:02:30	2020-04-20 14:02:30		admin	超级管理员	超级管理员
+
+
+func CreateSystemAdminRole(permIds []uint) *models.Role {
+	aul := &validates.RoleRequest{
+		Name:        "admin",
+		DisplayName: "超级管理员",
+		Description: "超级管理员",
+	}
+
+	role := models.GetRoleByName(aul.Name)
+	if role.ID == 0 {  // 问题原因： 只为id为0的角色，添加权限
+		return models.CreateRole(aul, permIds)
+	} else {
+		return role
+	}
+}
+
+mysql> delete from roles where id = 1;
+Query OK, 1 row affected (0.04 sec)
+
+删除后， 再新建， id从2开始
+mysql> select * from roles;
++----+---------------------+---------------------+------------+-------+-----------------+-----------------+
+| id | created_at          | updated_at          | deleted_at | name  | display_name    | description     |
++----+---------------------+---------------------+------------+-------+-----------------+-----------------+
+|  2 | 2020-04-22 12:20:31 | 2020-04-22 12:20:31 | NULL       | admin | 瓒呯骇绠＄悊鍛?     | 瓒呯骇绠＄悊鍛?
++----+---------------------+---------------------+------------+-------+-----------------+-----------------+
+1 row in set (0.04 sec)
+
+解决办法：
+gotest数据库中删除角色表，权限表：
+mysql> drop table permissions;
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> drop table roles;
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> drop table gorm_user;
+Query OK, 0 rows affected (0.11 sec)
+
+casbin数据库删除权限策略表：
+mysql> drop table  casbin_rule;
+Query OK, 0 rows affected (0.09 sec)
+
+重启进程：
+mysql> select * from casbin_rule;
++--------+------+--------------------------+---------+------+------+------+
+| p_type | v0   | v1                       | v2      | v3   | v4   | v5   |
++--------+------+--------------------------+---------+------+------+------+
+| p      | 1    | /user/logout             | DELETE  |      |      |      |
+| p      | 1    | /user/logout             | CONNECT |      |      |      |
+| p      | 1    | /user/logout             | TRACE   |      |      |      |
+| p      | 1    | /api/login               | POST    |      |      |      |
+| p      | 1    | /api/user                | GET     |      |      |      |
+| p      | 1    | /api/user/*              | GET     |      |      |      |
+| p      | 1    | /api/user                | POST    |      |      |      |
+| p      | 1    | /api/user                | PUT     |      |      |      |
+| p      | 1    | /api/user/insertOrUpdate | POST    |      |      |      |
+| p      | 1    | /api/etcd/:key           | GET     |      |      |      |
+| p      | 1    | /api/etcd/listallkeys    | GET     |      |      |      |
+| p      | 1    | /api/database/create     | POST    |      |      |      |
+| p      | 1    | /api/mem/redisset        | POST    |      |      |      |
+| g      | 1    | 1                        |         |      |      |      |
++--------+------+--------------------------+---------+------+------+------+
+14 rows in set (0.00 sec)
+
+13. 行锁问题
+
+
+14. 消息队列，消费的消息延迟消费问题，
+
+
+15。浏览器f5, token expired.
+[DBUG] 2020/04/22 12:34 Token extracted: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODc1MjkxODAsImlhdCI6MTU4NzUyNTU4MH0.z7bcAu5bv4c5QRbb02ED8LI_1CUGUyrtqjbnmjtz-EI
+[DBUG] 2020/04/22 12:34 Error parsing token: Token is expired
+[DBUG] 2020/04/22 12:35 Token extracted: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODc1MjkxODAsImlhdCI6MTU4NzUyNTU4MH0.z7bcAu5bv4c5QRbb02ED8LI_1CUGUyrtqjbnmjtz-EI
+[DBUG] 2020/04/22 12:35 Error parsing token: Token is expired

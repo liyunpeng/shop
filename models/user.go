@@ -173,6 +173,8 @@ func addRoles(uj *validates.CreateUpdateUserRequest, user *User) {
 				color.Red(fmt.Sprintf("CreateUserErr:%s \n ", err))
 			}
 		}
+	}else {
+		fmt.Println("没后为用户添加角色")
 	}
 }
 

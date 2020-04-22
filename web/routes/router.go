@@ -17,7 +17,7 @@ func RegisterApi(app *iris.Application){
 	api.PartyFunc("/user", func(party iris.Party){
 		casbinMiddleware := middleware.New(models.Enforcer)                  //casbin for gorm                                                   // <- IMPORTANT, register the middleware.
 		party.Use(middleware.JwtHandler().Serve) //登录验证
-		party.Use(middleware.JwtHandler().Serve, casbinMiddleware.ServeHTTP) //权限验证
+		party.Use(casbinMiddleware.ServeHTTP) //权限验证
 		party.Get("/",  controllers.ApiUserGetAll).Name = "获取所有用户"
 		party.Get("/{id:uint}",  controllers.ApiUserGetById).Name = "获取指定用户"
 		party.Post("/",  controllers.ApiUserPost).Name = "创建用户"

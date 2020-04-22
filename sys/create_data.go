@@ -151,12 +151,18 @@ func CreateSystemAdminRole(permIds []uint) *models.Role {
 		Description: "超级管理员",
 	}
 
-	role := models.GetRoleByName(aul.Name)
-	if role.ID == 0 {
-		return models.CreateRole(aul, permIds)
-	} else {
-		return role
-	}
+	//role := models.GetRoleByName(aul.Name)
+	//if role.ID == 0 {
+	//  role.ID == 0 表示角色不存在 有时casbin没有配置好，就错过了在casbin中为此用户创建的权限策略
+	//  所以为角色添加casbin权限的操作，不应该放在CreateRole里面。
+
+	//	return models.CreateRole(aul, permIds)
+	//} else {
+	//	return role
+	//}
+
+	return models.CreateRole(aul, permIds)
+	//return role
 }
 func CreateSystemAdmin(roleId uint) *models.User {
 	aul := &validates.CreateUpdateUserRequest{
