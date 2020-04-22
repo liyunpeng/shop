@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"github.com/fatih/color"
 	"github.com/jinzhu/gorm"
+	"strconv"
+	"sync"
 )
 
 type Goods struct {
@@ -30,6 +32,14 @@ func CreateGoods(goods *Goods) {
 	if err := DB.Create(goods).Error; err != nil {
 		color.Red(fmt.Sprintf("CreateGoodsErr:%s \n ", err))
 	}
+}
+
+func BuyGood(id int ) {
+	//DB.Model(&Goods{}).Where("id =?", id).Update(“”)
+	var mutex sync.Mutex
+	mutex.Lock()
+	DB.Raw("UPDATE gorm_goods SET stock = stock - 1  WHERE id = (" + strconv.Itoa(id) + ")")
+	mutex.Unlock()
 }
 
 func GoodsFindByName(name string) []*Goods {
