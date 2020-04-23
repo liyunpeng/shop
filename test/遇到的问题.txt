@@ -1,0 +1,2 @@
+1. BenchmarkOperateSyncMap8Work(b *testing.B) 没有被测试到
+原因： 文件名没有以_test.go为后缀

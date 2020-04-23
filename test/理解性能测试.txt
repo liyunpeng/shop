@@ -1,0 +1,41 @@
+-bench=".":  表示做性能测试，
+
+默认情况下，性能测试只测试每次函数调用的耗时时间， 如：
+ 0.332 ns/op
+
+-benchmem 表示显示每次函数申请的内存， 和申请内存的次数， 如：
+ 0 B/op          0 allocs/op
+
+功能测试和性能测试可同时进行。
+不写文件名，表示测试当前目录下所有以Test或Benchmark开头的函数。
+---
+D:\goworkspace\shop\test>go test -bench=. -benchmem
+B.N= 1
+goos: windows
+goarch: amd64
+pkg: shop/test
+BenchmarkAdd-4          B.N= 100
+B.N= 10000
+B.N= 1000000
+B.N= 100000000
+B.N= 1000000000
+1000000000               0.350 ns/op           0 B/op          0 allocs/op
+B.N= 1
+BenchmarkHeap-4         B.N= 100
+B.N= 10000
+B.N= 1000000
+B.N= 100000000
+B.N= 1000000000
+1000000000               0.368 ns/op           0 B/op          0 allocs/op
+PASS
+ok      shop/test       1.542s
+
+$ cd bench/
+$ go test -bench="."
+goos: windows
+goarch: amd64
+pkg: my.study/test/bench
+Benchmark_Division-4                    1000000000               0.332 ns/op
+Benchmark_TimeConsumingFunction-4       1000000000               0.336 ns/op
+PASS
+ok      my.study/test/bench     1.094s

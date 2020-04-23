@@ -1,0 +1,5 @@
+map 与 sync.map 并发下性能比较：
+BenchmarkOperateSyncMap8Work-4            352940              3117 ns/op             256 B/op         23 allocs/op
+BenchmarkOperateMap8Work-4                157893              8018 ns/op              16 B/op          1 allocs/op
+BenchmarkOperateSyncMap256Work-4            9999            126513 ns/op            8220 B/op        767 allocs/op
+BenchmarkOperateMap256Work-4                3636            335809 ns/op             108 B/op          1 allocs/op
