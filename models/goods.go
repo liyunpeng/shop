@@ -36,6 +36,7 @@ func CreateGoods(goods *Goods) {
 
 func BuyGood(id int ) {
 	//DB.Model(&Goods{}).Where("id =?", id).Update(“”)
+	//DB.Model(&user).Updates(map[string]interface{}{"name": "hello", "age": 18, "actived": false})
 	var mutex sync.Mutex
 	mutex.Lock()
 	DB.Raw("UPDATE gorm_goods SET stock = stock - 1  WHERE id = (" + strconv.Itoa(id) + ")")
