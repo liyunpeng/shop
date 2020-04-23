@@ -218,7 +218,9 @@ func main() {
 	}()
 
 	app := iris.New()
-	app.Logger().SetLevel("debug")
+
+	util.Logger = app.Logger()
+	util.Logger.SetLevel("debug")
 
 	service.WebsocketChan = make( chan string, 10)
 
@@ -271,16 +273,17 @@ func main() {
 		iris.WithoutInterruptHandler,
 		iris.WithCharset("UTF-8"),
 	)
-	fmt.Println("启动iris服务完毕")
+	util.Logger.Debug("启动iris服务完毕")
 
 
 	cookieGet(app)
 
 	control(app)
 
-	fmt.Println("等待所有routine关闭动作完成")
+
+	util.Logger.Info("等待所有routine关闭动作完成")
 	util.WaitGroup.Wait()
-	fmt.Println("所有routine的关闭动作已全部完成")
+	util.Logger.Info("所有routine的关闭动作已全部完成")
 }
 
 func control (app *iris.Application) {
@@ -311,13 +314,13 @@ Loopa:
 			timeout := 5 * time.Second
 			ctx, cancel := stdContext.WithTimeout(stdContext.Background(), timeout)
 			cancel()
-			fmt.Println("关闭iris 服务")
+			util.Logger.Println("关闭iris 服务")
 			app.Shutdown(ctx)
 
-			fmt.Println("关闭grpc 服务")
+			util.Logger.Println("关闭grpc 服务")
 			service.GrpcSever.Stop()
 
-			fmt.Println("关闭go-micro 微服务")
+			util.Logger.Println("关闭go-micro 微服务")
 			service.Stop()
 
 			break Loopa

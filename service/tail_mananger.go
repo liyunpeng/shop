@@ -14,15 +14,6 @@ import (
 
 var tailManager *TailManager
 
-func StartTailService() {
-	tailManager.MonitorConfChan()
-	util.WaitGroup.Wait()
-}
-
-func init (){
-	tailManager = NewTailManager()
-}
-
 type TailManager struct {
 	tailWithConfMap map[string]*TailWithConf
 	lock            sync.Mutex
@@ -134,4 +125,10 @@ func (t *TailManager) MonitorConfChan() {
 			continue
 		}
 	}
+}
+
+func StartTailService() {
+	tailManager = NewTailManager()
+	tailManager.MonitorConfChan()
+	util.WaitGroup.Wait()
 }
