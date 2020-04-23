@@ -1,6 +1,7 @@
 package client
 
 import (
+	"fmt"
 	"github.com/Shopify/sarama"
 	"github.com/astaxie/beego/logs"
 	"shop/custchan"
@@ -15,13 +16,15 @@ const loggerTopic = "irislog"
 
 // 实现io.writer接口的方法， 即可将LoggerOutput对象传给app.logger().setoutput()
 func (l *LoggerOutput)  Write(p []byte) (nn int, err error){
+	//util.PrintFuncName()
+	fmt.Println(" logger ", string(p))
 	msg := &custchan.Message {
 		Line: string(p),
 		Topic: loggerTopic,
 	}
 	custchan.KafkaProducerMsgChan  <- msg
 
-	return len(p), nil
+	return 0, nil
 }
 
 type KafkaProducer struct {
@@ -88,6 +91,8 @@ func (k *KafkaProducer) sendMsgToKfk(isAsync bool) {
 		//msg.Value = sarama.ByteEncoder(value)
 
 		util.Logger.Debug("kafka生产者向kafka broker发送消息，消息字符串=",
+			msg.Value, ", 消息主题=", msg.Topic)
+		fmt.Println("kafka生产者向kafka broker发送消息，消息字符串=",
 			msg.Value, ", 消息主题=", msg.Topic)
 
 		var err error

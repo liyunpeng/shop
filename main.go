@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"github.com/gorilla/securecookie"
 	"github.com/kataras/iris/v12"
+	"io"
 	_ "net/http/pprof"
 	"shop/custchan"
 	"shop/service"
@@ -184,6 +185,25 @@ func startClient(transformConfiguration *transformer.Conf) {
 	go client.StartGrpcClient()
 }
 
+
+// 按天生成日志文件
+func todayFilename() string {
+	today := time.Now().Format("20060102")
+	return today + ".log"
+}
+
+// 创建打开文件
+func newLogFile() *os.File {
+	filename := todayFilename()
+	f, err := os.OpenFile(filename, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	if err != nil {
+		panic(err)
+	}
+
+	return f
+}
+
+
 func main() {
 	//defer fmt.Println("主routine完全退出")
 	//defer fmt.Println("主routine内存分析完毕")
@@ -206,6 +226,8 @@ func main() {
 	//	}
 	//	memf.Close()
 	//}()
+	f := newLogFile()
+	defer f.Close()
 
 	irisConfiguration := iris.TOML("./config/conf.tml")
 	config.TransformConfiguration = config.GetTransformConfiguration(irisConfiguration)
@@ -219,18 +241,23 @@ func main() {
 		}
 	}()
 
+
+
+
 	app := iris.New()
 
 	util.Logger = app.Logger()
-	outputlog := &client.LoggerOutput{}
+	//outputlog := &client.LoggerOutput{}
 
-	util.Logger.SetOutput(outputlog)
+	//util.Logger.SetOutput(outputlog)
 
+	util.Logger.SetOutput(io.MultiWriter(f, os.Stdout))
 	util.Logger.SetLevel("debug")
 
 	//util.Logger.SetOutput()
 	service.WebsocketChan = make( chan string, 10)
 
+	startService(config.TransformConfiguration)
 	models.Register(config.TransformConfiguration)
 	models.DB.AutoMigrate(
 		&models.User{},
