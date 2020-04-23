@@ -143,7 +143,7 @@ Loop:
 			if ok {
 				GrpcCall(string(msg.Value))
 
-				util.Logger.Debug("kafka 消费者消费消息")
+				//util.Logger.Debug("kafka 消费者消费消息")
 				fmt.Fprintf(
 					os.Stdout,
 					"消费组ID=%s，主题=%s，分区=%d，offset=%d，key=%s，value=%s\n",

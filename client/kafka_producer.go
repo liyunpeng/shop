@@ -6,6 +6,7 @@ import (
 	"github.com/astaxie/beego/logs"
 	"shop/custchan"
 	"shop/util"
+	"unicode/utf8"
 )
 
 type LoggerOutput struct {
@@ -24,7 +25,8 @@ func (l *LoggerOutput)  Write(p []byte) (nn int, err error){
 	}
 	custchan.KafkaProducerMsgChan  <- msg
 
-	return 0, nil
+	n := utf8.RuneCountInString(string(p))
+	return  n, nil
 }
 
 type KafkaProducer struct {
@@ -90,8 +92,8 @@ func (k *KafkaProducer) sendMsgToKfk(isAsync bool) {
 		//也可将字符串转化为字节数组
 		//msg.Value = sarama.ByteEncoder(value)
 
-		util.Logger.Debug("kafka生产者向kafka broker发送消息，消息字符串=",
-			msg.Value, ", 消息主题=", msg.Topic)
+		//util.Logger.Debug("kafka生产者向kafka broker发送消息，消息字符串=",
+		//	msg.Value, ", 消息主题=", msg.Topic)
 		fmt.Println("kafka生产者向kafka broker发送消息，消息字符串=",
 			msg.Value, ", 消息主题=", msg.Topic)
 
@@ -102,7 +104,7 @@ func (k *KafkaProducer) sendMsgToKfk(isAsync bool) {
 			_, _, err = k.producerClientI.(sarama.SyncProducer).SendMessage(msg)
 		}
 
-		util.Logger.Debug("kafka生产者发送消息完成")
+		//util.Logger.Debug("kafka生产者发送消息完成")
 
 		if err != nil {
 			logs.Error("send massage to kafka error: %v", err)

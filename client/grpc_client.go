@@ -15,7 +15,7 @@ func StartGrpcClient(){
 	if err != nil {
 		fmt.Printf("连接异常：%GrpcSever\n", err)
 	}
-	defer conn.Close()
+	//defer conn.Close()
 	// 2. 实例化gRPC客户端
 	grpcClient = pb.NewUserInfoServiceClient(conn)
 }

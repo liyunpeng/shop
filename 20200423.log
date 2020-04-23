@@ -1,109 +1,119 @@
-[DBUG] 2020/04/23 21:31 ------------开始创建routine池，就是把所有的routine启动好， 不是请求数据来了，才启动routine----------
-[DBUG] 2020/04/23 21:31 创建的worker={0xc0000b0840}
-[DBUG] 2020/04/23 21:31 创建的worker={0xc0000b08a0}
-[DBUG] 2020/04/23 21:31 ------------------------- routine池的创建完成 -----------------
+[DBUG] 2020/04/23 22:28 ------------开始创建routine池，就是把所有的routine启动好， 不是请求数据来了，才启动routine----------
+[DBUG] 2020/04/23 22:28 创建的worker={0xc00065e180}
+[DBUG] 2020/04/23 22:28 创建的worker={0xc00065e1e0}
+[DBUG] 2020/04/23 22:28 ------------------------- routine池的创建完成 -----------------
 
  
-[DBUG] 2020/04/23 21:31 创建kafaka 异步生产者
-[DBUG] 2020/04/23 21:31 MVC Controller [controllers.EtcdController] [Scope=Stateless]
-[DBUG] 2020/04/23 21:31 Dependencies:
-	[2] Static binding: &client.etcdClientWrap{EtcdClient:(*clientv3.Client)(0xc000540000), EtcdKV:(*clientv3.kv)(0xc0005fa630)} for field 'Service client.EtcdClientWrap'
-[DBUG] 2020/04/23 21:31 MVC Controller [controllers.HomeController] [Scope=Stateless]
-[DBUG] 2020/04/23 21:31 Dependencies:
+[DBUG] 2020/04/23 22:28 MVC Controller [controllers.EtcdController] [Scope=Stateless]
+[DBUG] 2020/04/23 22:28 Dependencies:
+	[2] Static binding: &client.etcdClientWrap{EtcdClient:(*clientv3.Client)(0xc00024c000), EtcdKV:(*clientv3.kv)(0xc000310ae0)} for field 'Service client.EtcdClientWrap'
+[DBUG] 2020/04/23 22:28 MVC Controller [controllers.HomeController] [Scope=Stateless]
+[DBUG] 2020/04/23 22:28 Dependencies:
 
-[DBUG] 2020/04/23 21:31 MVC Controller [controllers.SelfController] [Scope=Stateless]
-[DBUG] 2020/04/23 21:31 Dependencies:
+[DBUG] 2020/04/23 22:28 MVC Controller [controllers.SelfController] [Scope=Stateless]
+[DBUG] 2020/04/23 22:28 Dependencies:
 
-[DBUG] 2020/04/23 21:31 MVC Controller [controllers.ShopCarController] [Scope=Stateless]
-[DBUG] 2020/04/23 21:31 Dependencies:
+[DBUG] 2020/04/23 22:28 MVC Controller [controllers.ShopCarController] [Scope=Stateless]
+[DBUG] 2020/04/23 22:28 Dependencies:
 
-[DBUG] 2020/04/23 21:31 MVC Controller [controllers.GoodsDetailController] [Scope=Stateless]
-[DBUG] 2020/04/23 21:31 Dependencies:
+[DBUG] 2020/04/23 22:28 MVC Controller [controllers.GoodsDetailController] [Scope=Stateless]
+[DBUG] 2020/04/23 22:28 Dependencies:
 
-[DBUG] 2020/04/23 21:31 MVC dependencies of method 'controllers.GoodsDetailController.GetBy':
+[DBUG] 2020/04/23 22:28 MVC dependencies of method 'controllers.GoodsDetailController.GetBy':
 [1] Dynamic binding: 'int64' for input position: 1 and type: 'int64'
 
-[DBUG] 2020/04/23 21:31 MVC Controller [controllers.AssortController] [Scope=Stateless]
-[DBUG] 2020/04/23 21:31 Dependencies:
+[DBUG] 2020/04/23 22:28 MVC Controller [controllers.AssortController] [Scope=Stateless]
+[DBUG] 2020/04/23 22:28 Dependencies:
 
-[DBUG] 2020/04/23 21:31 kafka broker 地址=192.168.0.223:9092
-[DBUG] 2020/04/23 21:31 成功连接kafka broker
-[DBUG] 2020/04/23 21:31 启动Kafka发送消息的协程
-[DBUG] 2020/04/23 21:31 MVC Controller [controllers.BuyController] [Scope=Stateless]
-[DBUG] 2020/04/23 21:31 Dependencies:
+[DBUG] 2020/04/23 22:28 创建kafaka 异步生产者
+[DBUG] 2020/04/23 22:28 kafka broker 地址=192.168.0.223:9092
+[DBUG] 2020/04/23 22:28 成功连接kafka broker
+[DBUG] 2020/04/23 22:28 启动Kafka发送消息的协程
+[DBUG] 2020/04/23 22:28 MVC Controller [controllers.BuyController] [Scope=Stateless]
+[DBUG] 2020/04/23 22:28 Dependencies:
 
-[DBUG] 2020/04/23 21:31 MVC dependencies of method 'controllers.BuyController.GetBy':
+[DBUG] 2020/04/23 22:28 MVC dependencies of method 'controllers.BuyController.GetBy':
 [1] Dynamic binding: 'int64' for input position: 1 and type: 'int64'
 
-[DBUG] 2020/04/23 21:31 MVC Controller [controllers.OrderController] [Scope=Stateless]
-[DBUG] 2020/04/23 21:31 Dependencies:
+[DBUG] 2020/04/23 22:28 MVC Controller [controllers.OrderController] [Scope=Stateless]
+[DBUG] 2020/04/23 22:28 Dependencies:
 
-[DBUG] 2020/04/23 21:31 MVC Controller [controllers.UserGController] [Scope=Stateless]
-[DBUG] 2020/04/23 21:31 Dependencies:
+[DBUG] 2020/04/23 22:28 MVC Controller [controllers.UserGController] [Scope=Stateless]
+[DBUG] 2020/04/23 22:28 Dependencies:
 	[2] Static binding: &client.userService{} for field 'Service client.UserService'
 
-[DBUG] 2020/04/23 21:31 消费者websocket 成功建立
-[DBUG] 2020/04/23 21:31 消费者成功建立
-[DBUG] 2020/04/23 21:31 %s:Rebalanced: %+v 
+[DBUG] 2020/04/23 22:28 消费者websocket 成功建立
+[DBUG] 2020/04/23 22:28 消费者成功建立
+[DBUG] 2020/04/23 22:28 %s:Rebalanced: %+v 
 group-1&{rebalance start map[] map[] map[]}
-[DBUG] 2020/04/23 21:31 %s:Rebalanced: %+v 
+[DBUG] 2020/04/23 22:28 %s:Rebalanced: %+v 
 group-2&{rebalance start map[] map[] map[]}
-[DBUG] 2020/04/23 21:31 启动iris服务完毕
-[DBUG] 2020/04/23 21:31 [./web/routes/router.go:22] GET: /api/user/{id:uint} -> shop/web/controllers.ApiUserGetById() and 3 more
-[DBUG] 2020/04/23 21:31 [./web/routes/router.go:29] GET: /api/etcd/{key:string} -> shop/web/controllers.ApiEtcdGetKV() and 1 more
-[DBUG] 2020/04/23 21:31 [./web/controllers/register.go:70] GET: /goodsdetail/buy/{param1:int64} -> controllers.BuyController.GetBy()
-[DBUG] 2020/04/23 21:31 [./web/routes/router.go:30] GET: /api/etcd/listallkeys -> shop/web/controllers.ApiEtcdListAllKV() and 1 more
-[DBUG] 2020/04/23 21:31 [./main.go:285] GET: /public/{file:path} -> HandleDir(directory: "./web/public")
-[DBUG] 2020/04/23 21:31 [./web/controllers/register.go:61] GET: /goodsdetail/{param1:int64} -> controllers.GoodsDetailController.GetBy()
-[DBUG] 2020/04/23 21:31 [./web/controllers/register.go:84] GET: /user/login -> controllers.UserGController.GetLogin()
-[DBUG] 2020/04/23 21:31 [./web/routes/router.go:38] POST: /api/database/create -> shop/web/controllers.ApiDatabaseCreate() and 1 more
-[DBUG] 2020/04/23 21:31 [./web/routes/router.go:38] OPTIONS: /api/database/create -> shop/web/controllers.ApiDatabaseCreate() and 1 more
-[DBUG] 2020/04/23 21:31 [./web/controllers/register.go:43] POST: /etcd/k/v -> controllers.EtcdController.PostKV()
-[DBUG] 2020/04/23 21:31 [./web/controllers/register.go:43] POST: /etcd -> controllers.EtcdController.Post()
-[DBUG] 2020/04/23 21:31 [./web/routes/router.go:30] OPTIONS: /api/etcd/listallkeys -> shop/web/controllers.ApiEtcdListAllKV() and 1 more
-[DBUG] 2020/04/23 21:31 [./web/controllers/register.go:43] GET: /etcd/kv -> controllers.EtcdController.GetKv()
-[DBUG] 2020/04/23 21:31 [./web/controllers/register.go:43] GET: /etcd/all -> controllers.EtcdController.GetAll()
-[DBUG] 2020/04/23 21:31 [./web/controllers/register.go:84] GET: /user/logout -> controllers.UserGController.AnyLogout()
-[DBUG] 2020/04/23 21:31 [./web/controllers/register.go:84] POST: /user/logout -> controllers.UserGController.AnyLogout()
-[DBUG] 2020/04/23 21:31 [./web/controllers/register.go:84] PUT: /user/logout -> controllers.UserGController.AnyLogout()
-[DBUG] 2020/04/23 21:31 [./web/controllers/register.go:84] DELETE: /user/logout -> controllers.UserGController.AnyLogout()
-[DBUG] 2020/04/23 21:31 [./web/controllers/register.go:84] CONNECT: /user/logout -> controllers.UserGController.AnyLogout()
-[DBUG] 2020/04/23 21:31 [./web/controllers/register.go:84] HEAD: /user/logout -> controllers.UserGController.AnyLogout()
-[DBUG] 2020/04/23 21:31 [./web/controllers/register.go:84] PATCH: /user/logout -> controllers.UserGController.AnyLogout()
-[DBUG] 2020/04/23 21:31 [./web/controllers/register.go:84] OPTIONS: /user/logout -> controllers.UserGController.AnyLogout()
-[DBUG] 2020/04/23 21:31 [./web/controllers/register.go:84] TRACE: /user/logout -> controllers.UserGController.AnyLogout()
-[DBUG] 2020/04/23 21:31 [./web/routes/router.go:41] OPTIONS: /api/mem/redisset -> shop/web/controllers.ApiRedisSet() and 1 more
-[DBUG] 2020/04/23 21:31 [./web/controllers/register.go:84] GET: /user/me -> controllers.UserGController.GetMe()
-[DBUG] 2020/04/23 21:31 [./web/controllers/register.go:84] GET: /user/register -> controllers.UserGController.GetRegister()
-[DBUG] 2020/04/23 21:31 [./web/controllers/register.go:84] POST: /user/login -> controllers.UserGController.PostLogin()
-[DBUG] 2020/04/23 21:31 [./web/controllers/register.go:84] POST: /user/register -> controllers.UserGController.PostRegister()
-[DBUG] 2020/04/23 21:31 [./web/routes/router.go:16] OPTIONS: /api/login -> shop/web/controllers.ApiUserLogin() and 1 more
-[DBUG] 2020/04/23 21:31 [./web/routes/router.go:16] POST: /api/login -> shop/web/controllers.ApiUserLogin() and 1 more
-[DBUG] 2020/04/23 21:31 [./web/routes/router.go:21] GET: /api/user -> shop/web/controllers.ApiUserGetAll() and 3 more
-[DBUG] 2020/04/23 21:31 [./web/routes/router.go:22] OPTIONS: /api/user/{id:uint} -> shop/web/controllers.ApiUserGetById() and 3 more
-[DBUG] 2020/04/23 21:31 [./main.go:285] HEAD: /public/{file:path} -> HandleDir(directory: "./web/public")
-[DBUG] 2020/04/23 21:31 [./web/routes/router.go:23] POST: /api/user -> shop/web/controllers.ApiUserPost() and 3 more
-[DBUG] 2020/04/23 21:31 [./web/routes/router.go:24] OPTIONS: /api/user -> shop/web/controllers.ApiUserUpdate() and 3 more
-[DBUG] 2020/04/23 21:31 [./web/routes/router.go:24] PUT: /api/user -> shop/web/controllers.ApiUserUpdate() and 3 more
-[DBUG] 2020/04/23 21:31 [./web/routes/router.go:25] OPTIONS: /api/user/insertOrUpdate -> shop/web/controllers.ApiUserInsertOrUpdate() and 3 more
-[DBUG] 2020/04/23 21:31 [./web/routes/router.go:25] POST: /api/user/insertOrUpdate -> shop/web/controllers.ApiUserInsertOrUpdate() and 3 more
-[DBUG] 2020/04/23 21:31 [./web/routes/router.go:29] OPTIONS: /api/etcd/{key:string} -> shop/web/controllers.ApiEtcdGetKV() and 1 more
-[DBUG] 2020/04/23 21:31 [./web/routes/router.go:41] POST: /api/mem/redisset -> shop/web/controllers.ApiRedisSet() and 1 more
-[DBUG] 2020/04/23 21:31 [./web/controllers/register.go:64] GET: /assort -> controllers.AssortController.Get()
-[DBUG] 2020/04/23 21:31 [./web/controllers/register.go:58] GET: /shopcar -> controllers.ShopCarController.Get()
-[DBUG] 2020/04/23 21:31 [./web/controllers/register.go:55] GET: /self -> controllers.SelfController.Get()
-[DBUG] 2020/04/23 21:31 [./web/controllers/register.go:49] GET: / -> controllers.HomeController.Get()
-[DBUG] 2020/04/23 21:31 [./web/controllers/register.go:43] GET: /etcd -> controllers.EtcdController.Get()
-[DBUG] 2020/04/23 21:31 [./web/controllers/register.go:76] GET: /order -> controllers.OrderController.Get()
-[DBUG] 2020/04/23 21:31 Application: 1 registered view engine(s)
-[DBUG] 2020/04/23 21:31 %s:Rebalanced: %+v 
+[DBUG] 2020/04/23 22:28 %s:Rebalanced: %+v 
 group-1&{rebalance OK map[nginx_log:[0]] map[] map[nginx_log:[0]]}
-[DBUG] 2020/04/23 21:31 Application: running using 1 host(s)
-[DBUG] 2020/04/23 21:31 Host: addr is :8082
-[DBUG] 2020/04/23 21:31 Host: virtual host is localhost:8082
-[DBUG] 2020/04/23 21:31 Host: register startup notifier
-[DBUG] 2020/04/23 21:31 Host: server will ignore the following errors: [http: Server closed]
+[DBUG] 2020/04/23 22:28 %s:Rebalanced: %+v 
+group-2&{rebalance OK map[irislog:[0]] map[] map[irislog:[0]]}
+[DBUG] 2020/04/23 22:28 启动iris服务完毕
+[DBUG] 2020/04/23 22:28 [./web/routes/router.go:22] OPTIONS: /api/user/{id:uint} -> shop/web/controllers.ApiUserGetById() and 4 more
+[DBUG] 2020/04/23 22:28 [./web/routes/router.go:29] OPTIONS: /api/etcd/{key:string} -> shop/web/controllers.ApiEtcdGetKV() and 2 more
+[DBUG] 2020/04/23 22:28 [./web/routes/router.go:38] OPTIONS: /api/database/create -> shop/web/controllers.ApiDatabaseCreate() and 2 more
+[DBUG] 2020/04/23 22:28 [./web/routes/router.go:25] OPTIONS: /api/user/insertOrUpdate -> shop/web/controllers.ApiUserInsertOrUpdate() and 4 more
+[DBUG] 2020/04/23 22:28 [./web/routes/router.go:41] OPTIONS: /api/mem/redisset -> shop/web/controllers.ApiRedisSet() and 2 more
+[DBUG] 2020/04/23 22:28 [./web/routes/router.go:30] OPTIONS: /api/etcd/listallkeys -> shop/web/controllers.ApiEtcdListAllKV() and 2 more
+[DBUG] 2020/04/23 22:28 [./web/routes/router.go:24] OPTIONS: /api/user -> shop/web/controllers.ApiUserUpdate() and 4 more
+[DBUG] 2020/04/23 22:28 [./web/routes/router.go:38] POST: /api/database/create -> shop/web/controllers.ApiDatabaseCreate() and 2 more
+[DBUG] 2020/04/23 22:28 [./web/controllers/register.go:43] POST: /etcd/k/v -> controllers.EtcdController.PostKV() and 1 more
+[DBUG] 2020/04/23 22:28 [./web/routes/router.go:30] GET: /api/etcd/listallkeys -> shop/web/controllers.ApiEtcdListAllKV() and 2 more
+[DBUG] 2020/04/23 22:28 [./web/controllers/register.go:61] GET: /goodsdetail/{param1:int64} -> controllers.GoodsDetailController.GetBy() and 1 more
+[DBUG] 2020/04/23 22:28 [./web/controllers/register.go:43] POST: /etcd -> controllers.EtcdController.Post() and 1 more
+[DBUG] 2020/04/23 22:28 [./main.go:304] GET: /public/{file:path} -> HandleDir(directory: "./web/public") and 1 more
+[DBUG] 2020/04/23 22:28 [./web/routes/router.go:29] GET: /api/etcd/{key:string} -> shop/web/controllers.ApiEtcdGetKV() and 2 more
+[DBUG] 2020/04/23 22:28 [./web/routes/router.go:41] POST: /api/mem/redisset -> shop/web/controllers.ApiRedisSet() and 2 more
+[DBUG] 2020/04/23 22:28 [./web/controllers/register.go:84] POST: /user/logout -> controllers.UserGController.AnyLogout() and 1 more
+[DBUG] 2020/04/23 22:28 [./web/controllers/register.go:84] PUT: /user/logout -> controllers.UserGController.AnyLogout() and 1 more
+[DBUG] 2020/04/23 22:28 [./web/controllers/register.go:84] DELETE: /user/logout -> controllers.UserGController.AnyLogout() and 1 more
+[DBUG] 2020/04/23 22:28 [./web/controllers/register.go:84] CONNECT: /user/logout -> controllers.UserGController.AnyLogout() and 1 more
+[DBUG] 2020/04/23 22:28 [./web/controllers/register.go:84] HEAD: /user/logout -> controllers.UserGController.AnyLogout() and 1 more
+[DBUG] 2020/04/23 22:28 [./web/controllers/register.go:84] PATCH: /user/logout -> controllers.UserGController.AnyLogout() and 1 more
+[DBUG] 2020/04/23 22:28 [./web/controllers/register.go:84] OPTIONS: /user/logout -> controllers.UserGController.AnyLogout() and 1 more
+[DBUG] 2020/04/23 22:28 [./web/controllers/register.go:84] TRACE: /user/logout -> controllers.UserGController.AnyLogout() and 1 more
+[DBUG] 2020/04/23 22:28 [./web/routes/router.go:25] POST: /api/user/insertOrUpdate -> shop/web/controllers.ApiUserInsertOrUpdate() and 4 more
+[DBUG] 2020/04/23 22:28 [./web/controllers/register.go:70] GET: /goodsdetail/buy/{param1:int64} -> controllers.BuyController.GetBy() and 1 more
+[DBUG] 2020/04/23 22:28 [./main.go:425] GET: /cookies/{name}/{value} -> main.cookieGet.func1() and 1 more
+[DBUG] 2020/04/23 22:28 [./web/controllers/register.go:84] POST: /user/login -> controllers.UserGController.PostLogin() and 1 more
+[DBUG] 2020/04/23 22:28 [./web/controllers/register.go:84] POST: /user/register -> controllers.UserGController.PostRegister() and 1 more
+[DBUG] 2020/04/23 22:28 [./web/routes/router.go:16] OPTIONS: /api/login -> shop/web/controllers.ApiUserLogin() and 2 more
+[DBUG] 2020/04/23 22:28 [./web/routes/router.go:16] POST: /api/login -> shop/web/controllers.ApiUserLogin() and 2 more
+[DBUG] 2020/04/23 22:28 [./web/routes/router.go:24] PUT: /api/user -> shop/web/controllers.ApiUserUpdate() and 4 more
+[DBUG] 2020/04/23 22:28 [./main.go:304] HEAD: /public/{file:path} -> HandleDir(directory: "./web/public") and 1 more
+[DBUG] 2020/04/23 22:28 [./web/routes/router.go:22] GET: /api/user/{id:uint} -> shop/web/controllers.ApiUserGetById() and 4 more
+[DBUG] 2020/04/23 22:28 [./web/routes/router.go:23] POST: /api/user -> shop/web/controllers.ApiUserPost() and 4 more
+[DBUG] 2020/04/23 22:28 [./main.go:432] GET: /cookies/{name} -> main.cookieGet.func2() and 1 more
+[DBUG] 2020/04/23 22:28 [./web/routes/router.go:21] GET: /api/user -> shop/web/controllers.ApiUserGetAll() and 4 more
+[DBUG] 2020/04/23 22:28 [./web/controllers/register.go:84] GET: /user/register -> controllers.UserGController.GetRegister() and 1 more
+[DBUG] 2020/04/23 22:28 [./web/controllers/register.go:84] GET: /user/login -> controllers.UserGController.GetLogin() and 1 more
+[DBUG] 2020/04/23 22:28 [./web/controllers/register.go:84] GET: /user/logout -> controllers.UserGController.AnyLogout() and 1 more
+[DBUG] 2020/04/23 22:28 [./web/controllers/register.go:43] GET: /etcd/all -> controllers.EtcdController.GetAll() and 1 more
+[DBUG] 2020/04/23 22:28 [./web/controllers/register.go:43] GET: /etcd/kv -> controllers.EtcdController.GetKv() and 1 more
+[DBUG] 2020/04/23 22:28 [./web/controllers/register.go:84] GET: /user/me -> controllers.UserGController.GetMe() and 1 more
+[DBUG] 2020/04/23 22:28 [./web/controllers/register.go:55] GET: /self -> controllers.SelfController.Get() and 1 more
+[DBUG] 2020/04/23 22:28 [./web/controllers/register.go:49] GET: / -> controllers.HomeController.Get() and 1 more
+[DBUG] 2020/04/23 22:28 [./web/controllers/register.go:64] GET: /assort -> controllers.AssortController.Get() and 1 more
+[DBUG] 2020/04/23 22:28 [./web/controllers/register.go:76] GET: /order -> controllers.OrderController.Get() and 1 more
+[DBUG] 2020/04/23 22:28 [./web/controllers/register.go:43] GET: /etcd -> controllers.EtcdController.Get() and 1 more
+[DBUG] 2020/04/23 22:28 [./web/controllers/register.go:58] GET: /shopcar -> controllers.ShopCarController.Get() and 1 more
+[DBUG] 2020/04/23 22:28 Application: 1 registered view engine(s)
+[DBUG] 2020/04/23 22:28 Application: running using 1 host(s)
+[DBUG] 2020/04/23 22:28 Host: addr is :8082
+[DBUG] 2020/04/23 22:28 Host: virtual host is localhost:8082
+[DBUG] 2020/04/23 22:28 Host: register startup notifier
+[DBUG] 2020/04/23 22:28 Host: server will ignore the following errors: [http: Server closed]
 Now listening on: http://localhost:8082
 Application started. Press CMD+C to shut down.
-[DBUG] 2020/04/23 21:31 %s:Rebalanced: %+v 
-group-2&{rebalance OK map[irislog:[0]] map[] map[irislog:[0]]}
+[INFO] 2020/04/23 22:36 140.458µs Hrefs.IndexLinks
+[INFO] 2020/04/23 22:36 200 64.386397ms ::1 GET / Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36
+[INFO] 2020/04/23 22:36 304 132.241µs ::1 GET /css/site.css Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36
+[INFO] 2020/04/23 22:36 304 378.529µs ::1 GET /js/rem.js Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36
+[INFO] 2020/04/23 22:36 304 177.078µs ::1 GET /css/mui.min.css Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36
+[INFO] 2020/04/23 22:36 304 73.754µs ::1 GET /css/base.css Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36
+[INFO] 2020/04/23 22:36 304 198.336µs ::1 GET /iconfont/iconfont.css Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36
+
