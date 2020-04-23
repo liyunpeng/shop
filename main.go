@@ -174,17 +174,13 @@ func startClient(transformConfiguration *transformer.Conf) {
 
 	util.WaitGroup.Add(1)
 	go client.StartKafkaProducer(
-		transformConfiguration.Kafka.Addr, 1)
+		transformConfiguration.Kafka.Addr, 1, true)
 
 	util.WaitGroup.Add(1)
 	go client.StartKafkaConsumer(transformConfiguration.Kafka.Addr)
 
 	go client.StartOauth2Client()
-
 }
-
-
-
 
 func main() {
 	//defer fmt.Println("主routine完全退出")
