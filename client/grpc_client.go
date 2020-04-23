@@ -7,7 +7,9 @@ import (
 	pb "shop/rpc/proto"
 )
 
-func GrpcClient( msg string) {
+
+var grpcClient pb.UserInfoServiceClient
+func StartGrpcClient(){
 	// 1. 创建与gRPC服务端的连接
 	conn, err := grpc.Dial("127.0.0.1:8989", grpc.WithInsecure())
 	if err != nil {
@@ -15,12 +17,15 @@ func GrpcClient( msg string) {
 	}
 	defer conn.Close()
 	// 2. 实例化gRPC客户端
-	client := pb.NewUserInfoServiceClient(conn)
+	grpcClient = pb.NewUserInfoServiceClient(conn)
+}
+
+func GrpcCall( msg string) {
 	// 3. 组装参数
 	req := new(pb.UserRequest)
 	req.Name = msg
 	// 4. 调用接口
-	resp, err := client.GetUserInfo(context.Background(), req)
+	resp, err := grpcClient.GetUserInfo(context.Background(), req)
 	if err != nil {
 		fmt.Printf("响应异常：%GrpcSever\n", err)
 	}

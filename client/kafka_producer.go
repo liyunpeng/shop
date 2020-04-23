@@ -7,10 +7,26 @@ import (
 	"shop/util"
 )
 
+type LoggerOutput struct {
+
+}
+
+const loggerTopic = "irislog"
+
+// 实现io.writer接口的方法， 即可将LoggerOutput对象传给app.logger().setoutput()
+func (l *LoggerOutput)  Write(p []byte) (nn int, err error){
+	msg := &custchan.Message {
+		Line: string(p),
+		Topic: loggerTopic,
+	}
+	custchan.KafkaProducerMsgChan  <- msg
+
+	return len(p), nil
+}
+
 type KafkaProducer struct {
 	producerClientI     interface{}
 }
-
 
 var KafkaProducerObj *KafkaProducer
 

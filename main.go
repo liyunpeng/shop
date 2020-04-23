@@ -180,6 +180,8 @@ func startClient(transformConfiguration *transformer.Conf) {
 	go client.StartKafkaConsumer(transformConfiguration.Kafka.Addr)
 
 	go client.StartOauth2Client()
+
+	go client.StartGrpcClient()
 }
 
 func main() {
@@ -220,8 +222,13 @@ func main() {
 	app := iris.New()
 
 	util.Logger = app.Logger()
+	outputlog := &client.LoggerOutput{}
+
+	util.Logger.SetOutput(outputlog)
+
 	util.Logger.SetLevel("debug")
 
+	//util.Logger.SetOutput()
 	service.WebsocketChan = make( chan string, 10)
 
 	models.Register(config.TransformConfiguration)
@@ -234,7 +241,7 @@ func main() {
 		&models.Goods{},
 	)
 
-	startService(config.TransformConfiguration)
+
 
 	startClient(config.TransformConfiguration)
 	/*

@@ -23,7 +23,8 @@ func StartKafkaConsumer(kafkaAdress string) {
 
 	//广播式消费
 	go clusterConsumerWebsocket(wg, Address, topic, "group-1")
-	go clusterConsumerRpc(wg, Address, topic, "group-2")
+
+	go clusterConsumerRpc(wg, Address, []string{loggerTopic}, "group-2")
 	wg.Wait()
 }
 
@@ -140,7 +141,7 @@ Loop:
 		select {
 		case msg, ok := <-consumer.Messages():
 			if ok {
-				GrpcClient(string(msg.Value))
+				GrpcCall(string(msg.Value))
 
 				util.Logger.Debug("kafka 消费者消费消息")
 				fmt.Fprintf(
