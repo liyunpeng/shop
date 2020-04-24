@@ -26,7 +26,9 @@ func OrderDelete(){
 	DB.Delete(&Order{})
 }
 
-func CreateOrder(aul *validates.CreateOrderRequest) {
+func CreateOrder(aul *validates.CreateOrderRequest) error {
+
+	tx := DB.Begin()
 	order := &Order{
 		Username: aul.Username,
 		Title: aul.Title,
@@ -37,11 +39,21 @@ func CreateOrder(aul *validates.CreateOrderRequest) {
 		//created:   time.Now().Format("2006-01-02 15:04:05")
 	}
 
-	if err := DB.Create(order).Error; err != nil {
+	if err := tx.Create(order).Error; err != nil {
 		color.Red(fmt.Sprintf("CreateOrderErr:%s \n ", err))
+		tx.Rollback()
+		return err
 	}
 
-	return
+	tx.Commit()
+
+	return nil
+
+
+	//if err := DB.Create(order).Error; err != nil {
+	//	color.Red(fmt.Sprintf("CreateOrderErr:%s \n ", err))
+	//}
+
 }
 
 func OrderFindByUser(username string) []*Order {
