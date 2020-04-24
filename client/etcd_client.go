@@ -72,7 +72,7 @@ func (e *etcdClientWrap) Get(key string) (*client.GetResponse) {
 	cancel()
 	return getResp
 }
-func (e *etcdClientWrap) EtcdWatch(keys []string) {
+func (e *etcdClientWrap) EtcdWatch(ctx context.Context, keys []string) {
 	defer util.WaitGroup.Done()
 
 	defer util.PrintFuncName()
@@ -95,6 +95,11 @@ func (e *etcdClientWrap) EtcdWatch(keys []string) {
 					custchan.ConfChan <- string(ev.Kv.Value)
 					fmt.Printf("etcd服务watch到新的键值对： etcd key = %s , etcd value = %s \n", ev.Kv.Key, ev.Kv.Value)
 				}
+			case <-ctx.Done():
+				util.Logger.Info(" 关闭配置通道，custchan.ConfChan 通道长度=", len(custchan.ConfChan))
+				close(custchan.ConfChan)
+				util.Logger.Info("EtcdWatch 退出对键值对的监控")
+				return
 			default:
 			}
 		}

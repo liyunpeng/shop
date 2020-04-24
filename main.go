@@ -8,6 +8,7 @@ import (
 	"github.com/gorilla/securecookie"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/middleware/logger"
+	"golang.org/x/net/context"
 	"io"
 	_ "net/http/pprof"
 	"shop/custchan"
@@ -38,6 +39,8 @@ import (
 
 
 func init() {
+
+	util.Ctx, util.Cancel = context.WithCancel(context.Background())
 	//var _path string
 	//
 	//flag.StringVar(&_path, "c", "./config.yaml", "default config path")
@@ -172,7 +175,9 @@ func startClient(transformConfiguration *transformer.Conf) {
 
 	// 启动对etcd的监听服务，有新的键值对会被监听到
 	util.WaitGroup.Add(1)
-	go client.EtcdClientInsance.EtcdWatch(etcdKeys)
+
+	go client.EtcdClientInsance.EtcdWatch( util.Ctx , etcdKeys)
+
 
 	util.WaitGroup.Add(1)
 	go client.StartKafkaProducer(
@@ -376,6 +381,7 @@ Loopa:
 		case <- signals:
 			println("shutdown...")
 
+			util.Cancel()
 			close(util.ChanStop)
 			close(custchan.KafkaProducerMsgChan)
 

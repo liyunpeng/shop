@@ -105,6 +105,7 @@ func (t *TailManager) reloadConfig(logConfArr []config.LogConfig) (err error) {
 }
 
 func (t *TailManager) MonitorConfChan() {
+
 	for etcdConfValue := range custchan.ConfChan {
 		fmt.Printf("tail服务从ConfChan通道拿到的配置数据: %v \n", etcdConfValue)
 
