@@ -1,0 +1,24 @@
+{
+  "HTTP服务地址": "IP地址",
+  "host1": "10.45.151.75",
+
+  "HTTP服务端口": "监听端口",
+  "port1": 8080,
+
+  "数据库配置": "从数据库中读取信息",
+  "dbConfig": {
+    "host":"10.45.151.1",
+    "port" : 3306,
+    "db" : "pbx",
+    "user" : "remote",
+    "passwd" : "tx_1234abc"
+  },
+
+  "rabbitmqConfig": {
+    "host":"10.45.151.75",
+    "port" : 5672,
+    "vhost" : "/",
+    "user" : "remote",
+    "passwd" : "tx_1234abc"
+  }
+}

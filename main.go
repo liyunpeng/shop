@@ -34,7 +34,7 @@ import (
 	_ "shop/validates"
 )
 
-var Conf *config.Config
+//var Conf *config.Config
 
 
 func init() {
@@ -227,6 +227,16 @@ func main() {
 	//	}
 	//	memf.Close()
 	//}()
+
+	err := config.InitConfig("./config/conf.json")
+	if err != nil{
+		return
+	}
+	// 分别打印http db rabbitmq配置
+	fmt.Println("host=", config.HttpConfig.Host)
+	fmt.Println("port=", config.DBConfig.Port)
+	fmt.Println("vhost=", config.AmqpConfig.Vhost)
+
 	f := newLogFile()
 	defer f.Close()
 
