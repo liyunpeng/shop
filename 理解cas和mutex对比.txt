@@ -1,3 +1,5 @@
+---
+cas概述
 Go中的sync/atomic基于CAS做到lock free。想了解下效率怎么样，写了个简单例子。
 在race condition特别严重的时候，也就是两个goroutine一直在抢着修改同一个对象的时候，
 CAS的表现和加锁mutex的效率差不多，时高时低。
@@ -9,8 +11,8 @@ CAS的表现和加锁mutex的效率差不多，时高时低。
 
 总结起来，多数情况下能用CAS做到lock free是比较好的，因为没有那么大量的race condition.
 
-所以没有大量race 竞争的情况， 用cas.
-有大量race 竞争的情况， 用mutex锁.
+所以没有大量race 竞争的情况， 即并发度比较少的情况，用cas.
+有大量race 竞争的情况，即并发度比较高的情况， 用mutex锁.
 
 ---
 被锁住的资源是一个整型变量的并发处理
