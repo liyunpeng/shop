@@ -13,7 +13,7 @@ func StartGrpcClient(){
 	// 1. 创建与gRPC服务端的连接
 	conn, err := grpc.Dial("127.0.0.1:8989", grpc.WithInsecure())
 	if err != nil {
-		fmt.Printf("连接异常：%GrpcSever\n", err)
+		fmt.Printf(" 连接异常：%GrpcSever\n", err)
 	}
 	//defer conn.Close()
 	// 2. 实例化gRPC客户端
