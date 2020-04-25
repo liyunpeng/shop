@@ -67,13 +67,21 @@ func init() {
 
 	//util.Logger.SetOutput()
 
+
+	//if err := pprof.PPCmd("cpu 10s"); err != nil {
+	//	panic(err)
+	//}
+	//
+	//if err := pprof.PPCmd("mem"); err != nil {
+	//	panic(err)
+	//}
 }
 
 // values should match with the client sides as well.
-const enableJWT = true
-const namespace = "default"
-
-// if namespace is empty then simply websocket.Events{...} can be used instead.
+//const enableJWT = true
+//const namespace = "default"
+//
+////if namespace is empty then simply websocket.Events{...} can be used instead.
 //var serverEvents = websocket.Namespaces{
 //	namespace: websocket.Events{
 //		websocket.OnNamespaceConnected: func(nsConn *websocket.NSConn, msg websocket.Message) error {

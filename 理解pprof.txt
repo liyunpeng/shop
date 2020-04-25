@@ -33,3 +33,74 @@ http://localhost:9909/debug/pprof/
 ---
 交互命令：
 输入top命令可以前10大的内存分配，flat是堆栈中当前层的inuse内存值，cum是堆栈中本层级的累计inuse内存值
+
+
+---
+win7 上安装graphviz
+1. 下载graphviz
+https://graphviz.gitlab.io/_pages/Download/Download_windows.html
+
+2. 配置path环境变量：
+D:\programe\graphviz\bin
+
+3. 确定代码里有：
+	go func() {
+		err := http.ListenAndServe(":9909", nil)
+		if err != nil {
+			panic(err)
+		}
+	}()
+
+4. 运行
+（1）查看cpu的：
+D:\goworkspace\shop>go tool pprof -http=:6666 http://localhost:9909/debug/pprof/profile
+命令行输出
+Fetching profile over HTTP from http://localhost:9909/debug/pprof/profile
+Saved profile in C:\Users\Administrator\pprof\pprof.samples.cpu.005.pb.gz
+Serving web UI on http://localhost:6666
+
+30秒后 弹出浏览器火焰图
+
+（2）查看内存的：
+D:\goworkspace\shop>go tool pprof -http=:6666 http://localhost:9909/debug/pprof/heap
+命令行输出：
+Fetching profile over HTTP from http://localhost:9909/debug/pprof/heap
+Saved profile in C:\Users\Administrator\pprof\pprof.alloc_objects.alloc_space.in
+use_objects.inuse_space.003.pb.gz
+Serving web UI on http://localhost:6666
+sample_index "samples" must be one of: [alloc_objects alloc_space inuse_objects
+inuse_space]
+
+---
+flat和flat%、sum%、cum和cum%，其中flat代表的是该函数自身代码的执行时长，
+而cum代表的是该函数自身代码+所有调用的函数的执行时长。这样解释可能不太直观，
+我们以下面的例子来说明，函数b由三部分组成：调用函数c、自己直接处理一些事情、调用函数d，其中调用函数c耗时1秒，
+自己直接处理事情耗时3秒，调用函数d耗时2秒，那么函数b的flat耗时就是3秒，cum耗时就是6秒。
+
+---
+alloc_space 总共分配的空间大小
+inuse_object 生成heap时，在用对象数
+inuse_space 生成heap时，在用空间
+
+---
+交互的使用：
+在交互页面中，输入list 你被profile的函数名
+
+(pprof) list MyFunction
+ROUTINE ========================
+766103 766103 (flat, cum) 7.09% of Total
+……
+39562 39562 184: list = make([]MyStruct, 0, 256)
+. . 185: slotidIndex := 0
+. . 186: for {
+. . 187: if begin >= totalLen {
+. . 188: break
+. . 189: }
+
+---
+原生界面上的字段含义
+Sys 进程从系统获得的内存空间，虚拟地址空间。
+HeapAlloc 进程堆内存分配使用的空间，通常是用户new出来的堆对象，包含未被gc掉的。
+HeapSys 进程从系统获得的堆内存，因为golang底层使用TCmalloc机制，会缓存一部分堆内存，虚拟地址空间。
+PauseNs 记录每次gc暂停的时间(纳秒)，最多记录256个最新记录。
+NumGC 记录gc发生的次数。
