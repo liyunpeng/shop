@@ -111,3 +111,21 @@ func (e *etcdClientWrap) EtcdWatch(ctx context.Context, keys []string) {
 func (e *etcdClientWrap) GetEtcdConfChan() chan string {
 	return custchan.ConfChan
 }
+
+func GetEtcdKeys() ([]string) {
+	var etcdKeys []string
+	//ips, err := getLocalIP()
+	var ips []string
+	//var err error
+	ips = append(ips, "192.168.0.1")
+	//if err != nil {
+	//	fmt.Println("get local ip error:", err)
+	//	//return err
+	//}
+	for _, ip := range ips {
+		//key := fmt.Sprintf("/logagent/%s/logconfig", ip)
+		etcdKeys = append(etcdKeys, ip)
+	}
+	fmt.Println("从etcd服务器获取到的以IP名为键的键值对: ", etcdKeys)
+	return etcdKeys
+}

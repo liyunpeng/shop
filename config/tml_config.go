@@ -8,6 +8,7 @@ import (
 )
 
 var TransformConfiguration *transformer.Conf
+var IrisConfiguration iris.Configuration
 
 func GetTransformConfiguration( irisConfiguration iris.Configuration) *transformer.Conf {
 	app := transformer.App{}

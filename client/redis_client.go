@@ -11,15 +11,15 @@ import (
 )
 
 var (
-	Pool *redis.Pool
-	Conn redis.Conn
+	RedisPool *redis.Pool
+	Conn      redis.Conn
 )
 
-func InitRedis() {
+func StartRedisClient() {
 	redisHost := config.TransformConfiguration.Redis.Addr
 	fmt.Println("redis连接池初始化")
-	Pool = newPool(redisHost)
-	Conn = Pool.Get()
+	RedisPool = newPool(redisHost)
+	Conn = RedisPool.Get()
 }
 
 func newPool(server string) *redis.Pool {
@@ -52,7 +52,7 @@ func RedisPoolclose() {
 	signal.Notify(c, syscall.SIGKILL)
 	go func() {
 		<-c
-		Pool.Close()
+		RedisPool.Close()
 		os.Exit(0)
 	}()
 }
@@ -237,7 +237,7 @@ func Hashsetget() {
 }
 
 func Subscribe() {
-	c := Pool.Get()
+	c := RedisPool.Get()
 	psc := redis.PubSubConn{c}
 	psc.Subscribe("redChatRoom")
 
@@ -264,7 +264,7 @@ func Subscribe() {
  *
  */
 func Pubscribe(s string) {
-	c := Pool.Get()
+	c := RedisPool.Get()
 	defer c.Close()
 
 	_, err := c.Do("PUBLISH", "redChatRoom", s)

@@ -203,3 +203,17 @@ mysql> select * from casbin_rule;
 16.
 http://localhost:9096/authorize
 invalid_request
+
+17.  windows 命令行乱码
+命令行乱码：
+chcp 65001
+chcp 936
+
+18, 解决 用户登录后， 查看用户列表， 返回403错误问题
+403 表时身份认证通过， 但是该身份没有权限，
+原因： casbin 没有连接上数据库，
+解决办法:
+conf.tml中修改：
+  CasbinConnect = "root:123456@tcp(192.168.0.141:3306)/"
+  改为：
+  CasbinConnect = "root:root@tcp(192.168.0.141:3306)/"

@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"github.com/gorilla/securecookie"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/core/router"
 	"shop/models"
@@ -40,6 +41,9 @@ func RegisterApi(app *iris.Application){
 	api.PartyFunc("/mem", func(party iris.Party){
 		party.Post("/redisset", controllers.ApiRedisSet).Name = "redis操作"
 	})
+
+	// cookie 加密操作
+	cookieGet(app)
 }
 
 func isPermRoute(s *router.Route) bool {
@@ -65,3 +69,33 @@ func GetRoutes(api *iris.Application) []*validates.PermissionRequest {
 	return rrs
 }
 
+
+var (
+	// AES仅支持16,24或32字节的密钥大小。
+	//您需要准确提供该密钥字节大小，或者从您键入的内容中获取密钥。
+	hashKey  = []byte("the-big-and-secret-fash-key-here")
+	blockKey = []byte("lot-secret-of-characters-big-too")
+	sc       = securecookie.New(hashKey, blockKey)
+)
+
+func cookieGet( app *iris.Application ) {
+
+	app.Get("/cookies/{name}/{value}", func(ctx iris.Context) {
+		name := ctx.Params().Get("name")
+		value := ctx.Params().Get("value")
+		//加密值
+		ctx.SetCookieKV(name, value, iris.CookieEncode(sc.Encode)) // <--设置一个Cookie
+		ctx.Writef("cookie added: %s = %s", name, value)
+	})
+	app.Get("/cookies/{name}", func(ctx iris.Context) {
+		name := ctx.Params().Get("name")
+		//解密值
+		value := ctx.GetCookie(name, iris.CookieDecode(sc.Decode)) // <--检索Cookie
+		ctx.WriteString(value)
+	})
+	app.Delete("/cookies/{name}", func(ctx iris.Context) {
+		name := ctx.Params().Get("name")
+		ctx.RemoveCookie(name) // <-- 删除Cookie
+		ctx.Writef("cookie %s removed", name)
+	})
+}
