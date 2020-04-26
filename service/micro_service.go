@@ -6,18 +6,35 @@ import (
 	micro "github.com/micro/go-micro/v2"
 	"github.com/micro/go-micro/v2/config"
 	"github.com/micro/go-micro/v2/registry"
+	etcdv3 "github.com/micro/go-micro/v2/registry/etcd"
 	"github.com/micro/go-micro/v2/server"
 	"github.com/micro/go-plugins/registry/consul/v2"
+	//"github.com/micro/go-plugins/registry/etcdv3"
+	custconfig "shop/config"
 	"shop/util"
 	"time"
 )
 
 var service micro.Service
 func StartMicroService(){
-	urls := util.GetConsulUrls()
-	reg := consul.NewRegistry(func(op *registry.Options) {
-		op.Addrs = urls
-	})
+	var reg registry.Registry
+	var useEtcd bool
+	useEtcd = true
+	if useEtcd == true {
+		reg = etcdv3.NewRegistry( func(options *registry.Options) {
+			// etcd 地址
+			//options.Addrs = []string{"127.0.0.1:2379"}
+			options.Addrs = []string{custconfig.TransformConfiguration.Etcd.Addr}
+			// etcd 用户名密码,如果设置的话
+			//etcdv3.Auth("root","password")(options)
+		})
+	}else{
+		urls := util.GetConsulUrls()
+		reg = consul.NewRegistry(func(op *registry.Options) {
+			op.Addrs = urls
+		})
+	}
+
 
 	// TODO: 检测consul服务发现是否正常启动
 
