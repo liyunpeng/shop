@@ -149,6 +149,23 @@ func init() {
 //}
 
 func main() {
+
+	util.InitCustLogger()
+	// TODO
+	//args := os.Args
+	//if len(args) < 1 || args == nil {
+	//	switch args[1] {
+	//	case "gen":
+	//
+	//		break
+	//	}
+	//}else{
+	//
+	//}
+
+
+
+
 	//defer fmt.Println("主routine完全退出")
 	//defer fmt.Println("主routine内存分析完毕")
 	//defer profile.StartMicroService(profile.MemProfile).Stop()
@@ -232,13 +249,14 @@ func main() {
 		iris.WithCharset("UTF-8"),
 	)
 	util.Logger.Debug("启动iris服务完毕")
-	control(app)
-	util.Logger.Info("等待所有routine关闭动作完成")
+
+	stopControl(app)
+	util.Info.Println("等待所有routine关闭动作完成")
 	util.WaitGroup.Wait()
-	util.Logger.Info("所有routine的关闭动作已全部完成")
+	util.Info.Println("所有routine的关闭动作已全部完成")
 }
 
-func control(app *iris.Application) {
+func stopControl(app *iris.Application) {
 	signals := make(chan os.Signal, 1)
 	//signal.Notify(signals, os.Interrupt)
 
@@ -258,7 +276,7 @@ Loopa:
 	for {
 		select {
 		case <-signals:
-			println("shutdown...")
+			util.Info.Println("shutdown...")
 
 			util.Cancel()
 			close(util.ChanStop)
@@ -267,15 +285,16 @@ Loopa:
 			timeout := 5 * time.Second
 			ctx, cancel := stdContext.WithTimeout(stdContext.Background(), timeout)
 			cancel()
-			util.Logger.Println("关闭iris 服务")
+			util.Info.Println("关闭iris 服务")
 			app.Shutdown(ctx)
 
-			util.Logger.Println("关闭grpc 服务")
+			util.Info.Println("关闭grpc 服务")
 			service.GrpcSever.Stop()
 
-			util.Logger.Println("关闭go-micro 微服务")
+			util.Info.Println("关闭go-micro 微服务")
 			service.Stop()
 
+			util.Info.Println("关闭控制流程结束")
 			break Loopa
 
 		}

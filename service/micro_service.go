@@ -30,11 +30,12 @@ func StartMicroService(){
 	service.Server().Init(server.Wait(nil))
 	micro.RegisterHandler(service.Server(), new(Hrefs))
 	service.Run()
-	service.Server().Stop()
+	//service.Server().Stop()
 }
 
 func Stop(){
 	service.Server().Stop()
+	util.Info.Println( "micro 微服务结束")
 }
 func logWrapper(fn server.HandlerFunc) server.HandlerFunc {
 	start := time.Now()

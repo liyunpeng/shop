@@ -39,7 +39,7 @@ func StartClient(transformConfiguration *transformer.Conf) {
 	util.WaitGroup.Add(1)
 	go StartKafkaConsumer(transformConfiguration.Kafka.Addr)
 
-	go StartOauth2Client()
+	//go StartOauth2Client()
 
 	go StartGrpcClient()
 

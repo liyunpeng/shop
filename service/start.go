@@ -15,5 +15,5 @@ func StartService(transformConfiguration *transformer.Conf) {
 
 	go StartMicroService()
 
-	go StartOauth2Service()
+	//go StartOauth2Service()
 }

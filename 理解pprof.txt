@@ -36,7 +36,7 @@ http://localhost:9909/debug/pprof/
 
 
 ---
-win7 上安装graphviz
+win7 上安装graphviz，
 1. 下载graphviz
 https://graphviz.gitlab.io/_pages/Download/Download_windows.html
 
@@ -59,7 +59,7 @@ Fetching profile over HTTP from http://localhost:9909/debug/pprof/profile
 Saved profile in C:\Users\Administrator\pprof\pprof.samples.cpu.005.pb.gz
 Serving web UI on http://localhost:6666
 
-30秒后 弹出浏览器火焰图
+以网页形式显示数据， 立即弹出浏览器，
 
 （2）查看内存的：
 D:\goworkspace\shop>go tool pprof -http=:6666 http://localhost:9909/debug/pprof/heap
@@ -87,9 +87,8 @@ inuse_space 生成heap时，在用空间
 在交互页面中，输入list 你被profile的函数名
 
 (pprof) list MyFunction
-ROUTINE ========================
+ROUTINE
 766103 766103 (flat, cum) 7.09% of Total
-……
 39562 39562 184: list = make([]MyStruct, 0, 256)
 . . 185: slotidIndex := 0
 . . 186: for {
@@ -104,3 +103,9 @@ HeapAlloc 进程堆内存分配使用的空间，通常是用户new出来的堆�
 HeapSys 进程从系统获得的堆内存，因为golang底层使用TCmalloc机制，会缓存一部分堆内存，虚拟地址空间。
 PauseNs 记录每次gc暂停的时间(纳秒)，最多记录256个最新记录。
 NumGC 记录gc发生的次数。
+
+原生页面监控的都是实时的， 没F5刷新一次，值都会变化。
+而通过go tool pprof -http=:6666 http://localhost:9909/debug/pprof/heap
+看到的是一个瞬时的数据，相当于一个快照，不会再有变动。
+
+
