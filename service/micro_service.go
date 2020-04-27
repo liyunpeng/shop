@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"fmt"
 	"github.com/kataras/golog"
 	micro "github.com/micro/go-micro/v2"
 	"github.com/micro/go-micro/v2/config"
@@ -21,8 +20,9 @@ var service micro.Service
 var reg registry.Registry
 
 func InitMicro(){
-	var useEtcd bool
-	useEtcd = true
+	// 外部参数
+	useEtcd := true
+
 	if useEtcd == true {
 		reg = etcdv3.NewRegistry( func(options *registry.Options) {
 			// etcd 地址
@@ -34,8 +34,8 @@ func InitMicro(){
 	}else{
 		urls := util.GetConsulUrls()
 		// TODO: 检测consul服务发现是否正常启动
-		reg = consul.NewRegistry(func(op *registry.Options) {
-			op.Addrs = urls
+		reg = consul.NewRegistry(func(options *registry.Options) {
+			options.Addrs = urls
 		})
 	}
 }
@@ -54,16 +54,10 @@ func StartMicroService(){
 
 	protobuf.RegisterUserHandler(service.Server(), new(User))
 
-	service.Run()
-	//service.Server().Stop()
-}
 
-type User struct{}
-
-func (u *User) Hello(ctx context.Context, req *protobuf.Request, res *protobuf.Response) error {
-	res.Msg = "Hello " + req.Name
-	util.Logger.Println("微服务的服务提供者的服务方法调用， ",res.Msg)
-	return nil
+	if err := service.Run(); err != nil {
+		util.Info.Println(err)
+	}
 }
 
 func Stop(){
@@ -93,6 +87,6 @@ func StartMicroService1() {
 	protobuf.RegisterUserHandler(service.Server(), new(User))
 
 	if err := service.Run(); err != nil {
-		fmt.Println(err)
+		util.Info.Println(err)
 	}
 }
