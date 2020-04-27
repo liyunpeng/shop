@@ -8,7 +8,7 @@ import (
 // Add takes two integers and returns the sum of them
 func Add(x, y int) int {
 	//slice := make([]int, 100, 200)
-	//fmt.Println("slice :", slice)
+	//logger.Info.Println("slice :", slice)
 	return x + y
 }
 
@@ -17,7 +17,7 @@ func Add(x, y int) int {
 
  */
 func BenchmarkAdd(t *testing.B){
-	fmt.Println("B.N=", t.N)
+	logger.Info.Println("B.N=", t.N)
 
 	for i :=0;  i< t.N; i++ {
 		_ = Add(1, 2)
@@ -29,7 +29,7 @@ func heap() ([]byte ) {
 }
 
 func BenchmarkHeap(t *testing.B){
-	fmt.Println("B.N=", t.N)
+	logger.Info.Println("B.N=", t.N)
 
 	for i :=0;  i< t.N; i++ {
 		_ = heap()
@@ -38,7 +38,7 @@ func BenchmarkHeap(t *testing.B){
 
 func ExampleAdd() {
 	sum := Add(1, 5)
-	fmt.Println(sum)
+	logger.Info.Println(sum)
 	// Output: 6
 }
 

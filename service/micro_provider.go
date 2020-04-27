@@ -2,23 +2,23 @@ package service
 
 import (
 	"context"
-	"fmt"
+	"shop/logger"
 	"shop/models"
 )
 
 type Hrefs struct{}
 
 func (s *Hrefs) GetOrderByUser(ctx context.Context, req string, rsp *models.OrderItems) error {
-	fmt.Println("微服务请求参数 req=", req)
+	logger.Info.Println("微服务请求参数 req=", req)
 	rsp.Items = models.OrderFindByUser(req)
-	fmt.Println("微服务响应： rsp=", rsp)
+	logger.Info.Println("微服务响应： rsp=", rsp)
 	return nil
 }
 
 func (s *Hrefs) GetOrderById(ctx context.Context, req int, rsp *models.Order) error {
-	fmt.Println("微服务请求参数 req=", req)
+	logger.Info.Println("微服务请求参数 req=", req)
 	*rsp = *models.OrderFindById(req)
-	fmt.Println("微服务响应： rsp.name=", rsp.Username)
+	logger.Info.Println("微服务响应： rsp.name=", rsp.Username)
 	return nil
 }
 
@@ -30,7 +30,7 @@ func (s *Hrefs) IndexLinks(ctx context.Context, req int, rsp *models.User) error
 	//}
 
 	rsp.Name = "aa"
-	fmt.Println("1111111   micro为服务响应, 接收到的请求参数为：",req)
+	logger.Info.Println("micro为服务响应, 接收到的请求参数为：",req)
 
 	return nil
 }

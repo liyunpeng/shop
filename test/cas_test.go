@@ -64,9 +64,9 @@ func CasMutex() {
 	go add(&x)
 	go sub(&x)
 	wg.Wait()
-	fmt.Println("No lock: ", x)
+	logger.Info.Println("No lock: ", x)
 	elasped := time.Since(start)
-	fmt.Println(elasped)
+	logger.Info.Println(elasped)
 
 	start = time.Now()
 	wg.Add(2)
@@ -74,9 +74,9 @@ func CasMutex() {
 	go addMutex(&x)
 	go subMutex(&x)
 	wg.Wait()
-	fmt.Println("Mutex lock with condition race: ", x)
+	logger.Info.Println("Mutex lock with condition race: ", x)
 	elasped = time.Since(start)
-	fmt.Println(elasped)
+	logger.Info.Println(elasped)
 
 	start = time.Now()
 	wg.Add(2)
@@ -84,27 +84,27 @@ func CasMutex() {
 	go addAtomic(&y)
 	go subAtomic(&y)
 	wg.Wait()
-	fmt.Println("Atomic CAS with condition race: ", y)
+	logger.Info.Println("Atomic CAS with condition race: ", y)
 	elasped = time.Since(start)
-	fmt.Println(elasped)
+	logger.Info.Println(elasped)
 
 	start = time.Now()
 	wg.Add(1)
 	x = 0
 	go addMutex(&x)
 	wg.Wait()
-	fmt.Println("Mutex lock without condition race: ", x)
+	logger.Info.Println("Mutex lock without condition race: ", x)
 	elasped = time.Since(start)
-	fmt.Println(elasped)
+	logger.Info.Println(elasped)
 
 	start = time.Now()
 	wg.Add(1)
 	y = 0
 	go addAtomic(&y)
 	wg.Wait()
-	fmt.Println("Atomic CAS without condition race: ", y)
+	logger.Info.Println("Atomic CAS without condition race: ", y)
 	elasped = time.Since(start)
-	fmt.Println(elasped)
+	logger.Info.Println(elasped)
 }
 
 func TestCasMutex(t *testing.T){

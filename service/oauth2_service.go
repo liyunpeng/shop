@@ -2,11 +2,11 @@ package service
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 	"net/url"
 	"os"
+	"shop/logger"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
@@ -77,7 +77,7 @@ func StartOauth2Service() {
 		store.Save()
 
 		err = srv.HandleAuthorizeRequest(w, r)
-		fmt.Println("authorise, r=", r)
+		logger.Info.Println("authorise, r=", r)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 		}
@@ -86,7 +86,7 @@ func StartOauth2Service() {
 	// 接收客户端token请求
 	http.HandleFunc("/token", func(w http.ResponseWriter, r *http.Request) {
 		err := srv.HandleTokenRequest(w, r)
-		fmt.Println("token 请求处理， w=", w, "r=", r)
+		logger.Info.Println("token 请求处理， w=", w, "r=", r)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
@@ -121,7 +121,7 @@ func userAuthorizeHandler(w http.ResponseWriter, r *http.Request) (userID string
 	if err != nil {
 		return
 	}
-	fmt.Println("userAuthorizeHandler \n\n")
+	logger.Info.Println("userAuthorizeHandler \n\n")
 	uid, ok := store.Get("LoggedInUserID")
 	if !ok {
 		if r.Form == nil {
@@ -153,8 +153,8 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 		store.Set("LoggedInUserID", "000000")
 		store.Save()
 
-		fmt.Println("login handler session= ", store)
-		fmt.Println("login handler requeset= ", r)
+		logger.Info.Println("login handler session= ", store)
+		logger.Info.Println("login handler requeset= ", r)
 		// 重定向到授权页面
 		w.Header().Set("Location", "/auth")
 		w.WriteHeader(http.StatusFound)
@@ -171,7 +171,7 @@ func authHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Println("/auth authHandler, sesstion=", store)
+	logger.Info.Println("/auth authHandler, sesstion=", store)
 	if _, ok := store.Get("LoggedInUserID"); !ok {
 		w.Header().Set("Location", "/login")
 		w.WriteHeader(http.StatusFound)

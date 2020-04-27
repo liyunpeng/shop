@@ -2,8 +2,8 @@ package service
 
 import (
 	"encoding/json"
-	"fmt"
 	"golang.org/x/net/websocket"
+	"shop/logger"
 	"shop/util"
 	//"shop/client"
 )
@@ -26,19 +26,19 @@ func WebSocketHandle(conn *websocket.Conn) {
 	defer conn.Close()
 	util.WaitGroup.Add(1)
 
-	fmt.Println("websocket与客户端建立连接，启动接收和发送数据的服务")
+	logger.Info.Println("websocket与客户端建立连接，启动接收和发送数据的服务")
 	go sendToClient(conn)
 	for {
 		jsonHandler := websocket.JSON
 		userInfo := &UserInfo{}
 		err := jsonHandler.Receive(conn, userInfo)
 		if err != nil {
-			fmt.Println(err)
+			logger.Info.Println(err)
 			break
 		}
 		jsonData, _ := json.Marshal(userInfo)
 
-		fmt.Println("receive frontend data:", string(jsonData[:]))
+		logger.Info.Println("receive frontend data:", string(jsonData[:]))
 		res := &Response{
 			Code: 1,
 			Msg:  "success",
@@ -46,7 +46,7 @@ func WebSocketHandle(conn *websocket.Conn) {
 		}
 		err = jsonHandler.Send(conn, res)
 		if err != nil {
-			fmt.Println(err)
+			logger.Info.Println(err)
 			break
 		}
 
@@ -61,7 +61,7 @@ func sendToClient(conn *websocket.Conn) {
 	for {
 		select {
 		case msg := <-WebsocketChan:
-			fmt.Println("向前端发送数据=", msg)
+			logger.Info.Println("向前端发送数据=", msg)
 			res := &Response{
 				Code: 1,
 				Msg:  "success",
@@ -69,7 +69,7 @@ func sendToClient(conn *websocket.Conn) {
 			}
 			err := jsonHandler.Send(conn, res)
 			if err != nil {
-				fmt.Println(err)
+				logger.Info.Println(err)
 
 				//go StartWebSocketService()
 				//panic("websockt 向客户端发送数据错误")
@@ -77,7 +77,7 @@ func sendToClient(conn *websocket.Conn) {
 			}
 			//time.Sleep(time.Millisecond * 500)
 		case <-util.ChanStop:
-			fmt.Println("websocket执行发送的routine结束")
+			logger.Info.Println("websocket执行发送的routine结束")
 			return
 		}
 	}

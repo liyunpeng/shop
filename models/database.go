@@ -7,6 +7,7 @@ import (
 	"github.com/fatih/color"
 	"github.com/jinzhu/gorm"
 	_ "shop/config"
+	"shop/logger"
 	"shop/transformer"
 	"time"
 )
@@ -17,14 +18,14 @@ var DB *gorm.DB
 func Register(rc *transformer.Conf) {
 	defer func() {
 		if err := recover(); err != nil {
-			fmt.Println(err) // 这里的err其实就是panic传入的内容
+			logger.Info.Println(err) // 这里的err其实就是panic传入的内容
 		}
 	}()
 	//mysqlConf := conf.Mysql
 
 	//DBConn := "root:123456@/gotest?charset=utf8&parseTime=True&loc=Local"
 	mysql := rc.Mysql // "root:123456@/gotest?charset=utf8&parseTime=True&loc=Local"
-	fmt.Println("mysql conf =", mysql)
+	logger.Info.Println("mysql conf =", mysql)
 	DB, err = gorm.Open(
 		"mysql",  mysql.Connect)
 	//"mysql", "root:password@tcp(192.168.0.220:31111)/gotest?charset=utf8&parseTime=True&loc=Local")
@@ -34,9 +35,9 @@ func Register(rc *transformer.Conf) {
 		DB.DB().SetConnMaxLifetime(time.Duration(300) * time.Minute)
 		DB.Set("gorm:table_options", "ENGINE=InnoDB DEFAULT CHARSET=utf8")
 		err = DB.DB().Ping()
-		fmt.Println("成功连接数据库")
+		logger.Info.Println("成功连接数据库")
 	} else {
-		fmt.Println("没有连接到数据库 err= ", err)
+		logger.Info.Println("没有连接到数据库 err= ", err)
 		panic("数据库错误")
 	}
 	driverName := "mysql"
@@ -77,10 +78,10 @@ func Register(rc *transformer.Conf) {
 //
 //		//判断策略中是否存在
 //		if e.Enforce(sub, obj, act) {
-//			fmt.Println("通过权限")
+//			logger.Info.Println("通过权限")
 //			c.Next()
 //		} else {
-//			fmt.Println("权限没有通过")
+//			logger.Info.Println("权限没有通过")
 //			c.Abort()
 //		}
 //	}

@@ -84,9 +84,9 @@ func StartRoutineWriteChan(useCAS bool) {
 		}(idx)
 	}
 
-	// fmt.Println(casObj.readLoop())
-	fmt.Println(obj.readLoop())
-	fmt.Println("quit.")
+	// logger.Info.Println(casObj.readLoop())
+	logger.Info.Println(obj.readLoop())
+	logger.Info.Println("quit.")
 }
 
 func TestStartRoutineWriteChan( t *testing.T){

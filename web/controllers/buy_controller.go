@@ -1,10 +1,10 @@
 package controllers
 
 import (
-	"fmt"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
 	"github.com/kataras/iris/v12/sessions"
+	"shop/logger"
 	"shop/models"
 	"shop/util"
 
@@ -34,7 +34,7 @@ func (c *BuyController) GetBy(goodsID int64) mvc.Result {
 	result := new(BuyResult)
 	result.Goods = 	models.GoodsFindById(goodsID)
 	result.User = models.UserFindById(util.GetCurrentUserID(c.Session))
-	fmt.Println("用户", result.User.Username, "name=", result.User.Name,  "进入购买页面，商品ID=", result.Goods.ID)
+	logger.Info.Println("用户", result.User.Username, "name=", result.User.Name,  "进入购买页面，商品ID=", result.Goods.ID)
 
 	var buyStaticView = mvc.View{
 		Name: "buy.html",

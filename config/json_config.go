@@ -2,10 +2,9 @@ package config
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
+	"shop/logger"
 )
-
 
 //type Config struct {
 //	Server ServerConf `yaml:"server"`
@@ -79,12 +78,12 @@ func InitConfig(filename string) (err error) {
 	)
 
 	if content, err = ioutil.ReadFile(filename); err != nil {
-		fmt.Println(err)
+		logger.Info.Println(err)
 		return
 	}
 
 	if err = json.Unmarshal(content, &conf); err != nil {
-		fmt.Println(err)
+		logger.Info.Println(err)
 		return
 	}
 

@@ -10,19 +10,19 @@ type Shape interface {
 type Rectangle struct {
 }
 func (this Rectangle) Draw() {
-	fmt.Println("Inside Rectangle::draw() method.")
+	logger.Info.Println("Inside Rectangle::draw() method.")
 }
 
 type Square struct {
 }
 func (this Square) Draw() {
-	fmt.Println("Inside Square ::draw() method.")
+	logger.Info.Println("Inside Square ::draw() method.")
 }
 
 type Circle struct {
 }
 func (this Circle) Draw() {
-	fmt.Println("Inside Circle  ::draw() method.")
+	logger.Info.Println("Inside Circle  ::draw() method.")
 }
 
 type ShapeFactory struct {

@@ -1,13 +1,13 @@
 package controllers
 
 import (
-	"fmt"
 	"github.com/go-playground/validator/v10"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
 	"github.com/kataras/iris/v12/sessions"
 	"net/http"
 	"shop/client"
+	"shop/logger"
 	"shop/models"
 	"shop/util"
 	validates "shop/validates"
@@ -53,7 +53,7 @@ func (c *UserGController) GetRegister() mvc.Result {
 
 // PostRegister handles POST: http://localhost:8080/user/register.
 func (c *UserGController) PostRegister() mvc.Result {
-	fmt.Println("响应注册提交")
+	logger.Info.Println("响应注册提交")
 	var (
 		username  = c.Ctx.FormValue("username")
 		password  = c.Ctx.FormValue("password")
@@ -117,13 +117,13 @@ func (c *UserGController) PostLogin() mvc.Result {
 	user, found := c.Service.GetByUsernameAndPassword(username, password)
 	if !found {
 		c.Service.CreateUserTable()
-		fmt.Println("进入注册页面")
+		logger.Info.Println("进入注册页面")
 		return mvc.Response{
 			Path: "/userg/register",
 		}
 	}
-	fmt.Println("user.Username=", user.Username)
-	fmt.Println("user.id=", user.ID)
+	logger.Info.Println("user.Username=", user.Username)
+	logger.Info.Println("user.id=", user.ID)
 	c.Ctx.SetCookieKV("username", user.Username) // <-- 设置一个Cookie
 	// 另外也可以用: ctx.SetCookie(&http.Cookie{...})
 	// 如果要设置自定义存放路径：
@@ -149,7 +149,7 @@ func (c *UserGController) PostLogin() mvc.Result {
 	//usergIDKey1 := "session_user_id"
 	//c.Session.Set(usergIDKey1, user.ID)
 	//id1 , _ := c.Session.GetInt(usergIDKey1)
-	//fmt.Println("c.Session.GetInt(usergIDKey1)=", id1)
+	//logger.Info.Println("c.Session.GetInt(usergIDKey1)=", id1)
 	return mvc.Response{
 		Path: "/self",
 	}
@@ -207,7 +207,7 @@ func ApiUserGetById(ctx iris.Context) {
 
 
 func  ApiUserPost(ctx iris.Context) {
-	fmt.Println("ApiUserPost is called")
+	logger.Info.Println("ApiUserPost is called")
 	aul := new(validates.CreateUpdateUserRequest)
 	if err := ctx.ReadJSON(aul); err != nil {
 		ctx.StatusCode(iris.StatusOK)
@@ -225,7 +225,7 @@ func  ApiUserPost(ctx iris.Context) {
 }
 
 func  ApiUserUpdate(ctx iris.Context) {
-	fmt.Println("ApiUserUpdate is called")
+	logger.Info.Println("ApiUserUpdate is called")
 	aul := new(validates.CreateUpdateUserRequest)
 	if err := ctx.ReadJSON(aul); err != nil {
 		ctx.StatusCode(iris.StatusOK)
@@ -241,7 +241,7 @@ func  ApiUserUpdate(ctx iris.Context) {
 }
 
 func  ApiUserInsertOrUpdate(ctx iris.Context) {
-	fmt.Println("ApiUserInsertOrUpdate is called")
+	logger.Info.Println("ApiUserInsertOrUpdate is called")
 	aul := new(validates.CreateUpdateUserRequest)
 	if err := ctx.ReadJSON(aul); err != nil {
 		ctx.StatusCode(iris.StatusOK)

@@ -11,11 +11,11 @@ type Base struct {
 }
 
 func (base *Base) HasFeet() {
-	fmt.Println(base.FirstName + base.LastName + "has feet! Base")
+	logger.Info.Println(base.FirstName + base.LastName + "has feet! Base")
 }
 
 func (base *Base) Flying() {
-	fmt.Println("Base Can flying!")
+	logger.Info.Println("Base Can flying!")
 }
 
 type Sub struct {
@@ -32,13 +32,13 @@ func (sub *Sub) Flying() {
 	这样会出现无限循环，即一直在调用子类的方法。
 	 */
 	sub.Base.Flying()
-	fmt.Println("Sub flying")
+	logger.Info.Println("Sub flying")
 }
 
 func TestZuhe( t *testing.T) {
 	chk := new(Sub)
 	chk.Flying()
 	chk2 := &Sub{Base{"Bob", "Steven", 2.0}, "China"}
-	fmt.Println(chk2.Area)
+	logger.Info.Println(chk2.Area)
 }
 

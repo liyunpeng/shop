@@ -9,6 +9,7 @@ import (
 	"github.com/jameskeane/bcrypt"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
+	"shop/logger"
 	"shop/validates"
 	"strconv"
 	"time"
@@ -16,13 +17,13 @@ import (
 
 type User struct {
 	gorm.Model
-	Salt      string `gorm:"type:varchar(255)" json:"salt"`
-	Username  string `gorm:"unique_index" json:"username"`
-	Name     string `gorm:"not null VARCHAR(191)"`
+	Salt        string `gorm:"type:varchar(255)" json:"salt"`
+	Username    string `gorm:"unique_index" json:"username"`
+	Name        string `gorm:"not null VARCHAR(191)"`
 	Address     string `gorm:"type:varchar(191)"`
-	Password  string `gorm:"type:varchar(200);column:password" json:"-"`
-	Phonenumber  string `gorm:"type:varchar(200);column:phonenumber" json:"phonenumber"`
-	Level string `gorm:"type:varchar(200);column:level" json:"level"`
+	Password    string `gorm:"type:varchar(200);column:password" json:"-"`
+	Phonenumber string `gorm:"type:varchar(200);column:phonenumber" json:"phonenumber"`
+	Level       string `gorm:"type:varchar(200);column:level" json:"level"`
 }
 
 func (u User) TableName() string {
@@ -44,7 +45,7 @@ func UserCreateTable() (s string) {
 	return buffer.String()
 }
 
-func UserInsert(user *User){
+func UserInsert(user *User) {
 	salt, _ := bcrypt.Salt(10)
 	hash, _ := bcrypt.Hash(user.Password, salt)
 
@@ -58,24 +59,24 @@ func UserInsert(user *User){
 	DB.Create(user)
 }
 
-func UserFindByName(name string) *User{
+func UserFindByName(name string) *User {
 	user := new(User)
 	tx := DB.Where("username =?", name).Find(&user)
-	if ( tx.Error == nil){
+	if tx.Error == nil {
 		return user
-	}else{
+	} else {
 		return nil
 	}
 }
 
-func IsUserExist(name string)  bool {
+func IsUserExist(name string) bool {
 	var count int
 	if DB.Model(&User{}).Where("username =?", name).Count(&count).Error != nil {
 		panic("IsExist 异常")
 	} else {
-		if (count == 0 ) {
+		if count == 0 {
 			return false
-		} else if ( count == 1) {
+		} else if count == 1 {
 			return true
 		} else {
 			panic("IsExist count 异常")
@@ -83,7 +84,7 @@ func IsUserExist(name string)  bool {
 	}
 }
 
-func UserUpdate(user *User) (err error){
+func UserUpdate(user *User) (err error) {
 	DB.Model(&User{}).Where("username =?", user.Username).Update(user)
 	return nil
 }
@@ -95,13 +96,13 @@ func UserDeleteByName(username string) {
 	DB.Delete(user)
 }
 
-func UserFindById(id int64) *User{
+func UserFindById(id int64) *User {
 	user := new(User)
 	DB.Where("id =?", id).First(user)
-	return  user
+	return user
 }
 
-func UserFindAll() ( []*User){
+func UserFindAll() []*User {
 	//var users []*User
 	//DB.DB().Ping()
 	//usersa := make([]*User, 100)
@@ -173,8 +174,8 @@ func addRoles(uj *validates.CreateUpdateUserRequest, user *User) {
 				color.Red(fmt.Sprintf("CreateUserErr:%s \n ", err))
 			}
 		}
-	}else {
-		fmt.Println("没后为用户添加角色")
+	} else {
+		logger.Info.Println("没后为用户添加角色")
 	}
 }
 
@@ -196,6 +197,3 @@ func CreateUser(aul *validates.CreateUpdateUserRequest) (user *User) {
 
 	return
 }
-
-
-

@@ -19,4 +19,10 @@ $ find -name "*.go" ! -path "./vendor/*"
 $ find -name "*.mod" ! -path "./vendor/*" | xargs rm -rf
 ---
 1. 批量替换文件
+centos 下：
 find  -name "*.go" | xargs  sed -i 's/github.com\/liyunpeng\///g'
+
+mac 下：
+$ find ./ -name "*.go" | xargs  sed -i '' 's/util\.Info\.Println/logger\.Info\.Println/g'
+find 后面要带 ./
+-i 后面要有 ''

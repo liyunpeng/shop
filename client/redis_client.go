@@ -6,6 +6,7 @@ import (
 	"os"
 	"os/signal"
 	"shop/config"
+	"shop/logger"
 	"syscall"
 	"time"
 )
@@ -17,7 +18,7 @@ var (
 
 func StartRedisClient() {
 	redisHost := config.TransformConfiguration.Redis.Addr
-	fmt.Println("redis连接池初始化")
+	logger.Info.Println("redis连接池初始化")
 	RedisPool = newPool(redisHost)
 	Conn = RedisPool.Get()
 }
@@ -28,18 +29,18 @@ func newPool(server string) *redis.Pool {
 		IdleTimeout: 240 * time.Second,
 		Dial: func() (redis.Conn, error) {
 			c, err := redis.Dial("tcp", server)
-			fmt.Println("TCP REDIS 建立连接")
+			logger.Info.Println("TCP REDIS 建立连接")
 			if err != nil {
-				fmt.Println("TCP REDIS 连接异常，err=", err)
+				logger.Info.Println("TCP REDIS 连接异常，err=", err)
 				return nil, err
 			} else {
-				fmt.Println("TCP REDIS 连接成功")
+				logger.Info.Println("TCP REDIS 连接成功")
 				return c, err
 			}
 		},
 		TestOnBorrow: func(c redis.Conn, t time.Time) error {
 			_, err := c.Do("PING")
-			fmt.Println("tcp redis 连接测试 err=", err)
+			logger.Info.Println("tcp redis 连接测试 err=", err)
 			return err
 		},
 	}
@@ -63,7 +64,7 @@ func RedisSet(key string, value string) error {
 	if err != nil {
 		return fmt.Errorf("error get key %s: %v", key, err)
 	}
-	fmt.Println("redis set data :", string(data))
+	logger.Info.Println("redis set data :", string(data))
 	return nil
 }
 type RedisUser struct {
@@ -81,7 +82,7 @@ func RedisUserHSet( userid string, k string , v string) { //userid string,  micr
 	))
 
 	if err != nil {
-		fmt.Println("Hash failed:", err)
+		logger.Info.Println("Hash failed:", err)
 	} else {
 		fmt.Printf("Hash result: \n %v \n", value)
 	}
@@ -96,7 +97,7 @@ func RedisUserHMSet( user *RedisUser) {
 	))
 
 	if err != nil {
-		fmt.Println("Hash failed:", err)
+		logger.Info.Println("Hash failed:", err)
 	} else {
 		fmt.Printf("Hash result: \n %v \n", value)
 	}
@@ -109,20 +110,20 @@ func RedisGet(key string) ([]byte, error) {
 		return data, fmt.Errorf("error get key %s: %v", key, err)
 	}
 
-	//fmt.Println("redis get key=", string(data))
+	//logger.Info.Println("redis get key=", string(data))
 	return data, err
 }
 
 func RedisSetString(k string, v string) {
 	_, err := Conn.Do("SET", k, v)
 	if err != nil {
-		fmt.Println("redis set failed:", err)
+		logger.Info.Println("redis set failed:", err)
 	}
 }
 func RedisDelString(k string, v string) {
 	_, err := Conn.Do("DEL", k, v)
 	if err != nil {
-		fmt.Println("redis set failed:", err)
+		logger.Info.Println("redis set failed:", err)
 	}
 }
 
@@ -130,13 +131,13 @@ func StringTest(k string, v string) {
 	var err error
 	_, err = Conn.Do("SET", "mykey", "superWang", "EX", "5")
 	if err != nil {
-		fmt.Println("redis set failed:", err)
+		logger.Info.Println("redis set failed:", err)
 	}
 
 	var username string
 	username, err = redis.String(Conn.Do("GET", "mykey"))
 	if err != nil {
-		fmt.Println("redis get failed:", err)
+		logger.Info.Println("redis get failed:", err)
 	} else {
 		fmt.Printf("Get mykey: %v \n", username)
 	}
@@ -145,7 +146,7 @@ func StringTest(k string, v string) {
 
 	username, err = redis.String(Conn.Do("GET", "mykey"))
 	if err != nil {
-		fmt.Println("redis get failed:", err)
+		logger.Info.Println("redis get failed:", err)
 	} else {
 		fmt.Printf("Get mykey: %v \n", username)
 	}
@@ -164,7 +165,7 @@ func Lua() {
 	value, err := redis.String(Conn.Do("eval", "return 'hello world'", 0))
 
 	if err != nil {
-		fmt.Println("lua failed:", err)
+		logger.Info.Println("lua failed:", err)
 	} else {
 		fmt.Printf("lua result: %v \n", value)
 	}
@@ -183,7 +184,7 @@ func Lpush() {
 	values, _ := redis.Values(Conn.Do("lrange", listName, "0", "100"))
 
 	for _, v := range values {
-		fmt.Println("v:", string(v.([]byte)))
+		logger.Info.Println("v:", string(v.([]byte)))
 	}
 	/*
 		运行结果：
@@ -193,9 +194,9 @@ func Lpush() {
 
 	var v1 string
 	redis.Scan(values, &v1)
-	fmt.Println("v1=", v1)
+	logger.Info.Println("v1=", v1)
 	redis.Scan(values, &v1)
-	fmt.Println("v1=", v1)
+	logger.Info.Println("v1=", v1)
 }
 
 func Hashsetget() {
@@ -209,18 +210,18 @@ func Hashsetget() {
 		"verified", "1"))
 
 	if err != nil {
-		fmt.Println("Hash failed:", err)
+		logger.Info.Println("Hash failed:", err)
 	} else {
 		fmt.Printf("Hash result: \n %v \n", value)
 	}
 
 	values, err := redis.Values(Conn.Do("hgetall", hashName))
 	if err != nil {
-		fmt.Println("Hash hgetall failed:", err)
+		logger.Info.Println("Hash hgetall failed:", err)
 	} else {
 		fmt.Printf("Hash hgetall result: \n %v \n", value)
 		for _, v := range values {
-			fmt.Println("hgetall:", string(v.([]byte)))
+			logger.Info.Println("hgetall:", string(v.([]byte)))
 		}
 		/*
 			运行结果：
@@ -253,7 +254,7 @@ func Subscribe() {
 			//fmt.Printf("%s: %s %d\n", v.Channel, v.Kind, v.Count)
 			continue
 		case error:
-			fmt.Println(v)
+			logger.Info.Println(v)
 			return
 		}
 	}
@@ -269,7 +270,7 @@ func Pubscribe(s string) {
 
 	_, err := c.Do("PUBLISH", "redChatRoom", s)
 	if err != nil {
-		fmt.Println("pub err: ", err)
+		logger.Info.Println("pub err: ", err)
 		return
 	}
 }
@@ -279,7 +280,7 @@ func Info() {
 	value, err := redis.String(Conn.Do("info", "server"))
 
 	if err != nil {
-		fmt.Println("Info failed:", err)
+		logger.Info.Println("Info failed:", err)
 	} else {
 		fmt.Printf("Info result: \n %v \n", value)
 	}

@@ -12,14 +12,14 @@ type IHello interface {
 type A struct {
 }
 func (*A) Hello(name string) {
-	fmt.Println("hello " + name + ", i am a")
+	logger.Info.Println("hello " + name + ", i am a")
 }
 
 type B struct {
 	IHello
 }
 func (*B) Hello(name string) {
-	fmt.Println("hello " + name + ", i am b")
+	logger.Info.Println("hello " + name + ", i am b")
 }
 
 type C struct {
@@ -30,7 +30,7 @@ type C struct {
 type D struct {
 }
 func (*D) Hello(name string) {
-	fmt.Println("hello " + name + ", i am d")
+	logger.Info.Println("hello " + name + ", i am d")
 }
 
 func TestZuheInteface(t *testing.T) {

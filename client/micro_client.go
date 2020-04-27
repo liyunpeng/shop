@@ -7,7 +7,7 @@ import (
 	microClient "github.com/micro/go-micro/v2/client"
 	"github.com/micro/go-micro/v2/config"
 	protobuf "shop/encode/generate" // 应用的目录可以和包名不同
-	"shop/util"
+	"shop/logger"
 )
 
 var microClientObj microClient.Client
@@ -31,7 +31,7 @@ func MicroCall(method string, req interface{}, rsp interface{}) error {
 	request := microClientObj.NewRequest(microServiceName, fmt.Sprintf("Hrefs.%s", method), req, microClient.WithContentType("application/json"))
 
 	if err := microClientObj.Call(context.TODO(), request, &rsp); err != nil {
-		fmt.Println(err)
+		logger.Info.Println(err)
 		return err
 	}
 
@@ -41,7 +41,7 @@ func MicroCall(method string, req interface{}, rsp interface{}) error {
 func MicroCallUser(){
 	res, err := microClientService.Hello(context.TODO(), &protobuf.Request{Name: "World ^_^"})
 	if err != nil {
-		fmt.Println(err)
+		logger.Info.Println(err)
 	}
-	util.Info.Println("微服务的客户端收到服务端的响应消息=", res.Msg)
+	logger.Info.Println("微服务的客户端收到服务端的响应消息=", res.Msg)
 }

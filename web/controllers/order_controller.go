@@ -1,11 +1,11 @@
 package controllers
 
 import (
-	"fmt"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
 	"github.com/kataras/iris/v12/sessions"
 	"shop/client"
+	"shop/logger"
 	"shop/models"
 	"shop/util"
 
@@ -36,16 +36,16 @@ type Result struct {
 func (c *OrderController) Get() mvc.Result {
 
 	cookieName := c.Ctx.GetCookie(util.COOKEI_NAME)
-	fmt.Println("cookieName=", cookieName)
+	logger.Info.Println("cookieName=", cookieName)
 
 	//iris.WithCharset("UTF-8")
 
 	rsp1 := new(models.User)
 	err1 := client.MicroCall("IndexLinks", 10, rsp1)
 	if err1 != nil {
-		fmt.Println("err =",err1 )
+		logger.Info.Println("err =",err1 )
 	}else{
-		fmt.Println("客户端调用微服务的结果 =", rsp1.Name )
+		logger.Info.Println("客户端调用微服务的结果 =", rsp1.Name )
 	}
 
 	client.MicroCallUser()
@@ -65,7 +65,7 @@ func (c *OrderController) Get() mvc.Result {
 	//go func (){
 	//	rsp := new(models.Order)
 	//	err := cli.MicroCall("GetOrderById", 1, rsp)
-	//	fmt.Println("rsp.name=", rsp.Username)
+	//	logger.Info.Println("rsp.name=", rsp.Username)
 	//	result.Orders = append(result.Orders, rsp)
 	//
 	//	if err != nil {
@@ -88,7 +88,7 @@ func (c *OrderController) Get() mvc.Result {
 	//mvc.View{}.Data = s
 	sessionUserName := 	c.Session.GetString(util.SessionUserName)
 	if len(sessionUserName) > 0 {
-		fmt.Println("用户已经登录")
+		logger.Info.Println("用户已经登录")
 		result := new( Result)
 		orderItems := new( models.OrderItems)
 		err := client.MicroCall("GetOrderByUser", sessionUserName, orderItems)
@@ -106,7 +106,7 @@ func (c *OrderController) Get() mvc.Result {
 			},
 		}
 	} else {
-		fmt.Println("用户没有登录")
+		logger.Info.Println("用户没有登录")
 		return mvc.View{
 			Name: "order.html",
 			Data: iris.Map{

@@ -53,6 +53,6 @@ func TestDefaultParams(t *testing.T) {
 		SetTimeout(time.Second*5),
 	)
 
-	fmt.Println("name:", s.conf.Name)
-	fmt.Println("time", s.conf.Timeout)
+	logger.Info.Println("name:", s.conf.Name)
+	logger.Info.Println("time", s.conf.Timeout)
 }

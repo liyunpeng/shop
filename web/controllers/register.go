@@ -18,8 +18,8 @@ func RegisterControllers( app *iris.Application) {
 	secureCookie := securecookie.New(hashKey, blockKey)
 
 	sessManager := sessions.New(sessions.Config{
-		Cookie:  util.COOKEI_NAME,
-		Expires: 24 * time.Hour,
+		Cookie:       util.COOKEI_NAME,
+		Expires:      24 * time.Hour,
 		Encode:       secureCookie.Encode,
 		Decode:       secureCookie.Decode,
 		AllowReclaim: true,

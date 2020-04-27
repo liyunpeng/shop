@@ -9,6 +9,8 @@ import (
 	etcdv3 "github.com/micro/go-micro/v2/registry/etcd"
 	"github.com/micro/go-micro/v2/server"
 	"github.com/micro/go-plugins/registry/consul/v2"
+	"shop/logger"
+
 	//"github.com/micro/go-plugins/registry/etcdv3"
 	custconfig "shop/config"
 	protobuf "shop/encode/generate"
@@ -56,13 +58,13 @@ func StartMicroService(){
 
 
 	if err := service.Run(); err != nil {
-		util.Info.Println(err)
+		logger.Info.Println(err)
 	}
 }
 
 func Stop(){
 	service.Server().Stop()
-	util.Info.Println( "micro 微服务结束")
+	logger.Info.Println( "micro 微服务结束")
 }
 func logWrapper(fn server.HandlerFunc) server.HandlerFunc {
 	start := time.Now()
@@ -87,6 +89,6 @@ func StartMicroService1() {
 	protobuf.RegisterUserHandler(service.Server(), new(User))
 
 	if err := service.Run(); err != nil {
-		util.Info.Println(err)
+		logger.Info.Println(err)
 	}
 }

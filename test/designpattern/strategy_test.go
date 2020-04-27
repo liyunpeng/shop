@@ -21,7 +21,7 @@ type Division struct {}
 func (p Division) Compute(num1, num2 int) int {
 	defer func() {
 		if f := recover(); f != nil {
-			fmt.Println(f)
+			logger.Info.Println(f)
 			return
 		}
 	}()
@@ -82,7 +82,7 @@ func (p *Computer) SetStrategy(strate Strategier) {
 func (p Computer) Do() int {
 	defer func() {
 		if f := recover(); f != nil {
-			fmt.Println(f)
+			logger.Info.Println(f)
 		}
 	}()
 
@@ -111,7 +111,7 @@ func Strategy() {
 	com := Computer{Num1: num1, Num2: num2}
 	strate := NewStrategy(stratey)
 	com.SetStrategy(strate)
-	fmt.Println(com.Do())
+	logger.Info.Println(com.Do())
 }
 
 func TestStrategy(t *testing.T){

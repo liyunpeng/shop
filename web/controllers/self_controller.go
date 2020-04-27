@@ -1,9 +1,9 @@
 package controllers
 
 import (
-	"fmt"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/sessions"
+	"shop/logger"
 	"shop/util"
 
 	//"github.com/kataras/iris/v12/context"
@@ -30,18 +30,18 @@ func (c *SelfController) Get() mvc.Result {
 
 	//sessionUserId, _ := 	c.Session.GetInt(util.SessionUserID)
 	if c.Session.GetInt64Default(util.SessionUserID, 0) > 0 {
-		fmt.Println("session id = ", c.Session.ID())
-		fmt.Println("session username = ", c.Session.GetString(util.SessionUserName))
-		fmt.Println("util.SessionUserID=", c.Session.GetInt64Default(util.SessionUserID, 0))
+		logger.Info.Println("session id = ", c.Session.ID())
+		logger.Info.Println("session username = ", c.Session.GetString(util.SessionUserName))
+		logger.Info.Println("util.SessionUserID=", c.Session.GetInt64Default(util.SessionUserID, 0))
 		c.Ctx.ViewData("Title", c.Session.GetString(util.SessionUserName))
 		//id1 , _ := c.Session.GetInt(SessionUserID)
 		//if id1 > 0 {
-		//	fmt.Println("c.Session.GetInt(SessionUserID)=", id1)
-		//	//fmt.Println("session.GetString=", c.Session.GetString("UserID"))
+		//	logger.Info.Println("c.Session.GetInt(SessionUserID)=", id1)
+		//	//logger.Info.Println("session.GetString=", c.Session.GetString("UserID"))
 		//	c.Ctx.ViewData("Title", id1)
 
 	} else {
-		fmt.Println("session is nil")
+		logger.Info.Println("session is nil")
 		c.Ctx.ViewData("Title", "未登录")
 	}
 

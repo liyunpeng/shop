@@ -11,6 +11,7 @@ import (
 
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/clientcredentials"
+	"shop/logger"
 )
 
 const (
@@ -45,13 +46,13 @@ func StartOauth2Client() {
 			return
 		}
 		code := r.Form.Get("code")
-		fmt.Println("获取授权码 code=", code)
+		logger.Info.Println("获取授权码 code=", code)
 		if code == "" {
 			http.Error(w, "Code not found", http.StatusBadRequest)
 			return
 		}
 		token, err := oauth2Config.Exchange(context.Background(), code)
-		fmt.Println("获取 token =", token)
+		logger.Info.Println("获取 token =", token)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -118,7 +119,7 @@ func StartOauth2Client() {
 			TokenURL:     oauth2Config.Endpoint.TokenURL,
 		}
 
-		fmt.Println("认证服务器的授权吗地址=", cfg)
+		logger.Info.Println("认证服务器的授权吗地址=", cfg)
 		token, err := cfg.Token(context.Background())
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)

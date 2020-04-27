@@ -1,8 +1,8 @@
 package workerpool
 
 import (
-	"fmt"
 	"runtime"
+	"shop/logger"
 	"time"
 )
 
@@ -11,7 +11,7 @@ type Score struct {
 }
 
 func (s *Score) Do() {
-	fmt.Println("num:", s.Num)
+	logger.Info.Println("num:", s.Num)
 	//这里延迟是模拟处理数据的耗时
 	time.Sleep(1 * 1 * time.Second)
 }
@@ -51,7 +51,7 @@ loopa:
 
 	for {
 
-		fmt.Println("启动的routine个数统计： runtime.NumGoroutine() :", runtime.NumGoroutine())
+		logger.Info.Println("启动的routine个数统计： runtime.NumGoroutine() :", runtime.NumGoroutine())
 		time.Sleep(2 * time.Second)
 		select {
 		case <-timer.C:
@@ -60,6 +60,6 @@ loopa:
 		}
 	}
 
-	fmt.Println("启动的routine个数统计： runtime.NumGoroutine() :", runtime.NumGoroutine())
-	fmt.Println("GopollMain 结束")
+	logger.Info.Println("启动的routine个数统计： runtime.NumGoroutine() :", runtime.NumGoroutine())
+	logger.Info.Println("GopollMain 结束")
 }

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"google.golang.org/grpc"
 	"net"
+	"shop/logger"
 	pb "shop/rpc/proto"
 	"shop/transformer"
 	"shop/util"
@@ -38,7 +39,7 @@ func StartGrpcService(grpcConf transformer.GrpcConf) {
 	// 第二个参数类型需要接口类型的变量
 	pb.RegisterUserInfoServiceServer(GrpcSever, &u)
 	// 4.启动gRPC服务
-	fmt.Println("启动gRPC服务")
+	logger.Info.Println("启动gRPC服务")
 
 	GrpcSever.Serve(listenSocket)
 

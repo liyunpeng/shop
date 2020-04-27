@@ -8,6 +8,7 @@ import (
 	"github.com/hpcloud/tail"
 	"shop/config"
 	"shop/custchan"
+	"shop/logger"
 	"shop/util"
 	"sync"
 )
@@ -30,7 +31,7 @@ func (t *TailManager) NewTailWithConf(logConfig config.LogConfig) (*TailWithConf
 	t.lock.Lock()
 	defer t.lock.Unlock()
 
-	fmt.Println("在Tail服务里增加一个被监控的文件：", logConfig)
+	logger.Info.Println("在Tail服务里增加一个被监控的文件：", logConfig)
 	_, ok := t.tailWithConfMap[logConfig.LogPath]
 	if ok {
 		return nil, errors.New("map中已存在该键值")
@@ -44,7 +45,7 @@ func (t *TailManager) NewTailWithConf(logConfig config.LogConfig) (*TailWithConf
 		Poll:      true,
 	})
 	if err != nil {
-		fmt.Println("tail file err:", err)
+		logger.Info.Println("tail file err:", err)
 		return nil, err
 	}
 
@@ -60,12 +61,12 @@ func (t *TailManager) NewTailWithConf(logConfig config.LogConfig) (*TailWithConf
 }
 
 func (t *TailManager) reloadConfig(logConfArr []config.LogConfig) (err error) {
-	fmt.Println("hdcloud tail管理者重新加载配置")
+	logger.Info.Println("hdcloud tail管理者重新加载配置")
 	for _, logConfArrValue := range logConfArr {
 		tailWithConf, ok := t.tailWithConfMap[logConfArrValue.LogPath]
 
 		if !ok {
-			fmt.Println("hdcloud tail监控的文件不存在，则为此文件新建一个tail对象")
+			logger.Info.Println("hdcloud tail监控的文件不存在，则为此文件新建一个tail对象")
 			tailWithConf, err = t.NewTailWithConf(logConfArrValue)
 			if err != nil {
 				logs.Error("add log file failed:%v", err)
@@ -76,7 +77,7 @@ func (t *TailManager) reloadConfig(logConfArr []config.LogConfig) (err error) {
 
 			//util.WaitGroup.Add(1)
 
-			fmt.Println("新的监控文件对应一个新的tail对象， ")
+			logger.Info.Println("新的监控文件对应一个新的tail对象， ")
 			go tailWithConf.readLog(logConfArrValue.LogPath)
 
 			continue
@@ -84,7 +85,7 @@ func (t *TailManager) reloadConfig(logConfArr []config.LogConfig) (err error) {
 		tailWithConf.logConf = logConfArrValue
 		tailWithConf.secLimit.Limit = int32(logConfArrValue.SendRate)
 		t.tailWithConfMap[logConfArrValue.LogPath] = tailWithConf
-		fmt.Println("tailWithConf:", tailWithConf)
+		logger.Info.Println("tailWithConf:", tailWithConf)
 	}
 
 	for key, tailWithConf := range t.tailWithConfMap {
@@ -112,11 +113,11 @@ func (t *TailManager) MonitorConfChan() {
 		var logConfArr []config.LogConfig
 
 		err := json.Unmarshal([]byte(etcdConfValue), &logConfArr)
-		fmt.Println("TailManager的Process函数从etcd得到的配置字符串解析出的配置对象: ", logConfArr)
+		logger.Info.Println("TailManager的Process函数从etcd得到的配置字符串解析出的配置对象: ", logConfArr)
 
 		if err != nil {
 			logs.Error("TailManager的Process函数 解析失败, err: %v etcdConfValue :%s", err, etcdConfValue)
-			fmt.Println("unmarshal failed, err: %v etcdConfValue :%s", err, etcdConfValue)
+			logger.Info.Println("unmarshal failed, err: %v etcdConfValue :%s", err, etcdConfValue)
 			continue
 		}
 

@@ -4,12 +4,12 @@ package main
 
 import (
 	stdContext "context"
-	"fmt"
 	"github.com/kataras/iris/v12"
 	"golang.org/x/net/context"
 	_ "net/http/pprof"
 	"shop/client"
 	"shop/custchan"
+	"shop/logger"
 	"shop/service"
 	"shop/sys"
 	"shop/web/controllers"
@@ -34,6 +34,7 @@ import (
 //var Conf *config.Config
 
 func init() {
+	logger.InitCustLogger()
 	go func() {
 		err := http.ListenAndServe(":9909", nil)
 		if err != nil {
@@ -50,7 +51,7 @@ func init() {
 	//content, err := ioutil.ReadFile(_path)®
 	//if err == nil {
 	//	err = yaml.Unmarshal(content, Conf)
-	//	fmt.Println("Conf=", Conf)
+	//	logger.Info.Println("Conf=", Conf)
 	//}
 
 	err := config.InitConfig("./config/conf.json")
@@ -58,9 +59,9 @@ func init() {
 		return
 	}
 	// 分别打印http db rabbitmq配置
-	fmt.Println("host=", config.HttpConfig.Host)
-	fmt.Println("port=", config.DBConfig.Port)
-	fmt.Println("vhost=", config.AmqpConfig.Vhost)
+	logger.Info.Println("host=", config.HttpConfig.Host)
+	logger.Info.Println("port=", config.DBConfig.Port)
+	logger.Info.Println("vhost=", config.AmqpConfig.Vhost)
 
 	config.IrisConfiguration = iris.TOML("./config/conf.tml")
 	config.TransformConfiguration = config.GetTransformConfiguration(config.IrisConfiguration)
@@ -150,7 +151,7 @@ func init() {
 
 func main() {
 
-	util.InitCustLogger()
+	logger.InitCustLogger()
 	// TODO
 	//args := os.Args
 	//if len(args) < 1 || args == nil {
@@ -166,8 +167,8 @@ func main() {
 
 
 
-	//defer fmt.Println("主routine完全退出")
-	//defer fmt.Println("主routine内存分析完毕")
+	//defer logger.Info.Println("主routine完全退出")
+	//defer logger.Info.Println("主routine内存分析完毕")
 	//defer profile.StartMicroService(profile.MemProfile).Stop()
 
 	//cpuf, err := os.Create("cpu_profile")
@@ -251,9 +252,9 @@ func main() {
 	util.Logger.Debug("启动iris服务完毕")
 
 	stopControl(app)
-	util.Info.Println("等待所有routine关闭动作完成")
+	logger.Info.Println("等待所有routine关闭动作完成")
 	util.WaitGroup.Wait()
-	util.Info.Println("所有routine的关闭动作已全部完成")
+	logger.Info.Println("所有routine的关闭动作已全部完成")
 }
 
 func stopControl(app *iris.Application) {
@@ -276,7 +277,7 @@ Loopa:
 	for {
 		select {
 		case <-signals:
-			util.Info.Println("shutdown...")
+			logger.Info.Println("shutdown...")
 
 			util.Cancel()
 			close(util.ChanStop)
@@ -285,16 +286,16 @@ Loopa:
 			timeout := 5 * time.Second
 			ctx, cancel := stdContext.WithTimeout(stdContext.Background(), timeout)
 			cancel()
-			util.Info.Println("关闭iris 服务")
+			logger.Info.Println("关闭iris 服务")
 			app.Shutdown(ctx)
 
-			util.Info.Println("关闭grpc 服务")
+			logger.Info.Println("关闭grpc 服务")
 			service.GrpcSever.Stop()
 
-			util.Info.Println("关闭go-micro 微服务")
+			logger.Info.Println("关闭go-micro 微服务")
 			service.Stop()
 
-			util.Info.Println("关闭控制流程结束")
+			logger.Info.Println("关闭控制流程结束")
 			break Loopa
 
 		}

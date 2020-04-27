@@ -1,10 +1,10 @@
 package service
 
 import (
-	"fmt"
 	"github.com/astaxie/beego/logs"
 	"github.com/hpcloud/tail"
 	"shop/config"
+	"shop/logger"
 	"shop/custchan"
 	"strings"
 	"sync/atomic"
@@ -28,12 +28,12 @@ func (t *TailWithConf) readLog(fileName string) {
 		}
 
 		lineStr := strings.TrimSpace(line.Text)
-		fmt.Println("从被监控的文件", fileName, "中读到的字符串=", lineStr)
+		logger.Info.Println("从被监控的文件", fileName, "中读到的字符串=", lineStr)
 
 		if len(lineStr) == 0 || lineStr[0] == '\n' {
 			continue
 		}
-		fmt.Println("向kafka生产者数据通道发送消息 消息字符串=",
+		logger.Info.Println("向kafka生产者数据通道发送消息 消息字符串=",
 			line.Text, "消息的topic=", t.logConf.Topic)
 		custchan.AddKafkaProducerMsg(line.Text, t.logConf.Topic)
 		t.secLimit.Add(1)
@@ -95,4 +95,3 @@ func (s *SecondLimit) Wait() bool {
 		return false
 	}
 }
-

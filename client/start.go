@@ -3,6 +3,7 @@ package client
 import (
 	"fmt"
 	"shop/custchan"
+	"shop/logger"
 	"shop/transformer"
 	"shop/util"
 	"time"
@@ -13,7 +14,7 @@ func StartClient(transformConfiguration *transformer.Conf) {
 	EtcdClientInsance = NewEtcdClientWrap(
 		[]string{transformConfiguration.Etcd.Addr}, 5 * time.Second)
 	go func() {
-		fmt.Println("到etcd服务器，按指定的键遍历键值对")
+		logger.Info.Println("到etcd服务器，按指定的键遍历键值对")
 		for _, key := range etcdKeys {
 			resp := EtcdClientInsance.Get(key)
 			if resp != nil || resp.Count < 1 {

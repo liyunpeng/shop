@@ -1,11 +1,11 @@
 package controllers
 
 import (
-	"fmt"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
 	"github.com/kataras/iris/v12/sessions"
 	"shop/client"
+	"shop/logger"
 	"shop/models"
 	"shop/util"
 )
@@ -21,12 +21,12 @@ func (c *HomeController) Get() mvc.Result {
 	rsp := new(models.User)
 	err := client.MicroCall("IndexLinks", 10, rsp)
 	if err != nil {
-		fmt.Println("err =",err )
+		logger.Info.Println("err =",err )
 	}else{
-		fmt.Println("客户端调用微服务的结果 =", rsp.Name )
+		logger.Info.Println("客户端调用微服务的结果 =", rsp.Name )
 	}
-	fmt.Println("cookiename =",cookieName)
-	fmt.Println("session name=", c.Session.Get(util.SessionUserID))
+	logger.Info.Println("cookiename =",cookieName)
+	logger.Info.Println("session name=", c.Session.Get(util.SessionUserID))
 
 	result := Result{
 		Item: 1,

@@ -1,7 +1,7 @@
 package client
 
 import (
-	"fmt"
+	"shop/logger"
 	"shop/models"
 )
 
@@ -44,10 +44,10 @@ func (u *userService) FindAllUser( users []*models.User) {
 func (u *userService) GetByUsernameAndPassword(username, userPassword string) (*models.User, bool) {
 	user := models.UserFindByName(username)
 	if user != nil && len(user.Username) > 0 {
-		fmt.Println("找到用户名=", user.Username)
+		logger.Info.Println("找到用户名=", user.Username)
 		return user, true
 	} else {
-		fmt.Println("没找到用户名=", username)
+		logger.Info.Println("没找到用户名=", username)
 		return user, false
 	}
 }

@@ -2,12 +2,12 @@ package validates
 
 import (
 	"fmt"
-	"reflect"
-
 	"github.com/go-playground/locales/zh"
 	ut "github.com/go-playground/universal-translator"
 	"github.com/go-playground/validator/v10"
 	zh_translations "github.com/go-playground/validator/v10/translations/zh"
+	"reflect"
+	"shop/logger"
 )
 
 // 表单验证
@@ -30,6 +30,6 @@ func init() {
 		return fld.Tag.Get("comment")
 	})
 	if err := zh_translations.RegisterDefaultTranslations(Validate, ValidateTrans); err != nil {
-		fmt.Println(fmt.Sprintf("RegisterDefaultTranslations %v", err))
+		logger.Info.Println(fmt.Sprintf("RegisterDefaultTranslations %v", err))
 	}
 }

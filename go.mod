@@ -28,7 +28,7 @@ require (
 	github.com/kataras/golog v0.0.10
 	github.com/kataras/iris/v12 v12.1.8
 	github.com/mattn/go-colorable v0.1.6 // indirect
-	github.com/micro/go-micro v1.18.0
+	github.com/micro/go-micro v1.18.0 // indirect
 	github.com/micro/go-micro/v2 v2.4.0
 	github.com/micro/go-plugins/registry/consul/v2 v2.3.0
 	github.com/onsi/ginkgo v1.12.0 // indirect

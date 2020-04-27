@@ -3,8 +3,8 @@ package service
 import (
 	"bufio"
 	"context"
-	"fmt"
 	"os"
+	"shop/logger"
 	pb "shop/rpc/proto"
 	"shop/util"
 )
@@ -19,12 +19,12 @@ func (u *UserInfoService) bufioWriteFile(s string) {
 	content := []byte(s)
 	newWriter := bufio.NewWriterSize(u.file, 1024)
 	if _, err = newWriter.Write(content); err != nil {
-		fmt.Println(err)
+		logger.Info.Println(err)
 	}
 	if err = newWriter.Flush(); err != nil {
-		fmt.Println(err)
+		logger.Info.Println(err)
 	}
-	fmt.Println("write file successful")
+	logger.Info.Println("write file successful")
 }
 
 type WorkerPoolJob struct {
@@ -34,7 +34,7 @@ type WorkerPoolJob struct {
 func (w *WorkerPoolJob) Do() {
 	util.PrintFuncName()
 
-	fmt.Println("Do parameter=", w.Paraeter)
+	logger.Info.Println("Do parameter=", w.Paraeter)
 }
 
 // 实现服务端需要首先的接口
@@ -69,7 +69,7 @@ func (u *UserInfoService) init() {
 	var err error
 	u.file, err = os.OpenFile("./aaa.txt", os.O_CREATE|os.O_RDWR|os.O_APPEND, 0666)
 	if err != nil {
-		fmt.Println(err)
+		logger.Info.Println(err)
 	}
 }
 func (u *UserInfoService) destroy() {

@@ -7,6 +7,7 @@ import (
 	"github.com/kataras/iris/v12/mvc"
 	"shop/client"
 	"shop/config"
+	"shop/logger"
 	"shop/util"
 	"shop/validates"
 	"strconv"
@@ -34,7 +35,7 @@ type MonitorFile struct {
 
 func ApiEtcdGetKV(ctx iris.Context) {
 	keya := ctx.Params().Get("key")
-	fmt.Println("api调用 ApiEtcdGetKV ,请求参数为", keya)
+	logger.Info.Println("api调用 ApiEtcdGetKV ,请求参数为", keya)
 	var ss []config.LogConfig
 	//resp :=	client.EtcdClientInsance.Get("/logagent/192.168.0.142/logconfig")
 	resp := client.EtcdClientInsance.Get(keya)
@@ -77,7 +78,7 @@ type EtcdOption struct {
 }
 
 func ApiEtcdListAllKV(ctx iris.Context) {
-	fmt.Println(" Apiectcd list all kv ")
+	logger.Info.Println(" Apiectcd list all kv ")
 	s := []EtcdOption{
 		{
 			//Label:"/logagent/192.168.0.1/logconfig",
@@ -103,7 +104,7 @@ func ApiEtcdListAllKV(ctx iris.Context) {
 }
 
 func (e *EtcdController) Post() mvc.Response {
-	fmt.Println("ApiUserPost is called")
+	logger.Info.Println("ApiUserPost is called")
 	k := e.Ctx.FormValue("key")
 	v := e.Ctx.FormValue("value")
 
@@ -114,7 +115,7 @@ func (e *EtcdController) Post() mvc.Response {
 }
 
 func (e *EtcdController) PostKV() {
-	fmt.Println("ApiUserPostKV is called")
+	logger.Info.Println("ApiUserPostKV is called")
 	//var i interface{}
 	//i = new()
 	aul := new(validates.CreateEtcdKVRequest)
@@ -128,7 +129,7 @@ func (e *EtcdController) PostKV() {
 	_, _ = e.Ctx.JSON(ApiResource(true, nil, "成功添加etcd键值对"))
 }
 func (e *EtcdController) GetAll() {
-	fmt.Println("api GetAll is called")
+	logger.Info.Println("api GetAll is called")
 
 	k := "/logagent/192.168.0.142/logconfig"
 	resp := e.Service.Get(k)
@@ -146,7 +147,7 @@ func (e *EtcdController) GetAll() {
 }
 
 //func ApiEtcdPost(ctx context2.Context) {
-//	fmt.Println("ApiUserPost is called")
+//	logger.Info.Println("ApiUserPost is called")
 //	aul := new(validates.CreateEtcdKVRequest)
 //	if err := ctx.ReadJSON(aul); err != nil {
 //		ctx.StatusCode(iris.StatusOK)
@@ -182,7 +183,7 @@ func (e *EtcdController) GetKv() string {
 //}
 
 func ApiRedisSet(ctx iris.Context) {
-	fmt.Println("redis 操作")
+	logger.Info.Println("redis 操作")
 	for i :=0; i< 100; i++ {
 		client.RedisSetString( strconv.Itoa(i), "aaaaaaaa")
 	}

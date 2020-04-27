@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"shop/custchan"
+	"shop/logger"
 	"shop/util"
 	"time"
 
@@ -33,9 +34,9 @@ func NewEtcdClientWrap(addrs []string, timeout time.Duration) *etcdClientWrap {
 		DialTimeout: timeout,
 	})
 	if err != nil {
-		fmt.Println("etcd 连接失败， err=", err)
+		logger.Info.Println("etcd 连接失败， err=", err)
 	}else {
-		fmt.Println("etcd 连接成功")
+		logger.Info.Println("etcd 连接成功")
 	}
 	kv := client.NewKV(etcdClient)
 
@@ -66,7 +67,7 @@ func (e *etcdClientWrap) Get(key string) (*client.GetResponse) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	getResp, err := e.EtcdKV.Get(ctx, key) //withPrefix()是未了获取该key为前缀的所有key-value
 	if err != nil {
-		fmt.Println("etcd get key 出错：", err)
+		logger.Info.Println("etcd get key 出错：", err)
 	}
 	//fmt.Printf("kvs2:  %v", getResp.Kvs)
 	cancel()
@@ -80,15 +81,15 @@ func (e *etcdClientWrap) EtcdWatch(ctx context.Context, keys []string) {
 	var watchChans []client.WatchChan
 	for _, key := range keys {
 		rch := e.EtcdClient.Watch(context.Background(), key)
-		fmt.Println("添加要watch的key，key的值=", key)
+		logger.Info.Println("添加要watch的key，key的值=", key)
 		watchChans = append(watchChans, rch)
 	}
 
 	for {
 		for _, watchC := range watchChans {
 			select {
-			case <- util.ChanStop:
-				fmt.Println("etcd watch 协程 退出")
+			case <-util.ChanStop:
+				logger.Info.Println("etcd watch 协程 退出")
 				return
 			case wresp := <-watchC:
 				for _, ev := range wresp.Events {
@@ -119,13 +120,13 @@ func GetEtcdKeys() ([]string) {
 	//var err error
 	ips = append(ips, "192.168.0.1")
 	//if err != nil {
-	//	fmt.Println("get local ip error:", err)
+	//	logger.Info.Println("get local ip error:", err)
 	//	//return err
 	//}
 	for _, ip := range ips {
 		//key := fmt.Sprintf("/logagent/%s/logconfig", ip)
 		etcdKeys = append(etcdKeys, ip)
 	}
-	fmt.Println("从etcd服务器获取到的以IP名为键的键值对: ", etcdKeys)
+	logger.Info.Println("从etcd服务器获取到的以IP名为键的键值对: ", etcdKeys)
 	return etcdKeys
 }

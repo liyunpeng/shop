@@ -74,7 +74,7 @@ func (this *Node) Sum() int {
 func (this *Node) InorderTraversal() {
 	if this != nil {
 		this.Left.InorderTraversal()
-		fmt.Println(this)
+		logger.Info.Println(this)
 		this.Right.InorderTraversal()
 	}
 }
@@ -88,7 +88,7 @@ func Inserts() {
 	Tree.Insert(5, 6)
 	Tree.Insert(7, 8)
 	Tree.InorderTraversal()
-	fmt.Println(Tree.Sum())
+	logger.Info.Println(Tree.Sum())
 }
 
 func TestInserts( t *testing.T){
