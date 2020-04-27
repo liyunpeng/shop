@@ -1,0 +1,110 @@
+任何代码程序都可以划分出框架部分和业务部分。
+框架部分基本是共性的，所以可以用生成的方式，自动化生成这些代码
+所以生成代码就是把框架代码生成好，
+micro微服务里框架被进一步延伸了，需要程序员自己去写的东西都被尽可能多限制在业务层面。
+这有几个好处：
+1. 用更短时间写出更高质量的代码
+2. 减少写错代码的几率
+3. 出现错误后，更容易找到排查方向
+这个思想和go语言设计思想是一致的，即共性的需求都被整合到语言本身，而不是交个开发者实现。
+像通道，map, 切片，以及net包等， 这些在c语言里是没有的，
+c语言也可以实现这些东西，但开发者需要花很多的时间设计，编写，调试，而且容易错误。
+而且在多并发时的线程安全问题方面的错误也藏的隐蔽，需要很大的并发量才能显露出错误。
+所以go语言把这些非常有共性需求的东西都被纳入到语言本身的支持，
+开发者不需要自己实现携程，通道这种普遍需要，而设计编写难度很高的模块
+开发者需要做的是正确使用他，而不是实现他。
+通道，map，协程基本是每个开发者都需要的，
+回到micro, 把共性进一步延伸了， 
+只不过需要自己编写接口，手动生成
+这些抽象出来的共性组成了框架。
+
+pb.go 是作为编解码的protobuf生成的，会为每个message定义生成一个protobuf序列化编解码需要的类型，
+该类型有四个成员和10个方法。
+解释一下为什么需要序列化，答：为了还原对象的需要。
+对象都是在内存里的，有自己的数据成员和方法成员。
+对象在放到其他介质里面的时候，就需要转换一下格式，这个过程就叫序列化，从介质中还原出对象的过程，就是反序列化。
+这个介质可以是文件，数据库，网络。
+protobuf目前是所有序列化里最快的。
+微服务是一种rpc, 即调用远端的服务方法。
+请求参数会封装成一个对象传给远端，即对象传给远端，这就需要序列化
+micro用protobuf序列化。
+在gitbash命令行中，在用go get下载好go-micro-gen bin文件后，
+就可这直接用protoc一个命令生成
+
+$ protoc -I ./protos/ --go_out=protoc-gen-go:./proto_gen --micro_out=./proto_gen ./protos/user.proto
+-I 表示proto定义文件
+--go_out 为proto的go语言版本的序列化消息的生成代码文件的存放目录
+--micro_out 为使用go-micro-gen生成micro微服务的生成代码文件的存放目录
+
+pb.micro.go生成文件分成两个部分：客户端的api和服务端的api
+micro微服务的客户端api自己的接口，实现，和提供一个微服务的new方法。业务方法调用时需要的框架部分
+type UserService interface {
+	Hello(ctx context.Context, in *Request, opts ...client.CallOption) (*Response, error)
+}
+
+type userService struct {
+	c    client.Client
+	name string
+}
+
+func NewUserService(name string, c client.Client) UserService {
+	if c == nil {
+		c = client.NewClient()
+	}
+	if len(name) == 0 {
+		name = "user"
+	}
+	return &userService{
+		c:    c,
+		name: name,
+	}
+}
+
+func (c *userService) Hello(ctx context.Context, in *Request, opts ...client.CallOption) (*Response, error) {
+	req := c.c.NewRequest(c.name, "User.Hello", in)
+	out := new(Response)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+micro微服务的服务端api有自己的接口，实现，和向server端注入具体业务服务的方法
+type UserHandler interface {
+	Hello(context.Context, *Request, *Response) error
+}
+
+func RegisterUserHandler(s server.Server, hdlr UserHandler, opts ...server.HandlerOption) error {
+	type user interface {
+		Hello(ctx context.Context, in *Request, out *Response) error
+	}
+	type User struct {
+		user
+	}
+	h := &userHandler{hdlr}
+	return s.Handle(s.NewHandler(&User{h}, opts...))
+}
+
+type userHandler struct {
+	UserHandler
+}
+
+func (h *userHandler) Hello(ctx context.Context, in *Request, out *Response) error {
+	return h.UserHandler.Hello(ctx, in, out)
+}
+
+供外部业务程序调用
+服务的提供者和使用者都是micro服务的外部客户程序
+服务的使用者调用客户端api，为微服务的客户端client获取业务服务，调用目标业务方法
+user := proto.NewUserService("user", service.Client())
+res, err := user.Hello(context.TODO(), &proto.Request{Name: "World ^_^"})
+
+服务的提供者调用服务端api, 实现业务服务，并把服务注入到微服务的server端：
+type User struct{}
+
+func (u *User) Hello(ctx context.Context, req *proto.Request, res *proto.Response) error {
+	res.Msg = "Hello " + req.Name
+	return nil
+}
+proto.RegisterUserHandler(service.Server(), new(User))  //new服务对象, 把这个对象注入到服务
+通过handler向服务里注册具体的业务服务

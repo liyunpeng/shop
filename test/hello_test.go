@@ -1,6 +1,10 @@
 package test
 
-import "testing"
+import (
+	"shop/client"
+	"shop/service"
+	"testing"
+)
 
 const helloPrefix = "Hello, "
 
@@ -31,5 +35,12 @@ func TestHello(t *testing.T) {
 		want := "Hello, World1"
 		assertCorrectMessage(t, got, want)
 	})
+}
+
+func TestMicro(t *testing.T){
+
+	client.MicroCallUser()
+
+	service.StartMicroService()
 }
 

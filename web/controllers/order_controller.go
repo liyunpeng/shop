@@ -47,6 +47,8 @@ func (c *OrderController) Get() mvc.Result {
 	}else{
 		fmt.Println("客户端调用微服务的结果 =", rsp1.Name )
 	}
+
+	client.MicroCallUser()
 	//rsp := new(models.Order)
 	//err := cli.MicroCall("GetOrderByUser", "aa", rsp)
 	//var s []Order

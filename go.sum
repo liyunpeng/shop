@@ -509,8 +509,6 @@ github.com/micro/go-micro/v2 v2.4.0 h1:icFvqf8fof8bObqgDHGoiUCMuKwOCyWTGXaQjZDgE
 github.com/micro/go-micro/v2 v2.4.0/go.mod h1:lYuHYFPjY3QE9fdiy3F2awXcsXTdB68AwoY3RQ3dPN4=
 github.com/micro/go-plugins/registry/consul/v2 v2.3.0 h1:leX7yPBYvvs+poGyw/UWdGzcYmngoeIjr+fPdsqHx48=
 github.com/micro/go-plugins/registry/consul/v2 v2.3.0/go.mod h1:BftHiALzT0vPQkmtH9y+zbJ2MTNVZ16rRsSsxOfzf8M=
-github.com/micro/go-plugins/registry/etcdv3 v0.0.0-20200119172437-4fe21aa238fd h1:oTqvYym0IwWVtewAECorh11cgymZb9AFR7xfdI93waQ=
-github.com/micro/go-plugins/registry/etcdv3 v0.0.0-20200119172437-4fe21aa238fd/go.mod h1:GMrkmYoxDWgof79v3A7ipnRxQaMybZ0WJrVJxpXA7Jo=
 github.com/micro/mdns v0.3.0 h1:bYycYe+98AXR3s8Nq5qvt6C573uFTDPIYzJemWON0QE=
 github.com/micro/mdns v0.3.0/go.mod h1:KJ0dW7KmicXU2BV++qkLlmHYcVv7/hHnbtguSWt9Aoc=
 github.com/micro/protoc-gen-micro v1.0.0/go.mod h1:C8ij4DJhapBmypcT00AXdb0cZ675/3PqUO02buWWqbE=

@@ -13,7 +13,11 @@ func StartService(transformConfiguration *transformer.Conf) {
 	util.WaitGroup.Add(1)
 	go StartGrpcService(transformConfiguration.Grpc)
 
+	InitMicro()
+
 	go StartMicroService()
 
+
+	//go StartMicroService1()
 	//go StartOauth2Service()
 }

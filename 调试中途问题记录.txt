@@ -218,3 +218,26 @@ conf.tml中修改：
   CasbinConnect = "root:123456@tcp(192.168.0.141:3306)/"
   改为：
   CasbinConnect = "root:root@tcp(192.168.0.141:3306)/"
+
+19. etcd 连接超时：
+在量一台主机上， 在conf.tml忘记修改etcd的地址， 导致etcd超时错误
+EtcdClientInsance = NewEtcdClientWrap(
+		[]string{transformConfiguration.Etcd.Addr}, 5 * time.Second)
+	go func() {
+		fmt.Println("到etcd服务器，按指定的键遍历键值对")
+		for _, key := range etcdKeys {
+			resp := EtcdClientInsance.Get(key)
+
+etcd get key 出错： context deadline exceeded
+{"level":"warn","ts":"2020-04-27T15:51:30.977+0800","caller":"clientv3/retry_interceptor.go:61","msg":"retrying of unary invoker failed","target":"endpoint://client-9eab48e3-36f2-4b2b-84c6-a0e07030a488/192.168.0.223:2379","attempt":0,"error":"rpc error: code = DeadlineExceeded desc = context deadline exceeded"}
+panic: runtime error: invalid memory address or nil pointer dereference
+
+20. 生成代码的micro版本 与 业务使用的micro版本不一致。
+$ protoc -I ./source/ --go_out=protoc-gen-go:./generate --micro_out=./generate ./source/user.proto
+生成代码用的版本：
+client "github.com/micro/go-micro/client"
+业务代码用的版本：
+microClient "github.com/micro/go-micro/v2/client"
+解决办法：
+生产代码修改为：
+client "github.com/micro/go-micro/v2/client"

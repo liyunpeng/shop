@@ -1,0 +1,21 @@
+生成pb.go 序列化文件和pb.micro.go 微服务框架代码文件，在项目根目录下运行：
+$ protoc -I ./protos/ --go_out=protoc-gen-go:./proto_gen --micro_out=./proto_gen ./protos/user.proto
+
+运行微服务的业务服务提供者代码：
+$ go run server.go
+2020-01-23 18:29:05.234000 I | Transport [http] Listening on [::]:52137
+2020-01-23 18:29:05.234000 I | Broker [http] Connected to [::]:52138
+2020-01-23 18:29:05.321000 I | Registry [mdns] Registering node: user-3722929b-8388-4d53-8109-936cc9a1386c
+
+运行微服务的业务服务使用者代码：
+$ go run client.go
+Hello World ^_^
+
+
+--------------
+查找出vendor目录下所有的.mod后缀的文件
+$ find -name "*.go" ! -path "./vendor/*"
+
+查找出vendor目录下所有的.mod后缀的文件， 并删除这些文件
+$ find -name "*.mod" ! -path "./vendor/*" | xargs rm -rf
+

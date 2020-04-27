@@ -1,0 +1,131 @@
+1.  创建micro服务
+一个业务里包含多个方法， 一个业务有一个单独的micro客户端，
+到目前为止， 方法接口的形式有：
+1) 直接在代码的interface声明，
+2) 在aidl配置文件中定义，android 里用的 3 在 proto文件里定义，
+后两者生成接口代码文件和响应的带有框架代码的实现代码， 外部业务程序向这些实现代码里注入依赖
+到此三部曲完成了， 这三部曲完成了业务方法使用者需要的， 看看业务方法使用如何调用这些生成的代码：
+	service := micro.NewService(micro.Name("user.client"))
+	service.Init()
+服务对象的创建和初始化，两句代码，就完成了一个服务的部署。注意这个newService并不是生成的框架代码，
+可谓是简化之极， 没有再简化的空间，
+而且透明化， 不像其他语言封装成库， 透明化可以利于理解代码， 好理解了， 也就更利于程序的维护，
+ 要知道成熟的软件产品，是长期维护长期升级的， 据说70%时间在维护和升级
+极致的简化， 加透明的简化， 成就简化完美
+业务方法的提供者和业务方法的使用者，
+都要创建一个mciro的服务.
+业务方法的使用者从这个mciro服务里获取到方法
+业务方法的提供者向这个micro服务注入业务方法，
+
+2.  获取具体的业务服务
+业务方法的使用者通过proto获取具体的业务服务：
+	user := proto.NewUserService("user", service.Client())
+proto.NewUserService 创建了一个专门给业务使用者的服务， 这个服务是根据业务定制生成的，
+这个客制化的服务完成远程方法的调用， 这个客制化的服务不同于上面的micro服务， micro服务是标准的。 不是定制的。
+业务的使用者是对应micro服务的客户端， 需要用这个客户端构造出这个客制化的服务。
+这个方法不属于结构体实现部分， 这个new方法是要返回一个结构体实现对象
+所以他不属于结构体对象本身，
+属于包的， 调用的时候都是包名.new方法出来一个结构体对象，
+这些都是通用的写法，
+服务结构，服务结构体，new服务方法，
+new的任务就是返回一创建好的服务结构体对象，
+基本是围绕把结构体里的成员赋值好，
+具体是client和name都赋值好，
+这个new是供外部调用的， 所以以大写开头
+里面外部传入来的参数，基本外部程序简化到比较好的水平， 让业务程序简化到无可简化的程度
+结构体对象没传进来，是nil, 但是可以调用结构体实现的方法， 所以这里外部程序没有传入microcliene是可以的，
+func NewUserService(name string, c client.Client) UserService {
+	if c == nil {
+		c = client.NewClient()
+	}
+	if len(name) == 0 {
+		name = "user"
+	}
+	return &userService{
+		c:    c,
+		name: name,
+	}
+}
+newAAAService的命名， AAA是一个业务的名字，这里的user表示针对用户的业务， 可以用户注册，
+登录等服务方法都隶属于这个serive, 可以proto定义好这些方法的接口，
+
+在说方法的返回值类型， 完全是在proto生成文件的service接口规定好的，
+type UserService interface {
+	Hello(ctx context.Context, in *Request, opts ...client.CallOption) (*Response, error)  规定了业务方法的使用者在调用这个方法参数和返回值，
+}
+第一个client,  对于micro，服务方法的提供者 和使用者都是客户端，
+所以这里有个client,
+micro就想一个港口，
+服务方法提供者， 抽象出service, 要有自己的名字， 所以第二个成员是name,
+type userService struct {
+	c    client.Client
+	name string
+}
+说服务方法，
+func (c *userService) Hello(ctx context.Context, in *Request, opts ...client.CallOption) (*Response, error) {
+	req := c.c.NewRequest(c.name, "User.Hello", in)
+	out := new(Response)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+这个服务的方法代码分两部分， 一是框架部分， 一是业务部分
+框架部分包括请求的构造， 响应的构造， 调用业务方法， 业务传来的是一个方法名字符串，
+要通过这个方法字符串反射得到这个方法体。
+外部程序，把方法名字符串传进来就行，实际是把方法业务实现塞进来， 和里面的框架代码结合， 变成一个真正的方法执行体， 这种方式叫做依赖注入， 真正的业务， 就是服务的依赖， 框架准别好， 把这个依赖 注入进来， 就变成了一个真正有业务的服务 ，而不是一个空的框架， 有点像回调， 但回调需要框架把业务的接口固定， 作为一个框架， 要接受各种各样的业务业务函数， 函数有不同的参数， 所以传给框的只能是业务函数名字符串， 而不是函数体， 就是为了通用型， 这种方式就叫成了依赖注入， 区别于回调，
+c.c得到服务的客户端， NewRequest 构造出适合于rpc的请求结构体
+out := new(Response) 准好好响应的地方， 这是存放函数输出结果的地方，
+
+3. 从业务服务调用业务方法
+res, err := user.Hello(context.TODO(), &proto.Request{Name: "World ^_^"})
+rpc方法调用时，方法的参数要包装成proto.Request格式的，参数已经演变为消息，
+所以在生成时， 用message命名，
+user.proto定义的Request：
+message Request {
+string name = 1;
+}
+
+user.pb.go对应生成的Request有4个数据成员和10个方法。4个数据成员有：
+type Request struct {
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+10个方法为：
+消息置空， 字符串， 描述符， 解码方法， 编码方法， 将其他消息合并到本消息， 消息大小， 消息丢弃，消息名字。
+func (m *Request) Reset()         { *m = Request{} }
+func (m *Request) String() string { return proto.CompactTextString(m) }
+func (*Request) ProtoMessage()    {}
+func (*Request) Descriptor() ([]byte, []int) {
+	return fileDescriptor_116e343673f7ffaf, []int{0}
+}
+func (m *Request) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Request.Unmarshal(m, b)
+}
+func (m *Request) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Request.Marshal(b, m, deterministic)
+}
+func (m *Request) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Request.Merge(m, src)
+}
+func (m *Request) XXX_Size() int {
+	return xxx_messageInfo_Request.Size(m)
+}
+func (m *Request) XXX_DiscardUnknown() {
+	xxx_messageInfo_Request.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Request proto.InternalMessageInfo
+
+func (m *Request) GetName() string {
+	if m != nil {
+		return m.Name
+	}
+	return ""
+}
+
+以上部分是业务使用者需要的生成代码， 和业务使用者调用生成代码的格式，

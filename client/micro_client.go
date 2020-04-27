@@ -6,6 +6,7 @@ import (
 	"github.com/micro/go-micro/v2"
 	microClient "github.com/micro/go-micro/v2/client"
 	"github.com/micro/go-micro/v2/config"
+	protobuf "shop/encode/generate"   // 应用的目录可以和包名不同
 )
 
 var microClientObj microClient.Client
@@ -27,4 +28,16 @@ func MicroCall(method string, req interface{}, rsp interface{}) error {
 	}
 
 	return nil
+}
+
+func MicroCallUser(){
+	service := micro.NewService()
+	service.Init()
+
+	userService := protobuf.NewUserService( config.Get("srv").String("micro.hrefs.srv"), service.Client())
+	res, err := userService.Hello(context.TODO(), &protobuf.Request{Name: "World ^_^"})
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(res.XXX_Unmarshal([]byte(res.Msg)))
 }

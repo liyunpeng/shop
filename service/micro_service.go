@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"fmt"
 	"github.com/kataras/golog"
 	micro "github.com/micro/go-micro/v2"
 	"github.com/micro/go-micro/v2/config"
@@ -11,13 +12,15 @@ import (
 	"github.com/micro/go-plugins/registry/consul/v2"
 	//"github.com/micro/go-plugins/registry/etcdv3"
 	custconfig "shop/config"
+	protobuf "shop/encode/generate"
 	"shop/util"
 	"time"
 )
 
 var service micro.Service
-func StartMicroService(){
-	var reg registry.Registry
+var reg registry.Registry
+
+func InitMicro(){
 	var useEtcd bool
 	useEtcd = true
 	if useEtcd == true {
@@ -34,8 +37,8 @@ func StartMicroService(){
 			op.Addrs = urls
 		})
 	}
-
-
+}
+func StartMicroService(){
 	// TODO: 检测consul服务发现是否正常启动
 
 	service = micro.NewService(
@@ -43,11 +46,25 @@ func StartMicroService(){
 		micro.Name(config.Get("srv").String("micro.hrefs.srv")),
 		micro.WrapHandler(logWrapper),
 	)
+
 	server.Init()
+
 	service.Server().Init(server.Wait(nil))
+
+
 	micro.RegisterHandler(service.Server(), new(Hrefs))
+
+	protobuf.RegisterUserHandler(service.Server(), new(User))
+
 	service.Run()
 	//service.Server().Stop()
+}
+
+type User struct{}
+
+func (u *User) Hello(ctx context.Context, req *protobuf.Request, res *protobuf.Response) error {
+	res.Msg = "Hello " + req.Name
+	return nil
 }
 
 func Stop(){
@@ -62,5 +79,21 @@ func logWrapper(fn server.HandlerFunc) server.HandlerFunc {
 
 		golog.Infof("%s %s", time.Since(start), req.Endpoint())
 		return err
+	}
+}
+
+
+func StartMicroService1() {
+	service := micro.NewService(
+		micro.Registry(reg),
+		micro.Name("user"),
+	)
+
+	service.Init()
+
+	protobuf.RegisterUserHandler(service.Server(), new(User))
+
+	if err := service.Run(); err != nil {
+		fmt.Println(err)
 	}
 }

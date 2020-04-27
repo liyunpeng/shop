@@ -1,0 +1,19 @@
+折腾了两个晚上的时间， 每个晚上一个多小时， go-systemd总是提示错误， 网上也没找到答案，
+最后还是在群里发问， 热心朋友的提醒下才成功。
+本质原因是，
+1.缺少一个好的习惯， 没有用go env查看当前的环境变量配置
+2.用了一个错误的代理proxy.io, 应该是proxy.cn。
+
+同样因为没有go env对环境变量的检查，导致GOOS错误也没发现，
+导致没有设置正确的GOOS, 导致go get到的go-micro-gen是linux格式的，导致procf不能生成目标文件user.pb.micro.go
+在windows下工作，就算在gitbash里面， export这种方式也不是一定有效的，
+软件一个担心就是那些不完全失效的设置， 隐藏了排查的方向。
+在windows就要在我的电脑属性里设置环境变量， 重要的要设置全，
+GOOS要设置为windows, 因为有些go get得到的包是bin文件，
+这个GOOS告诉go get是要linux的bin文件， 还是windows的bin文件，
+设置GOOS要设置为windows，就是因为缺少了这个动作，导致go get得到的go-micro-gen bin文件不正确，
+profc因为使用了go-micro-gen ，导致不能生成目标文件。
+windows下go get下载，尽量在cmd命令行，不要用gitbash，因为在gitbash下，go get会下载.exe工具
+生成的user.pb.go  user.pb.micro.go可以一起提交到git hub,
+这样其他电脑下载， 可以直接go run server.go， 不用procf生成。
+生成的go.mod也要直接提交， 这样提交时间点对应的依赖包的版本号可以记录下来， 避免依赖包的版本变换导致问题
