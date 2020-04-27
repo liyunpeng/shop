@@ -6,21 +6,29 @@ import (
 	"github.com/micro/go-micro/v2"
 	microClient "github.com/micro/go-micro/v2/client"
 	"github.com/micro/go-micro/v2/config"
-	protobuf "shop/encode/generate"   // 应用的目录可以和包名不同
+	protobuf "shop/encode/generate" // 应用的目录可以和包名不同
+	"shop/util"
 )
 
 var microClientObj microClient.Client
-var name string
+var microServiceName string
 
+var microClientService protobuf.UserService
 func init() {
 	service := micro.NewService()
 	service.Init()
 	microClientObj = service.Client()
-	name = config.Get("srv").String("micro.hrefs.srv")
+	microServiceName = config.Get("srv").String("micro.hrefs.srv")
+
+
+	microClientService = protobuf.NewUserService(
+		microServiceName,
+		microClientObj)
+
 }
 
 func MicroCall(method string, req interface{}, rsp interface{}) error {
-	request := microClientObj.NewRequest(name, fmt.Sprintf("Hrefs.%s", method), req, microClient.WithContentType("application/json"))
+	request := microClientObj.NewRequest(microServiceName, fmt.Sprintf("Hrefs.%s", method), req, microClient.WithContentType("application/json"))
 
 	if err := microClientObj.Call(context.TODO(), request, &rsp); err != nil {
 		fmt.Println(err)
@@ -31,13 +39,9 @@ func MicroCall(method string, req interface{}, rsp interface{}) error {
 }
 
 func MicroCallUser(){
-	service := micro.NewService()
-	service.Init()
-
-	userService := protobuf.NewUserService( config.Get("srv").String("micro.hrefs.srv"), service.Client())
-	res, err := userService.Hello(context.TODO(), &protobuf.Request{Name: "World ^_^"})
+	res, err := microClientService.Hello(context.TODO(), &protobuf.Request{Name: "World ^_^"})
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(res.XXX_Unmarshal([]byte(res.Msg)))
+	util.Info.Println("微服务的客户端收到服务端的响应消息=", res.Msg)
 }

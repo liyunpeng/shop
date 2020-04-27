@@ -74,7 +74,7 @@ type RedisUser struct {
 	ShopCar	string
 }
 
-func RedisUserHSet( userid string, k string , v string) { //userid string,  name string, ad0dress string, priority string ){
+func RedisUserHSet( userid string, k string , v string) { //userid string,  microServiceName string, ad0dress string, priority string ){
 	hashName := "user:" + userid
 	value, err := redis.String(Conn.Do("hmset", hashName,
 		k, v,

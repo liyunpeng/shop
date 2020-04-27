@@ -33,14 +33,13 @@ func InitMicro(){
 		})
 	}else{
 		urls := util.GetConsulUrls()
+		// TODO: 检测consul服务发现是否正常启动
 		reg = consul.NewRegistry(func(op *registry.Options) {
 			op.Addrs = urls
 		})
 	}
 }
 func StartMicroService(){
-	// TODO: 检测consul服务发现是否正常启动
-
 	service = micro.NewService(
 		micro.Registry(reg),
 		micro.Name(config.Get("srv").String("micro.hrefs.srv")),
@@ -50,7 +49,6 @@ func StartMicroService(){
 	server.Init()
 
 	service.Server().Init(server.Wait(nil))
-
 
 	micro.RegisterHandler(service.Server(), new(Hrefs))
 
@@ -64,6 +62,7 @@ type User struct{}
 
 func (u *User) Hello(ctx context.Context, req *protobuf.Request, res *protobuf.Response) error {
 	res.Msg = "Hello " + req.Name
+	util.Logger.Println("微服务的服务提供者的服务方法调用， ",res.Msg)
 	return nil
 }
 
