@@ -40,7 +40,7 @@ func (obj *Obj) writeMsg(idx int, v interface{}) (err error) {
 	for {
 		if len(obj.c) < _CHAN_SIZE {
 			obj.c <- v
-			fmt.Printf("R(%v)+1 ", idx)
+			logger.Info.Printf("R(%v)+1 ", idx)
 			return nil
 		}
 	}
@@ -52,7 +52,7 @@ func (obj *Obj) writeMsgWithCASCheck(idx int, v interface{}) (err error) {
 			if len(obj.c) < _CHAN_SIZE {
 				obj.c <- v
 				atomic.StoreInt64(&obj.flag, 0)
-				fmt.Printf("R(%v)+1 ", idx)
+				logger.Info.Printf("R(%v)+1 ", idx)
 				return nil
 			} else {
 				atomic.StoreInt64(&obj.flag, 0)

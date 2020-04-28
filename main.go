@@ -249,7 +249,7 @@ func main() {
 		iris.WithoutInterruptHandler,
 		iris.WithCharset("UTF-8"),
 	)
-	util.Logger.Debug("启动iris服务完毕")
+	logger.Info.Println("启动iris服务完毕")
 
 	stopControl(app)
 	logger.Info.Println("等待所有routine关闭动作完成")
@@ -324,7 +324,7 @@ Loopa:
 //	// Read events from browser
 //	c.On("chat", func(msg string) {
 //		// Print the message to the console, c.Context() is the iris's http context.
-//		fmt.Printf("%s sent: %s\n", c.Context().RemoteAddr(), msg)
+//		logger.Info.Printf("%s sent: %s\n", c.Context().RemoteAddr(), msg)
 //		// Write message back to the client message owner with:
 //		// c.Emit("chat", msg)
 //		// Write message to all except this client with:

@@ -84,7 +84,7 @@ func RedisUserHSet( userid string, k string , v string) { //userid string,  micr
 	if err != nil {
 		logger.Info.Println("Hash failed:", err)
 	} else {
-		fmt.Printf("Hash result: \n %v \n", value)
+		logger.Info.Printf("Hash result: \n %v \n", value)
 	}
 }
 func RedisUserHMSet( user *RedisUser) {
@@ -99,7 +99,7 @@ func RedisUserHMSet( user *RedisUser) {
 	if err != nil {
 		logger.Info.Println("Hash failed:", err)
 	} else {
-		fmt.Printf("Hash result: \n %v \n", value)
+		logger.Info.Printf("Hash result: \n %v \n", value)
 	}
 }
 
@@ -139,7 +139,7 @@ func StringTest(k string, v string) {
 	if err != nil {
 		logger.Info.Println("redis get failed:", err)
 	} else {
-		fmt.Printf("Get mykey: %v \n", username)
+		logger.Info.Printf("Get mykey: %v \n", username)
 	}
 
 	//time.Sleep(8 * time.Second)
@@ -148,7 +148,7 @@ func StringTest(k string, v string) {
 	if err != nil {
 		logger.Info.Println("redis get failed:", err)
 	} else {
-		fmt.Printf("Get mykey: %v \n", username)
+		logger.Info.Printf("Get mykey: %v \n", username)
 	}
 
 	/*
@@ -167,7 +167,7 @@ func Lua() {
 	if err != nil {
 		logger.Info.Println("lua failed:", err)
 	} else {
-		fmt.Printf("lua result: %v \n", value)
+		logger.Info.Printf("lua result: %v \n", value)
 	}
 	/*
 		运行结果：
@@ -212,14 +212,14 @@ func Hashsetget() {
 	if err != nil {
 		logger.Info.Println("Hash failed:", err)
 	} else {
-		fmt.Printf("Hash result: \n %v \n", value)
+		logger.Info.Printf("Hash result: \n %v \n", value)
 	}
 
 	values, err := redis.Values(Conn.Do("hgetall", hashName))
 	if err != nil {
 		logger.Info.Println("Hash hgetall failed:", err)
 	} else {
-		fmt.Printf("Hash hgetall result: \n %v \n", value)
+		logger.Info.Printf("Hash hgetall result: \n %v \n", value)
 		for _, v := range values {
 			logger.Info.Println("hgetall:", string(v.([]byte)))
 		}
@@ -249,9 +249,9 @@ func Subscribe() {
 	for {
 		switch v := psc.Receive().(type) {
 		case redis.Message:
-			fmt.Printf("%s: messages: %s\n", v.Channel, v.Data)
+			logger.Info.Printf("%s: messages: %s\n", v.Channel, v.Data)
 		case redis.Subscription:
-			//fmt.Printf("%s: %s %d\n", v.Channel, v.Kind, v.Count)
+			//logger.Info.Printf("%s: %s %d\n", v.Channel, v.Kind, v.Count)
 			continue
 		case error:
 			logger.Info.Println(v)
@@ -282,7 +282,7 @@ func Info() {
 	if err != nil {
 		logger.Info.Println("Info failed:", err)
 	} else {
-		fmt.Printf("Info result: \n %v \n", value)
+		logger.Info.Printf("Info result: \n %v \n", value)
 	}
 	/*
 		运行结果：

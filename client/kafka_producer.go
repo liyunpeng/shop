@@ -54,10 +54,10 @@ func NewKafkaProducer(kafkaAddr string, isAsync bool) (kafkaProducer *KafkaProdu
 
 	if isAsync {
 		kafkaProducer.producerClientI, err = sarama.NewAsyncProducer([]string{kafkaAddr}, config)
-		util.Logger.Debug("创建kafaka 异步生产者")
+		logger.Info.Println("创建kafaka 异步生产者")
 	} else {
 		kafkaProducer.producerClientI, err = sarama.NewSyncProducer([]string{kafkaAddr}, config)
-		util.Logger.Debug("创建kafaka 同步生产者")
+		logger.Info.Println("创建kafaka 同步生产者")
 	}
 
 	if err != nil {
@@ -70,9 +70,9 @@ func NewKafkaProducer(kafkaAddr string, isAsync bool) (kafkaProducer *KafkaProdu
 			for {
 				select {
 				case suc := <-p.Successes():
-					util.Logger.Debug("offset: ", suc.Offset, "timestamp: ", suc.Timestamp.String(), "partitions: ", suc.Partition)
+					logger.Info.Println("offset: ", suc.Offset, "timestamp: ", suc.Timestamp.String(), "partitions: ", suc.Partition)
 				case fail := <-p.Errors():
-					util.Logger.Debug("err: ", fail.Err)
+					logger.Info.Println("err: ", fail.Err)
 				}
 			}
 		}(kafkaProducer.producerClientI.(sarama.AsyncProducer))
@@ -92,7 +92,7 @@ func (k *KafkaProducer) sendMsgToKfk(isAsync bool) {
 		//也可将字符串转化为字节数组
 		//msg.Value = sarama.ByteEncoder(value)
 
-		//util.Logger.Debug("kafka生产者向kafka broker发送消息，消息字符串=",
+		//logger.Info.Println("kafka生产者向kafka broker发送消息，消息字符串=",
 		//	msg.Value, ", 消息主题=", msg.Topic)
 		logger.Info.Println("kafka生产者向kafka broker发送消息，消息字符串=",
 			msg.Value, ", 消息主题=", msg.Topic)
@@ -104,7 +104,7 @@ func (k *KafkaProducer) sendMsgToKfk(isAsync bool) {
 			_, _, err = k.producerClientI.(sarama.SyncProducer).SendMessage(msg)
 		}
 
-		//util.Logger.Debug("kafka生产者发送消息完成")
+		//logger.Info.Println("kafka生产者发送消息完成")
 
 		if err != nil {
 			logs.Error("send massage to kafka error: %v", err)
@@ -113,7 +113,7 @@ func (k *KafkaProducer) sendMsgToKfk(isAsync bool) {
 
 	}
 
-	util.Logger.Debug("生产者退出")
+	logger.Info.Println("生产者退出")
 }
 
 func StartKafkaProducer(kafkaAddr string, threadNum int, isAync bool) {
@@ -121,14 +121,14 @@ func StartKafkaProducer(kafkaAddr string, threadNum int, isAync bool) {
 	defer util.PrintFuncName()
 	var err error
 	KafkaProducerObj, err = NewKafkaProducer(kafkaAddr, isAync)
-	util.Logger.Debug("kafka broker 地址=", kafkaAddr)
+	logger.Info.Println("kafka broker 地址=", kafkaAddr)
 	if err != nil {
 		panic("连接kafka broker错误 ")
 	} else {
-		util.Logger.Debug("成功连接kafka broker")
+		logger.Info.Println("成功连接kafka broker")
 	}
 	for i := 0; i < threadNum; i++ {
-		util.Logger.Debug("启动Kafka发送消息的协程")
+		logger.Info.Println("启动Kafka发送消息的协程")
 		util.WaitGroup.Add(1)
 		go KafkaProducerObj.sendMsgToKfk( isAync)
 	}

@@ -2,7 +2,6 @@ package client
 
 import (
 	"context"
-	"fmt"
 	"shop/custchan"
 	"shop/logger"
 	"shop/util"
@@ -14,7 +13,6 @@ import (
 )
 
 var (
-
 	EtcdClientInsance *etcdClientWrap
 )
 
@@ -25,7 +23,7 @@ type EtcdClientWrap interface {
 
 type etcdClientWrap struct {
 	EtcdClient *client.Client
-	EtcdKV client.KV
+	EtcdKV     client.KV
 }
 
 func NewEtcdClientWrap(addrs []string, timeout time.Duration) *etcdClientWrap {
@@ -35,14 +33,14 @@ func NewEtcdClientWrap(addrs []string, timeout time.Duration) *etcdClientWrap {
 	})
 	if err != nil {
 		logger.Info.Println("etcd 连接失败， err=", err)
-	}else {
+	} else {
 		logger.Info.Println("etcd 连接成功")
 	}
 	kv := client.NewKV(etcdClient)
 
 	e := &etcdClientWrap{
 		EtcdClient: etcdClient,
-		EtcdKV:         kv,
+		EtcdKV:     kv,
 	}
 	return e
 }
@@ -59,9 +57,8 @@ func (e *etcdClientWrap) PutKV(key string, value string) {
 
 	cancel()
 
-	//fmt.Printf("kvs1: %v", putResp.PrevKv)
+	//logger.Info.Printf("kvs1: %v", putResp.PrevKv)
 }
-
 
 func (e *etcdClientWrap) Get(key string) (*client.GetResponse) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
@@ -69,7 +66,7 @@ func (e *etcdClientWrap) Get(key string) (*client.GetResponse) {
 	if err != nil {
 		logger.Info.Println("etcd get key 出错：", err)
 	}
-	//fmt.Printf("kvs2:  %v", getResp.Kvs)
+	//logger.Info.Printf("kvs2:  %v", getResp.Kvs)
 	cancel()
 	return getResp
 }
@@ -94,12 +91,12 @@ func (e *etcdClientWrap) EtcdWatch(ctx context.Context, keys []string) {
 			case wresp := <-watchC:
 				for _, ev := range wresp.Events {
 					custchan.ConfChan <- string(ev.Kv.Value)
-					fmt.Printf("etcd服务watch到新的键值对： etcd key = %s , etcd value = %s \n", ev.Kv.Key, ev.Kv.Value)
+					logger.Info.Printf("etcd服务watch到新的键值对： etcd key = %s , etcd value = %s \n", ev.Kv.Key, ev.Kv.Value)
 				}
 			case <-ctx.Done():
-				util.Logger.Info(" 关闭配置通道，custchan.ConfChan 通道长度=", len(custchan.ConfChan))
+				logger.Info.Println(" 关闭配置通道，custchan.ConfChan 通道长度=", len(custchan.ConfChan))
 				close(custchan.ConfChan)
-				util.Logger.Info("EtcdWatch 退出对键值对的监控")
+				logger.Info.Println("EtcdWatch 退出对键值对的监控")
 				return
 			default:
 			}

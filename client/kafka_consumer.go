@@ -6,10 +6,12 @@ import (
 	cluster "github.com/bsm/sarama-cluster"
 	"os"
 	"os/signal"
+	"shop/logger"
 	wshandler "shop/service"
 	"shop/util"
 	"sync"
 )
+
 var Address = []string{}
 
 func StartKafkaConsumer(kafkaAdress string) {
@@ -28,7 +30,6 @@ func StartKafkaConsumer(kafkaAdress string) {
 	wg.Wait()
 }
 
-
 // 支持brokers cluster的消费者
 func clusterConsumerWebsocket(wg *sync.WaitGroup, brokers, topics []string, groupId string) {
 	defer wg.Done()
@@ -41,13 +42,13 @@ func clusterConsumerWebsocket(wg *sync.WaitGroup, brokers, topics []string, grou
 	// init consumer
 	consumer, err := cluster.NewConsumer(brokers, groupId, topics, config)
 	if err != nil {
-		util.Logger.Debug("%s: sarama.NewSyncProducer err, message=%s \n", groupId, err)
+		logger.Info.Println("%s: sarama.NewSyncProducer err, message=%s \n", groupId, err)
 		return
-	}else{
-		util.Logger.Debug("消费者websocket 成功建立")
+	} else {
+		logger.Info.Println("消费者websocket 成功建立")
 	}
-	defer func(){
-		util.Logger.Debug("消费者 websocket 完全退出")
+	defer func() {
+		logger.Info.Println("消费者 websocket 完全退出")
 	}()
 
 	// trap SIGINT to trigger a shutdown
@@ -57,14 +58,14 @@ func clusterConsumerWebsocket(wg *sync.WaitGroup, brokers, topics []string, grou
 	// consume errors
 	go func() {
 		for err := range consumer.Errors() {
-			util.Logger.Debug("消费者组%s: 出错，Error: %s\n", groupId, err.Error())
+			logger.Info.Println("消费者组%s: 出错，Error: %s\n", groupId, err.Error())
 		}
 	}()
 
 	// consume notifications
 	go func() {
 		for ntf := range consumer.Notifications() {
-			util.Logger.Debug("%s:Rebalanced: %+v \n", groupId, ntf)
+			logger.Info.Println("%s:Rebalanced: %+v \n", groupId, ntf)
 		}
 	}()
 
@@ -77,7 +78,7 @@ Loop:
 			if ok {
 				wshandler.WebsocketChan <- string(msg.Value)
 
-				util.Logger.Debug("kafka 消费者 websocket 消费消息")
+				logger.Info.Println("kafka 消费者 websocket 消费消息")
 				fmt.Fprintf(
 					os.Stdout,
 					"消费组ID=%s，主题=%s，分区=%d，offset=%d，key=%s，value=%s\n",
@@ -95,7 +96,6 @@ Loop:
 	}
 }
 
-
 func clusterConsumerRpc(wg *sync.WaitGroup, brokers, topics []string, groupId string) {
 	defer wg.Done()
 
@@ -107,13 +107,13 @@ func clusterConsumerRpc(wg *sync.WaitGroup, brokers, topics []string, groupId st
 	// init consumer
 	consumer, err := cluster.NewConsumer(brokers, groupId, topics, config)
 	if err != nil {
-		util.Logger.Debug("%s: sarama.NewSyncProducer err, message=%s \n", groupId, err)
+		logger.Info.Println("%s: sarama.NewSyncProducer err, message=%s \n", groupId, err)
 		return
-	}else{
-		util.Logger.Debug("消费者成功建立")
+	} else {
+		logger.Info.Println("消费者成功建立")
 	}
-	defer func(){
-		util.Logger.Debug("消费者rpc 完全退出")
+	defer func() {
+		logger.Info.Println("消费者rpc 完全退出")
 	}()
 
 	// trap SIGINT to trigger a shutdown
@@ -123,14 +123,14 @@ func clusterConsumerRpc(wg *sync.WaitGroup, brokers, topics []string, groupId st
 	// consume errors
 	go func() {
 		for err := range consumer.Errors() {
-			util.Logger.Debug("消费者组%s: 出错，Error: %s\n", groupId, err.Error())
+			logger.Info.Println("消费者组%s: 出错，Error: %s\n", groupId, err.Error())
 		}
 	}()
 
 	// consume notifications
 	go func() {
 		for ntf := range consumer.Notifications() {
-			util.Logger.Debug("%s:Rebalanced: %+v \n", groupId, ntf)
+			logger.Info.Println("%s:Rebalanced: %+v \n", groupId, ntf)
 		}
 	}()
 
@@ -143,7 +143,7 @@ Loop:
 			if ok {
 				GrpcCall(string(msg.Value))
 
-				//util.Logger.Debug("kafka 消费者消费消息")
+				//logger.Info.Println("kafka 消费者消费消息")
 				fmt.Fprintf(
 					os.Stdout,
 					"消费组ID=%s，主题=%s，分区=%d，offset=%d，key=%s，value=%s\n",

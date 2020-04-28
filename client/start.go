@@ -1,7 +1,6 @@
 package client
 
 import (
-	"fmt"
 	"shop/custchan"
 	"shop/logger"
 	"shop/transformer"
@@ -22,7 +21,7 @@ func StartClient(transformConfiguration *transformer.Conf) {
 			}
 			for _, ev := range resp.Kvs {
 				custchan.ConfChan <- string(ev.Value)
-				fmt.Printf("etcdkey = %s \n etcdvalue = %s \n", ev.Key, ev.Value)
+				logger.Info.Printf("etcdkey = %s \n etcdvalue = %s \n", ev.Key, ev.Value)
 			}
 		}
 	}()

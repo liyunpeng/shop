@@ -29,7 +29,7 @@ type HandBag struct {
 }
 
 func (h *HandBag) GetName(){
-	fmt.Printf("包的名字是%s,颜色是%s \n", h.Name,h.color)
+	logger.Info.Printf("包的名字是%s,颜色是%s \n", h.Name,h.color)
 }
 
 // 扩展抽象化角色 钱包
@@ -40,7 +40,7 @@ type Wallet struct {
 }
 
 func (w Wallet) GetName(){
-	fmt.Printf("包的名字是%s,颜色是%s \n", w.Name,w.color)
+	logger.Info.Printf("包的名字是%s,颜色是%s \n", w.Name,w.color)
 }
 
 type Color interface {
@@ -53,7 +53,7 @@ type Blue struct {
 }
 
 func (b *Blue) GetColor(){
-	fmt.Printf("颜色是%s \n", b.Name)
+	logger.Info.Printf("颜色是%s \n", b.Name)
 }
 
 type Red struct {
@@ -61,7 +61,7 @@ type Red struct {
 }
 
 func (r *Red) GetColor(){
-	fmt.Printf("颜色是%s \n", r.Name)
+	logger.Info.Printf("颜色是%s \n", r.Name)
 }
 
 

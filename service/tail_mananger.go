@@ -3,7 +3,6 @@ package service
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"github.com/astaxie/beego/logs"
 	"github.com/hpcloud/tail"
 	"shop/config"
@@ -27,7 +26,7 @@ func NewTailManager() *TailManager {
 	}
 }
 
-func (t *TailManager) NewTailWithConf(logConfig config.LogConfig) (*TailWithConf,  error) {
+func (t *TailManager) NewTailWithConf(logConfig config.LogConfig) (*TailWithConf, error) {
 	t.lock.Lock()
 	defer t.lock.Unlock()
 
@@ -38,7 +37,7 @@ func (t *TailManager) NewTailWithConf(logConfig config.LogConfig) (*TailWithConf
 	}
 
 	tail, err := tail.TailFile(logConfig.LogPath, tail.Config{
-		ReOpen:   true,
+		ReOpen:    true,
 		Follow:    true,
 		Location:  &tail.SeekInfo{Offset: 0, Whence: 2}, // read to tail
 		MustExist: false,                                //file does not exist, it does not return an error
@@ -108,7 +107,7 @@ func (t *TailManager) reloadConfig(logConfArr []config.LogConfig) (err error) {
 func (t *TailManager) MonitorConfChan() {
 
 	for etcdConfValue := range custchan.ConfChan {
-		fmt.Printf("tail服务从ConfChan通道拿到的配置数据: %v \n", etcdConfValue)
+		logger.Info.Printf("tail服务从ConfChan通道拿到的配置数据: %v \n", etcdConfValue)
 
 		var logConfArr []config.LogConfig
 

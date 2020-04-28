@@ -1,7 +1,6 @@
 package service
 
 import (
-	"fmt"
 	"google.golang.org/grpc"
 	"net"
 	"shop/logger"
@@ -19,12 +18,12 @@ func StartGrpcService(grpcConf transformer.GrpcConf) {
 	defer util.WaitGroup.Done()
 	defer util.PrintFuncName()
 	// 1. 监听
-	addr :=  grpcConf.Addr
+	addr := grpcConf.Addr
 	listenSocket, err := net.Listen("tcp", grpcConf.Addr)
 	if err != nil {
-		fmt.Printf("监听异常：%GrpcSever\n", err)
+		logger.Info.Printf("监听异常：%GrpcSever\n", err)
 	}
-	fmt.Printf("grpc 服务开始监听的地址和端口：%GrpcSever\n", addr)
+	logger.Info.Printf("grpc 服务开始监听的地址和端口：%GrpcSever\n", addr)
 	// 2.实例化gRPC
 	GrpcSever = grpc.NewServer()
 

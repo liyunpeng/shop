@@ -26,3 +26,12 @@ mac 下：
 $ find ./ -name "*.go" | xargs  sed -i '' 's/util\.Info\.Println/logger\.Info\.Println/g'
 find 后面要带 ./
 -i 后面要有 ''
+
+
+2. 排除指定目录
+要在find后 加上-path ./a -prune -o
+如：
+find -path ./vendor -prune -o  -name "*.go" | xargs  sed -i 's/github.com\/liyunpeng\///g'
+
+$ find  -path ./vendor -prune -o -name "*.go" | xargs  sed -i 's/fmt.Printf/logger.Info.Printf/g'
+
