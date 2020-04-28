@@ -1,17 +1,21 @@
-proto生成的go 文件命令指定了plugins， 这个决定了生成的service会生成什么样， 看列子
+生成grpc
+protoc -I . --go_out=plugins=grpc:. ./user.proto
+
+proto生成的go文件命令指定了plugins， 这个决定了生成的service会生成什么样， 看列子
 
 service UserInfoService{
 //相当于接口内的方法
 // 定义请求参数为UserRequest,响应参数为UserResponse
 rpc GetUserInfo(UserRequest) returns (UserResponse){}
 }
-protoc -I . --go_out=plugins=grpc:. ./user.proto
+
 经过这个命令， 生成的代码：
 总的来说会定义出服务端接口和实现结构体  注册服务端， 和向服务端注入业务的handler方法
 如果使用要生成micro格式的， 则用：
-protoc --proto_path=. --micro_out=. --go_out=. proto/user/user.proto  这个命令会调用proto-micro-gen这个bin执行文件
+protoc --proto_path=. --micro_out=. --go_out=. proto/user/user.proto
+这个命令会调用proto-micro-gen这个bin执行文件
 
-然后， 客户端接口，实现结构体， 和结构体使用者调用的方法
+然后， 客户端接口，实现结构体和结构体使用者调用的方法
 
 先看user服务端：
 // UserInfoServiceServer is the server API for UserInfoService service.  会自动生成注释
