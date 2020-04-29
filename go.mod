@@ -10,8 +10,14 @@ require (
 	github.com/casbin/gorm-adapter/v2 v2.0.3
 	github.com/coreos/go-systemd v0.0.0-20191104093116-d3cd4ed1dbcf // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
+	github.com/facebookgo/ensure v0.0.0-20200202191622-63f1cf65ac4c // indirect
+	github.com/facebookgo/inject v0.0.0-20180706035515-f23751cae28b
+	github.com/facebookgo/stack v0.0.0-20160209184415-751773369052 // indirect
+	github.com/facebookgo/structtag v0.0.0-20150214074306-217e25fb9691 // indirect
+	github.com/facebookgo/subset v0.0.0-20200203212716-c811ad88dec4 // indirect
 	github.com/fatih/color v1.9.0
 	github.com/garyburd/redigo v1.6.0
+	github.com/go-macaron/inject v0.0.0-20200308113650-138e5925c53b
 	github.com/go-playground/locales v0.13.0
 	github.com/go-playground/universal-translator v0.17.0
 	github.com/go-playground/validator/v10 v10.2.0
@@ -28,7 +34,6 @@ require (
 	github.com/kataras/golog v0.0.10
 	github.com/kataras/iris/v12 v12.1.8
 	github.com/mattn/go-colorable v0.1.6 // indirect
-	github.com/micro/go-micro v1.18.0 // indirect
 	github.com/micro/go-micro/v2 v2.4.0
 	github.com/micro/go-plugins/registry/consul/v2 v2.3.0
 	github.com/onsi/ginkgo v1.12.0 // indirect
@@ -42,6 +47,7 @@ require (
 	golang.org/x/net v0.0.0-20200222125558-5a598a2470a0
 	golang.org/x/oauth2 v0.0.0-20190604053449-0f29369cfe45
 	google.golang.org/grpc v1.26.0
+	gopkg.in/macaron.v1 v1.3.6
 	gopkg.in/oauth2.v3 v3.12.0
 	sigs.k8s.io/yaml v1.2.0 // indirect
 )
