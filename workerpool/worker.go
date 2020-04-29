@@ -20,7 +20,8 @@ func (w Worker) Run(wq chan Worker) {
 	go func() {
 		for {
 			logger.Info.Println("worker阻塞读取自己的JobQueue")
-			// 向worker通道里增加一个worker, 因为这个时间点， 是worker已经干完活了， 手上没有活了，所以把这个worke放到worker池里面
+			// 向worker通道里增加一个worker, 因为这个时间点，本worker已经干完活了， 手上没有活了，
+			// 所以把这个worker放到worker池里面
 			wq <- w
 			select {
 			// 阻塞在取job, 即是worker待命的时候， 只要来job， 立即干活
