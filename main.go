@@ -164,8 +164,8 @@ func main() {
 	//
 	//}
 
-
-
+	u := models.User{}
+	controllers.ObjectPool.Put(u)
 
 	//defer logger.Info.Println("主routine完全退出")
 	//defer logger.Info.Println("主routine内存分析完毕")

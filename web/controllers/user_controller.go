@@ -1,6 +1,7 @@
 package controllers
 
 import (
+
 	"github.com/go-playground/validator/v10"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
@@ -12,7 +13,24 @@ import (
 	"shop/util"
 	validates "shop/validates"
 	"strconv"
+	"sync"
 )
+
+var ObjectPool = sync.Pool{
+	New: func() interface{} {
+		//b := make([]byte, 1024)
+		//fmt.Println("sync.Pool new 分配1024个字节空间")
+		//return &b
+
+		u := models.User{
+
+		}
+
+		//u := make([]byte, 100)
+		logger.Info.Println("sync 对象池 new分配一块models.User空间")
+		return u
+	},
+}
 
 type UserGController struct {
 	// context is auto-binded by Iris on each request,
@@ -54,26 +72,41 @@ func (c *UserGController) GetRegister() mvc.Result {
 // PostRegister handles POST: http://localhost:8080/user/register.
 func (c *UserGController) PostRegister() mvc.Result {
 	logger.Info.Println("响应注册提交")
-	var (
-		username  = c.Ctx.FormValue("username")
-		password  = c.Ctx.FormValue("password")
-	)
-	//user := models.UserFindByName(username)
-	//
-	//if user != nil {
-	//	return mvc.Response{
-	//
-	//	}
-	//}
+	userName := c.Ctx.FormValue("username")
+
+	user := models.UserFindByName(userName)
+	if user != nil {
+		return mvc.Response{
+			Text: "用户名已存在",
+		}
+	}else{
+		/*
+			重新get 还是会new 分配空间， 仅局限在本函数内 有效
+
+		 */
+		u := ObjectPool.Get().(models.User)
+		ObjectPool.Put(u)
+		u = ObjectPool.Get().(models.User)
+		ObjectPool.Put(u)
+
+		u.Username = userName
+		u.Password =  c.Ctx.FormValue("password")
+		c.Service.InsertUser(&u)
+
+		ObjectPool.Put(u)
+		return mvc.Response{
+			Path: "/self",
+		}
+	}
 	//_, _ = c.Ctx.JSON(ApiResource(true, nil, "成功添加数据行"))
 	// create the new user, the password will be hashed by the service.
 	//  创建一个用户， 密码会被被service通过摘要算法计算出一个哈希值，将此哈希值存入数据库用户表
 	//u, err := c.Service.InsertUserg(datamodels.User{
 	//TODO : InsertUserg 返回值， 新增记录的id如何获取
-	 c.Service.InsertUser(&models.User{
-		Username:  username,
-		Password: password,
-	})
+	// c.Service.InsertUser(&models.User{
+	//	Username:  username,
+	//	Password: password,
+	//})
 
 	// set the user's id to this session even if err != nil,
 	// the zero id doesn't matters because .getCurrentUserID() checks for that.
