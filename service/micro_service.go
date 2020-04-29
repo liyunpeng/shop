@@ -10,7 +10,6 @@ import (
 	"github.com/micro/go-micro/v2/server"
 	"github.com/micro/go-plugins/registry/consul/v2"
 	"shop/logger"
-
 	//"github.com/micro/go-plugins/registry/etcdv3"
 	custconfig "shop/config"
 	protobuf "shop/encode/generate"
@@ -41,30 +40,36 @@ func InitMicro(){
 		})
 	}
 }
-func StartMicroService(){
+//func StartMicroService(wg *sync.WaitGroup){
+//	defer wg.Done()
+func StartMicroService() {
 	service = micro.NewService(
 		micro.Registry(reg),
 		micro.Name(config.Get("srv").String("micro.hrefs.srv")),
 		micro.WrapHandler(logWrapper),
 	)
 
+
 	server.Init()
 
-	service.Server().Init(server.Wait(nil))
+	//service.Server().Init(server.Wait(nil))
 
 	micro.RegisterHandler(service.Server(), new(Hrefs))
 
 	protobuf.RegisterUserHandler(service.Server(), new(User))
 
-
+	logger.Info.Println(" micro 完成业务服务的注册")
 	if err := service.Run(); err != nil {
 		logger.Info.Println(err)
 	}
+
+	// ctrl +c service.Run() 即退出
+	logger.Info.Println("micro 微服务结束")
 }
 
-func Stop(){
+func StopMicro(){
 	service.Server().Stop()
-	logger.Info.Println( "micro 微服务结束")
+	logger.Info.Println( "micro 微服务stop 结束")
 }
 func logWrapper(fn server.HandlerFunc) server.HandlerFunc {
 	start := time.Now()

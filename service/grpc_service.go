@@ -27,6 +27,10 @@ func StartGrpcService(grpcConf transformer.GrpcConf) {
 	// 2.实例化gRPC
 	GrpcSever = grpc.NewServer()
 
+
+
+
+
 	num := 2
 	GrpcWorkerPool = workerpool.NewWorkerPool(num)
 	GrpcWorkerPool.Run()
@@ -42,4 +46,9 @@ func StartGrpcService(grpcConf transformer.GrpcConf) {
 
 	GrpcSever.Serve(listenSocket)
 
+}
+
+func StopGrpcService(){
+	GrpcSever.Stop()
+	logger.Info.Println(" grpc 服务结束")
 }

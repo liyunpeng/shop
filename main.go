@@ -283,17 +283,17 @@ Loopa:
 			close(util.ChanStop)
 			close(custchan.KafkaProducerMsgChan)
 
-			timeout := 5 * time.Second
+			timeout := 1 * time.Second
 			ctx, cancel := stdContext.WithTimeout(stdContext.Background(), timeout)
 			cancel()
-			logger.Info.Println("关闭iris 服务")
+			logger.Info.Println("开始关闭iris 服务")
 			app.Shutdown(ctx)
 
-			logger.Info.Println("关闭grpc 服务")
-			service.GrpcSever.Stop()
+			logger.Info.Println("开始关闭grpc 服务")
+			service.StopGrpcService()
 
-			logger.Info.Println("关闭go-micro 微服务")
-			service.Stop()
+			//logger.Info.Println("开始关闭go-micro 微服务")
+			//service.StopMicro()
 
 			logger.Info.Println("关闭控制流程结束")
 			break Loopa
