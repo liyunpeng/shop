@@ -19,4 +19,6 @@ func StartService(transformConfiguration *transformer.Conf) {
 
 	//go StartMicroService1()
 	//go StartOauth2Service()
+
+	go StartRpcxService()
 }

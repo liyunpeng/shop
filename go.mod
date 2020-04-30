@@ -40,6 +40,7 @@ require (
 	github.com/onsi/gomega v1.9.0 // indirect
 	github.com/sergi/go-diff v1.1.0 // indirect
 	github.com/shiena/ansicolor v0.0.0-20151119151921-a422bbe96644 // indirect
+	github.com/smallnest/rpcx v0.0.0-20200428104205-b633eed00350
 	github.com/snowlyg/gotransformer v0.1.0
 	github.com/valyala/fasthttp v1.9.0 // indirect
 	go.etcd.io/etcd v3.3.18+incompatible

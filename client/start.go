@@ -44,5 +44,7 @@ func StartClient(transformConfiguration *transformer.Conf) {
 	go StartGrpcClient()
 
 	StartRedisClient()
+
+	StartRpcClient()
 }
 
