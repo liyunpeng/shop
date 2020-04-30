@@ -1,0 +1,39 @@
+rpcx目前已提供了GateWay来为对应的rpcx服务提供了http网关服务，
+直接通过http的方式来完成不同语言对rpcx服务的调用
+
+目前rpcx提供了两种部署模式：
+1、Gateway：将网关服务单独部署，所有client将http请求发送给gateway，
+由gateway来完成将http请求转换rpcx请求，再调用对应的rpcx服务，
+最终再将rpcx返回结果转换成http的response，返回给client
+
+2、Agent：将网关程序与client程序部署在一起，
+agent以一个后端服务的形式存在client机器上，
+即使机器上已部署多个client，也只需一个agent来完成将client发送的http请求到本地的agent后端服务，
+再由agent后端服务将http请求转为rpcx请求，
+再转发给rpcx服务，
+最终将rpcx服务返回的结果转为http的response返回给client。
+
+---
+http协议转换为rpcx协议涉及到如下的内容：
+1. http请求request的header设置
+X-RPCX-Version: rpcx 版本
+X-RPCX-MesssageType: 设置为0,代表request
+X-RPCX-Heartbeat: 是否是heartbeat请求, 默认=false
+X-RPCX-Oneway: 是否是单向请求,默认=false.
+X-RPCX-SerializeType: 0 as raw bytes, 1 as JSON, 2 as protobuf, 3 as msgpack
+X-RPCX-MessageID: 消息id, uint64 类型
+X-RPCX-ServicePath: service path
+X-RPCX-ServiceMethod: service method
+X-RPCX-Meta: 额外的metadata数据
+
+2. http响应response的header设置
+X-RPCX-Version: rpcx 版本
+X-RPCX-MesssageType: 1 ,代表response
+X-RPCX-Heartbeat: 是否是heartbeat请求
+X-RPCX-MessageStatusType: Error 还是正常返回结果
+X-RPCX-SerializeType: 0 as raw bytes, 1 as JSON, 2 as protobuf, 3 as msgpack
+X-RPCX-MessageID: 消息id, uint64 类型
+X-RPCX-ServicePath: service path
+X-RPCX-ServiceMethod: service method
+X-RPCX-Meta: 额外的metadata
+X-RPCX-ErrorMessage: 错误信息, 需要设置X-RPCX-MessageStatusType为Error

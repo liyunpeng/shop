@@ -38,6 +38,7 @@ require (
 	github.com/micro/go-plugins/registry/consul/v2 v2.3.0
 	github.com/onsi/ginkgo v1.12.0 // indirect
 	github.com/onsi/gomega v1.9.0 // indirect
+	github.com/rpcx-ecosystem/rpcx-gateway v0.0.0-20191101051611-6011e3464192
 	github.com/sergi/go-diff v1.1.0 // indirect
 	github.com/shiena/ansicolor v0.0.0-20151119151921-a422bbe96644 // indirect
 	github.com/smallnest/rpcx v0.0.0-20200428104205-b633eed00350
