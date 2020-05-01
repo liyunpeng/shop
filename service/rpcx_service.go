@@ -13,7 +13,6 @@ var (
 func StartRpcxService() {
 	flag.Parse()
 
-
 	addr := "localhost:8972"
 	var s *server.Server
 	if false {
@@ -26,8 +25,6 @@ func StartRpcxService() {
 	}
 	logger.Info.Println("Rpcx 微服务 启动 ")
 	s.Serve("tcp",addr)
-
-
 
 	logger.Info.Println("Rpcx 微服务运行结束 ")
 

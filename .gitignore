@@ -14,3 +14,7 @@ log_file
 shop
 cpu_profile
 *.log
+block.prof
+cpu.prof
+mem.prof
+

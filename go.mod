@@ -45,7 +45,7 @@ require (
 	github.com/snowlyg/gotransformer v0.1.0
 	github.com/valyala/fasthttp v1.9.0 // indirect
 	go.etcd.io/etcd v3.3.18+incompatible
-	go.uber.org/zap v1.14.0 // indirect
+	go.uber.org/zap v1.14.0
 	golang.org/x/net v0.0.0-20200222125558-5a598a2470a0
 	golang.org/x/oauth2 v0.0.0-20190604053449-0f29369cfe45
 	google.golang.org/grpc v1.26.0

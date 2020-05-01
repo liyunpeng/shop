@@ -4,6 +4,7 @@ import (
 	"google.golang.org/grpc"
 	"net"
 	"shop/logger"
+	"shop/pprofutil"
 	pb "shop/rpc/proto"
 	"shop/transformer"
 	"shop/util"
@@ -17,6 +18,7 @@ var GrpcWorkerPool *workerpool.WorkerPool
 func StartGrpcService(grpcConf transformer.GrpcConf) {
 	defer util.WaitGroup.Done()
 	defer util.PrintFuncName()
+	pprofutil.StartCpuProf()
 	// 1. 监听
 	addr := grpcConf.Addr
 	listenSocket, err := net.Listen("tcp", grpcConf.Addr)
@@ -26,10 +28,6 @@ func StartGrpcService(grpcConf transformer.GrpcConf) {
 	logger.Info.Printf("grpc 服务开始监听的地址和端口：%GrpcSever\n", addr)
 	// 2.实例化gRPC
 	GrpcSever = grpc.NewServer()
-
-
-
-
 
 	num := 2
 	GrpcWorkerPool = workerpool.NewWorkerPool(num)
@@ -50,5 +48,8 @@ func StartGrpcService(grpcConf transformer.GrpcConf) {
 
 func StopGrpcService(){
 	GrpcSever.Stop()
+	pprofutil.StopCpuProf()
+
+	pprofutil.SaveMemProf()
 	logger.Info.Println(" grpc 服务结束")
 }

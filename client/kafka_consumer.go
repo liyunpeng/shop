@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/signal"
 	"shop/logger"
+	"shop/pprofutil"
 	wshandler "shop/service"
 	"shop/util"
 	"sync"
@@ -90,6 +91,9 @@ Loop:
 		//	break Loop
 		case <-util.ChanStop:
 			fmt.Fprintf(os.Stdout, "kafka消费者websocket开始执行退出 %s consume %d messages \n", groupId, successes)
+			pprofutil.SaveMemProf()
+			pprofutil.ProfGc()
+			pprofutil.SaveBlockProfile()
 			consumer.Close()
 			break Loop
 		}
