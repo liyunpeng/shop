@@ -45,6 +45,6 @@ func StartClient(transformConfiguration *transformer.Conf) {
 
 	StartRedisClient()
 
-	StartRpcClient()
+	StartRpcxClient()
 }
 

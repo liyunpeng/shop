@@ -22,3 +22,8 @@ func StartService(transformConfiguration *transformer.Conf) {
 
 	go StartRpcxService()
 }
+
+func StopService(){
+    StopGrpcService()
+	StopRpcxService()
+}

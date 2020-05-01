@@ -17,7 +17,7 @@ import (
 //	addr1       = flag.String("addr", "127.0.0.1:8972", "server address")
 //)
 
-func StartRpcClient() {
+func StartRpcxClient() {
 	Peer2Peer()
 
 	CallwithGateway()

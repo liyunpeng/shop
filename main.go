@@ -289,8 +289,9 @@ Loopa:
 			logger.Info.Println("开始关闭iris 服务")
 			app.Shutdown(ctx)
 
-			logger.Info.Println("开始关闭grpc 服务")
-			service.StopGrpcService()
+			logger.Info.Println("开始关闭多个服务")
+			service.StopService()
+
 
 			//logger.Info.Println("开始关闭go-micro 微服务")
 			//service.StopMicro()

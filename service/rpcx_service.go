@@ -10,26 +10,31 @@ var (
 	addr1 = flag.String("addr", "localhost:8972", "server address")
 )
 
+
+var rpcxServer *server.Server
 func StartRpcxService() {
 	flag.Parse()
 
 	addr := "localhost:8972"
-	var s *server.Server
 	if false {
-		s = &server.Server{}
-		s.RegisterName("Arith", new(Arith), "")
+		rpcxServer = &server.Server{}
+		rpcxServer.RegisterName("Arith", new(Arith), "")
 	}else{
-		s = server.NewServer()
-		s.Register(new(Arith),"")
+		rpcxServer = server.NewServer()
+		rpcxServer.Register(new(Arith),"")
 
 	}
 	logger.Info.Println("Rpcx 微服务 启动 ")
-	s.Serve("tcp",addr)
+	rpcxServer.Serve("tcp",addr)
 
 	logger.Info.Println("Rpcx 微服务运行结束 ")
 
-	//s.Close()
 	//select {}
 }
 
 
+func StopRpcxService() {
+
+	rpcxServer.Close()
+	logger.Info.Println("控制Rpcx微服务运行结束 ")
+}
