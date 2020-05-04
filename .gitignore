@@ -17,4 +17,5 @@ cpu_profile
 block.prof
 cpu.prof
 mem.prof
+*.out
 

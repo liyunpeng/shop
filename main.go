@@ -233,6 +233,8 @@ func main() {
 	routes.RegisterApi(app)
 	controllers.RegisterControllers(app)
 
+	var i = 10
+	logger.Info.Println(i)
 	sys.CreateSystemData(app) //apiRoutes)
 
 	//websocket1(app)
