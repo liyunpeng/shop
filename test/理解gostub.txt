@@ -1,0 +1,40 @@
+stub$ go test -v
+=== RUN   TestStub
+Counter: 200
+open /tmp/test.config: no such file or directory
+[]
+1
+LocalHost <nil>
+--- PASS: TestStub (0.00s)
+PASS
+ok      shop/test/stub  0.006s
+stub$ go test -v
+=== RUN   TestStub
+Counter: 200
+open /tmp/test.config: no such file or directory
+[]
+1
+LocalHost <nil>
+--- PASS: TestStub (0.00s)
+=== RUN   TestFuncDemo
+
+  TestFuncDemo
+    for succ 200
+1
+
+
+
+0 total assertions
+
+--- PASS: TestFuncDemo (0.00s)
+PASS
+ok      shop/test/stub  0.014s
+
+
+
+
+GoStub框架可以解决很多场景的函数打桩问题，但下列复杂场景除外：
+A、被测函数中多次调用了数据库读操作函数接口，并且数据库为key-value型。
+B、被测函数中有一个循环，用于一个批量操作，当某一次操作失败，则返回失败，并进行错误处理。
+C、被测函数中多次调用了同一底层操作函数。
+
