@@ -1,0 +1,39 @@
+import goconvey包时，前面加点号"."，以减少冗余的代码。凡是在测试代码中看到Convey和So两个方法，肯定是convey包的，不要在产品代码中定义相同的函数名
+测试函数的名字必须以Test开头，而且参数类型必须为*testing.T
+每个测试用例必须使用Convey函数包裹起来，它的第一个参数为string类型的测试描述，第二个参数为测试函数的入参（类型为*testing.T），第三个参数为不接收任何参数也不返回任何值的函数（习惯使用闭包）
+Convey函数的第三个参数闭包的实现中通过So函数完成断言判断，
+它的第一个参数为实际值，
+第二个参数为断言函数变量，第三个参数或者没有
+（当第二个参数为类ShouldBeTrue形式的函数变量）或者有（当第二个函数为类ShouldEqual形式的函数变量）
+
+
+convey$ go test -v
+=== RUN   TestStringSliceEqual
+
+  TestStringSliceEqual should return true when a != nil  && b != nil ✔
+
+
+1 total assertion
+
+--- PASS: TestStringSliceEqual (0.00s)
+=== RUN   TestStringSliceEqualA
+
+  TestStringSliceEqual
+    should return true when a != nil  && b != nil ✘
+    should return true when a ＝= nil  && b ＝= nil ✔
+    should return false when a ＝= nil  && b != nil ✔
+    should return false when a != nil  && b != nil ✔
+
+
+Failures:
+
+  * /Users/admin1/goworkspace/shop/test/convey/slice_test.go
+  Line 22:
+  Expected: true
+  Actual:   false
+  goroutine 8 [running]:
+  shop/test/convey.TestStringSliceEqualA.func1.1()
+        /Users/admin1/goworkspace/shop/test/convey/slice_test.go:22 +0xce
+  github.com/jtolds/gls.(*ContextManager).SetValues.func1(0x0)
+        /Users/admin1/goworkspace/shop/vendor/github.com/jtolds/gls/context.go:97 +0x466
+
