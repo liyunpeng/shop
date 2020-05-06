@@ -61,5 +61,59 @@ if m == nil{
 一个简单的例子就是三角插座，我没有三角口，用一个转接器呗。
 
 对象适配器：
+将那个你看的不顺眼的对象的引用存在你的包装类对象内
 
-　　将那个你看的不顺眼的对象的引用存在你的包装类对象内
+---
+桥接模式
+桥接模式是为了通过一个公共接口来创建这个类的一个实例。
+然而这个类是一个完全的由其它类组合而成的一个类。通过这个公有的接口类，
+我们可以控制其中其它的类之间的组成，比如说我要创建一个animal，animal由sex、nam这两个类组成，
+我可以通过animal而自由搭配，雌雄、其它动物名。
+与其说是这样的组合模式，不如说，这是将一个结构拆散成不同的具体类型，然后通过这个结构传参创建。
+
+---
+责任链：
+判断责任链， 代码中有sethandler, 就是责任链模式了。
+广泛用于请求的处理， 不同的请求路由到不同的责任链中，
+请求中指定的method,即指定责任链中具体是哪个责任处理者来处理。
+
+责任链模式为请求创建了一个接收者对象的链。
+处理请求的对象是一系列链条，或者一个集合。每个处理节点都保存有其他处理节点的引用。
+接收到请求的时候，会判断该请求是否需要自己处理，
+处理完毕传给下一个处理节点，有点像流水线作业。
+
+优点：
+降低耦合度。它将请求的发送者和接收者解耦。
+简化了对象。使得对象不需要知道链的结构。
+增强给对象指派职责的灵活性。通过改变链内的成员或者调动它们的次序，允许动态地新增或者删除责任。
+增加新的请求处理类很方便。
+缺点：
+不能保证请求一定被接收。
+系统性能将受到一定影响，而且在进行代码调试时不太方便，可能会造成循环调用。
+可能不容易观察运行时的特征，有碍于除错。
+
+责任链log打印，方便理解：
+D:\goworkspace\shop\test\designpattern>go test -v responsibilitychain_test.go
+=== RUN   TestChainResponsibity
+[Info] 2020/05/06 17:15:21 responsibilitychain_test.go:63: SetHandler用于本处理者设置责任的下一个处理者，这里下一个处理者的名
+字= POST
+[Info] 2020/05/06 17:15:21 responsibilitychain_test.go:66: 下个处理者可以有很多个，每个责任处理者都有自己的handlers集合, 表示
+下一个处理者的集合， handlers= map[POST:0xc0000364a0]
+[Info] 2020/05/06 17:15:21 responsibilitychain_test.go:127: 一个责任链可以接受很多请求，一个请求用一个键值对表示， key为请求
+的url= login value= 0x5084c0
+[Info] 2020/05/06 17:15:21 responsibilitychain_test.go:34: 请求中的methdo这里被当作责任链上责任者的名字来用， 这个责任者的名
+字= POST
+[Info] 2020/05/06 17:15:21 responsibilitychain_test.go:84: RootProcesser 处理者处理一个请求， 该请求为 &{POST login map[passw
+ord:[222] username:[111]]}
+[Info] 2020/05/06 17:15:21 responsibilitychain_test.go:85: RootProcesser 处理者处理方式时把请求交给责任链上的下一个处理者
+[Info] 2020/05/06 17:15:21 responsibilitychain_test.go:108: PostProcesser处理者处理一个请求， 该请求为 &{POST login map[passw
+ord:[222] username:[111]]}
+[Info] 2020/05/06 17:15:21 responsibilitychain_test.go:109: PostProcesser处理者没有把请求转给下一个处理者，而是实实在在的为请
+求做事情
+111
+222
+--- PASS: TestChainResponsibity (0.02s)
+PASS
+ok      command-line-arguments  0.286s
+
+

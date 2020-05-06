@@ -72,6 +72,8 @@ func BridgePattern(){
 	b := Blue{Name:"蓝色"}
 	// 红色的手包
 	h := HandBag{Name:"手包"}
+
+	// 不同类中，可以有一个共同的类型， 这个类型就是桥接的类型， 以此避免定义太多的类或对象
 	h.color = &r
 	h.GetName()
 
