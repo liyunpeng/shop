@@ -1,6 +1,9 @@
 package designpattern
 
-import "fmt"
+import (
+	"shop/logger"
+	"testing"
+)
 
 // 这个工厂中所有产品要实现的方法， 这里产品名叫Shape
 type Shape interface {
@@ -40,4 +43,11 @@ func (this ShapeFactory) getShape(shapeType string) Shape {
 		return Square{}
 	}
 	return nil
+}
+
+func TestFactory(t *testing.T){
+	logger.InitCustLogger()
+	factory := new(ShapeFactory)
+	shape := factory.getShape("CIRCLE")
+	shape.Draw()
 }
