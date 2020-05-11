@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/micro/go-config"
 	"github.com/micro/go-log"
-	"github.com/micro/go-micro/v2"
+	"github.com/micro/go-micro"
 	"shopping/user/handler"
 	"shopping/user/model"
 	"shopping/user/repository"
