@@ -13,7 +13,6 @@ require (
 	github.com/mattn/go-sqlite3 v1.10.0 // indirect
 	github.com/micro/go-config v0.14.0
 	github.com/micro/go-log v0.1.0
-	github.com/micro/go-micro v1.16.0
 	github.com/micro/go-micro/v2 v2.6.0
 	golang.org/x/crypto v0.0.0-20200323165209-0ec3e9974c59
 )

@@ -1,0 +1,23 @@
+启动micro api网关服务：
+micro api --namespace=go.micro.srv
+postman发送http请求
+post http://localhost:8080/user/UserService/Register
+{"user" : {"id": 1, "name": "test", "phone": "123", "password": "123"}}
+
+
+{"id":"go.micro.client.transport","code":500,"detail":
+"malformed HTTP response \"\\x00\\x00\\x06\\x04\\x00\\x00\\x00\\x00\\x00\\x00\\x05\\x00\\x00@\\x00\"",
+"status":"Internal Server Error"}
+---
+D:\goworkspace\shop>micro api --namespace=go.micro.srv
+2020-05-11 15:10:30.283606 I | [api] Registering API Default Handler at /
+2020-05-11 15:10:30.285606 I | [api] HTTP API Listening on [::]:8080
+2020-05-11 15:10:30.286606 I | [api] Transport [http] Listening on [::]:53896
+2020-05-11 15:10:30.286606 I | [api] Broker [http] Connected to [::]:53897
+2020-05-11 15:10:30.304608 I | [api] Registry [mdns] Registering node: go.micro.api-c6f57666-f3a7-419c-8806-6e31e1fdf86b
+::1 - - [11/May/2020:15:10:42 +0800] "POST /user/UserService/Register HTTP/1.1" 500 274 "" "Mozilla/5.0 (Windows NT 6.1; Win6
+4; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+
+
+
+

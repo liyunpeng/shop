@@ -2,8 +2,9 @@ package handler
 
 import (
 	"context"
+	"fmt"
 	"github.com/micro/go-log"
-	"github.com/micro/go-micro/errors"
+	"github.com/micro/go-micro/v2/errors"
 	"golang.org/x/crypto/bcrypt"
 	"shopping/user/model"
 	"shopping/user/repository"
@@ -17,6 +18,7 @@ type User struct{
 
 // Call is a single request handler called via client.Call or the generated client code
 func (e *User) Register(ctx context.Context, req *user.RegisterRequest, rsp *user.Response) error {
+	fmt.Println(" user Register ")
 	hashedPwd, err := bcrypt.GenerateFromPassword([]byte(req.User.Password), bcrypt.DefaultCost)
 	if err != nil {
 		return err
