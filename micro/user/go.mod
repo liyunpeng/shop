@@ -12,4 +12,4 @@ require (
 	golang.org/x/crypto v0.0.0-20200323165209-0ec3e9974c59
 )
 
-replace github.com/testcontainers/testcontainer-go => /Users/admin1/gopath/pkg/mod/github.com/testcontainers/testcontainers-go@v0.5.1
+replace github.com/testcontainers/testcontainer-go => E:\gomodpath\pkg\mod\github.com\testcontainers\testcontainers-go@v0.5.1
