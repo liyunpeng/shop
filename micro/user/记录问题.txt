@@ -37,3 +37,20 @@ post会报错：
     "detail": "service not found",
     "status": "Internal Server Error"
 }
+
+---
+product$ go mod tidy
+go: github.com/micro/go-grpc@v1.0.1 requires
+        github.com/micro/go-plugins@v1.1.0 requires
+        github.com/golang/lint@v0.0.0-20190313153728-d0100b6bd8b3: parsing go.mod:
+        module declares its path as: golang.org/x/lint
+                but was required as: github.com/golang/lint
+
+~$ go get golang.org/x/lint
+go: finding golang.org/x/lint latest
+go: downloading golang.org/x/lint v0.0.0-20200302205851-738671d3881b
+go: extracting golang.org/x/lint v0.0.0-20200302205851-738671d3881b
+go: downloading golang.org/x/tools v0.0.0-20200130002326-2f3ba24bd6e7
+go: extracting golang.org/x/tools v0.0.0-20200130002326-2f3ba24bd6e7
+go: finding golang.org/x/tools v0.0.0-20200130002326-2f3ba24bd6e7
+

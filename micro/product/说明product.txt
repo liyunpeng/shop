@@ -1,0 +1,26 @@
+
+post http://localhost:8080/product/ProductService/Search/
+{"name":"a"}
+{"code":"200","msg":"搜索结果共0条"}
+
+---
+post http://localhost:8080/product/ProductService/Search/
+{"name":"product1"}
+{"code":"200","msg":"搜索结果共1条","products":[{"id":1,"name":"product1","intro":"ntro1","number":1}]}
+
+post http://localhost:8080/product/ProductService/Detail/
+{"name":"product1"}
+{"id":"go.micro.api","code":500,"detail":"error during request: unknown field \"name\" in go.micro.srv.product.DetailRequest","status":"Internal Server Error"}
+
+post http://localhost:8080/product/ProductService/Detail/
+{"id":1}
+{"code":"200","msg":"商品详情如下：","product":{"id":1,"name":"product1","intro":"ntro1","number":1}}
+
+post http://localhost:8080/proddct111/ProductService/Detail/
+{"id":1}
+{
+    "id": "go.micro.srv",
+    "code": 500,
+    "detail": "service not found",
+    "status": "Internal Server Error"
+}

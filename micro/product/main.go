@@ -2,9 +2,9 @@ package main
 
 import (
 	"github.com/micro/go-config"
-	"github.com/micro/go-grpc"
 	"github.com/micro/go-log"
 	"github.com/micro/go-micro"
+
 	//"github.com/opentracing/opentracing-go"
 	//"os"
 	"shopping/product/handler"
@@ -38,11 +38,12 @@ func main() {
 
 	repo := &repository.Product{db}
 
+	repo.Db.Exec("insert into products(name, intro, number) values('product1', 'ntro1', 1);")
 	// boot trace
 	//TraceBoot()
 
 	// New Service
-	service := grpc.NewService(
+	service := micro.NewService(
 		micro.Name("go.micro.srv.product"),
 		micro.Version("latest"),
 		//micro.WrapHandler(wrapperTrace.NewHandlerWrapper()),
