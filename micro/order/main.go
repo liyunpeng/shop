@@ -2,6 +2,8 @@ package main
 
 import (
 	"github.com/micro/go-config"
+	//"shopping/order/vendor/github.com/micro/go-plugins/broker/rabbitmq"
+
 	//"github.com/micro/go-grpc"
 	"github.com/micro/go-log"
 	"github.com/micro/go-micro"
@@ -16,7 +18,8 @@ import (
 	"shopping/order/repository"
 	product "shopping/product/proto/product"
 
-	"github.com/micro/go-plugins/broker/rabbitmq"
+	//"github.com/micro/go-plugins/broker/rabbitmq"
+	"github.com/micro/go-plugins/broker/kafka"
 
 	//"go.opencensus.io/trace"
 	//"go.opencensus.io/exporter/zipkin"
@@ -24,7 +27,7 @@ import (
 	//openzipkin "github.com/openzipkin/zipkin-go"
 	//zipkinHTTP "github.com/openzipkin/zipkin-go/reporter/http"
 
-	wrapperTrace "github.com/micro/go-plugins/wrapper/trace/opentracing"
+	//wrapperTrace "github.com/micro/go-plugins/wrapper/trace/opentracing"
 	//"github.com/opentracing/opentracing-go"
 	jaegercfg "github.com/uber/jaeger-client-go/config"
 
@@ -55,8 +58,11 @@ func main() {
 	repo := &repository.Order{db}
 
 	//broker
-	b := rabbitmq.NewBroker(
-		broker.Addrs(config.Get("rabbitmq_addr").String("")),
+	//b := rabbitmq.NewBroker(
+	//	broker.Addrs(config.Get("rabbitmq_addr").String("")),
+	//)
+	b := kafka.NewBroker(
+		broker.Addrs(config.Get("192.168.0.223:9092").String("")),
 	)
 
 	// boot trace
@@ -67,8 +73,8 @@ func main() {
 		micro.Name("go.micro.srv.order"),
 		micro.Version("latest"),
 		micro.Broker(b),
-		micro.WrapHandler(wrapperTrace.NewHandlerWrapper()),
-		micro.WrapClient(wrapperTrace.NewClientWrapper()),
+		//micro.WrapHandler(wrapperTrace.NewHandlerWrapper()),
+		//micro.WrapClient(wrapperTrace.NewClientWrapper()),
 		micro.WrapHandler(wrapperPrometheus.NewHandlerWrapper()),
 	)
 
@@ -149,7 +155,7 @@ func TraceBoot() {
 		},
 		Reporter: &jaegercfg.ReporterConfig{
 			LogSpans: true,
-			LocalAgentHostPort:  "192.168.0.111:9412",
+			LocalAgentHostPort:  "192.168.0.223:9412",
 		},
 	}
 
@@ -171,7 +177,7 @@ func PrometheusBoot(){
 	http.Handle("/metrics", promhttp.Handler())
 	// 启动web服务，监听8085端口
 	go func() {
-		err := http.ListenAndServe("192.168.0.110:8085", nil)
+		err := http.ListenAndServe("192.168.0.223:8085", nil)
 		if err != nil {
 			log.Fatal("ListenAndServe: ", err)
 		}

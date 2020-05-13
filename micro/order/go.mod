@@ -15,7 +15,7 @@ require (
 	github.com/micro/go-config v1.1.0
 	github.com/micro/go-log v0.1.0
 	github.com/micro/go-micro v1.18.0
-	github.com/micro/go-plugins/broker/rabbitmq v0.0.0-20200119172437-4fe21aa238fd
+	github.com/micro/go-plugins/broker/kafka v0.0.0-20200119172437-4fe21aa238fd
 	github.com/micro/go-plugins/wrapper/monitoring/prometheus v0.0.0-20200119172437-4fe21aa238fd
 	github.com/micro/go-plugins/wrapper/trace/opentracing v0.0.0-20200119172437-4fe21aa238fd
 	github.com/prometheus/client_golang v1.6.0
