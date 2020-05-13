@@ -5,6 +5,26 @@ post http://localhost:8080/order/OrderService/Submit/
 响应：
 {"code":"200","msg":"订单提交成功"}
 
+
+可以看到相关的主题已经生成
+/ # kafka-topics.sh --list --zookeeper 192.168.0.223:2181
+__consumer_offsets
+go.micro.srv.order
+irislog
+nginx_log
+notification.submit
+
+
+/ # kafka-topics.sh  --bootstrap-server 192.168.0.223:9092 --topic go.micro.srv.order --describe
+Topic: go.micro.srv.order	PartitionCount: 1	ReplicationFactor: 1	Configs: segment.bytes=1073741824
+	Topic: go.micro.srv.order	Partition: 0	Leader: 0	Replicas: 0	Isr: 0
+
+查看所有消息， 没有查到：
+ # kafka-console-consumer.sh --bootstrap-server 192.168.0.223:9092 --topic go.micro.srv.order --from-
+beginning
+
 再来一次：
 {"productId":1,"count":1,"uid":1}
 {"id":"go.micro.srv.order","code":400,"detail":"库存不足","status":"Bad Request"}
+
+
