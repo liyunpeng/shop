@@ -38,7 +38,7 @@ func main() {
 
 	repo := &repository.Product{db}
 
-	repo.Db.Exec("insert into products(name, intro, number) values('product1', 'ntro1', 1);")
+	repo.Db.Exec("insert into products(name, intro, number) values('product1', 'ntro1', 100);")
 	// boot trace
 	//TraceBoot()
 

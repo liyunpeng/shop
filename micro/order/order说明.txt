@@ -1,0 +1,10 @@
+post http://localhost:8080/order/OrderService/Submit/
+
+{"productId":1,"count":1,"uid":1}
+
+响应：
+{"code":"200","msg":"订单提交成功"}
+
+再来一次：
+{"productId":1,"count":1,"uid":1}
+{"id":"go.micro.srv.order","code":400,"detail":"库存不足","status":"Bad Request"}
