@@ -1,9 +1,9 @@
 {
   "mysql" : {
-    "host" : "192.168.0.111",
+    "host" : "192.168.0.223",
     "port" : "3306",
-    "user" : "mytestroot",
-    "password" : "mytestroot",
+    "user" : "root",
+    "password" : "root",
     "database" : "shopping"
   },
   "rabbitmq_addr" : "amqp://用户名:密码@主机host:端口port"

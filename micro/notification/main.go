@@ -5,8 +5,8 @@ import (
 	"github.com/micro/go-log"
 	"github.com/micro/go-micro"
 	"github.com/micro/go-micro/broker"
-	"github.com/micro/go-plugins/broker/rabbitmq"
-	"log"
+	//"github.com/micro/go-plugins/broker/rabbitmq"
+	"github.com/micro/go-plugins/broker/kafka"
 
 	//"github.com/opentracing/opentracing-go"
 	//"os"
@@ -27,8 +27,12 @@ func main() {
 		return
 	}
 
-	b := rabbitmq.NewBroker(
-		broker.Addrs(config.Get("rabbitmq_addr").String("")),
+	//b := rabbitmq.NewBroker(
+	//	broker.Addrs(config.Get("rabbitmq_addr").String("")),
+	//)
+
+	b := kafka.NewBroker(
+		broker.Addrs(config.Get("192.168.0.223:9092").String("")),
 	)
 
 	b.Init()

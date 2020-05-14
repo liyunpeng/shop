@@ -15,6 +15,7 @@ require (
 	github.com/micro/go-log v0.1.0
 	github.com/micro/go-micro v1.18.0
 	github.com/micro/go-plugins/broker/grpc v0.0.0-20200119172437-4fe21aa238fd
+	github.com/micro/go-plugins/broker/kafka v0.0.0-20200119172437-4fe21aa238fd
 	github.com/micro/go-plugins/broker/rabbitmq v0.0.0-20200119172437-4fe21aa238fd
 	product v0.0.0-00010101000000-000000000000
 	user v0.0.0-00010101000000-000000000000
