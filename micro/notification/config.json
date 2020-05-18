@@ -6,5 +6,6 @@
     "password" : "root",
     "database" : "shopping"
   },
-  "rabbitmq_addr" : "amqp://用户名:密码@主机host:端口port"
+  "rabbitmq_addr" : "amqp://用户名:密码@主机host:端口port",
+  "kafka_addr" : "192.168.0.223:9092",
 }

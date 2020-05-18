@@ -62,7 +62,7 @@ func main() {
 	//	broker.Addrs(config.Get("rabbitmq_addr").String("")),
 	//)
 	b := kafka.NewBroker(
-		broker.Addrs(config.Get("192.168.0.223:9092").String("")),
+		broker.Addrs(config.Get("kafka_addr").String("")),
 	)
 
 	// boot trace
