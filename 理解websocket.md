@@ -10,7 +10,7 @@ jsonHandler.Send(conn, res)
 这样在vue的onmessage接受websocket服务数据的函数才会走到：
 this.websock.onmessage = this.onmessage
 onmessage: function (e) {
-   
+   ...
 }
 还是断点调试， 能最快定位问题，goland启动断点调试很快
 

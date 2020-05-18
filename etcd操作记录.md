@@ -1,3 +1,5 @@
+*  进入etcd docker， 获取设置键值对
+```
 bogon:logmanager admin1$ docker exec -it d616fef8310a /bin/sh
 / # ls
 bin         etcd0.etcd  media       root        srv         usr
@@ -91,25 +93,28 @@ OPTIONS:
       --key=""					identify secure client using this TLS key file
       --user=""					username[:password] for authentication (prompt if password is not supplied)
   -w, --write-out="simple"			set the output format (fields, json, protobuf, simple, table)
+```
 
-  ---------------
-  postman:
-  localhost:8082/etcd/  post:
-  {"key":"/logagent/192.168.0.142/logconfig", "value":`
-  [
-  	{
-  		"topic":"nginx_log",
-  		"log_path":"D:\\log1",
-  		"service":"test_service",
-  		"send_rate":1000
-  	},
+*  向项目应用发送http post请求 
+用postman发送http请求
+```
+post: httt://localhost:8082/etcd/
+body raw内容： 
+{"key":"/logagent/192.168.0.142/logconfig", "value":`
+[
+{
+    "topic":"nginx_log",
+    "log_path":"D:\\log1",
+    "service":"test_service",
+    "send_rate":1000
+},
 
-  	{
-  		"topic":"nginx_log1",
-  		"log_path":"D:\\log2",
-  		"service":"test_service1",
-  		"send_rate":1000
-  	}
-  ]`
-  }
-
+{
+    "topic":"nginx_log1",
+    "log_path":"D:\\log2",
+    "service":"test_service1",
+    "send_rate":1000
+}
+]`
+}
+```
