@@ -1,4 +1,4 @@
-#### 1. 解决docker 里的kafka启动不了
+#### 1. 解决因zookeeper容器启动错误导致的kafka容器启动不了
 * 问题描述：
 docker logs 看到这样的log:  
 ```

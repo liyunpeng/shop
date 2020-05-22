@@ -101,8 +101,10 @@ func addPerms(permIds []uint, role *Role) {
 			color.Red(fmt.Sprintf("AppendPermsErr:%s \n", err))
 		}
 		var perms []Permission
+		// 根据制定的权限ID集合， 找到所有权限
 		DB.Where("id in (?)", permIds).Find(&perms)
 		for _, perm := range perms {
+			// 在casbin数据库，为指定角色添加权限集，addpolicy实际作用就是addPermission
 			if _, err := Enforcer.AddPolicy(roleId, perm.Name, perm.Act); err != nil {
 				color.Red(fmt.Sprintf("AddPolicy:%s \n", err))
 			}

@@ -2,7 +2,7 @@
 $ go run server.go
 2020/03/24 15:38:51 Server is running at 9096 port.
 
-##### 1. 收到重定向的log：
+##### 1. 客户端被引导到认证服务器的获取授权码的log：
 ```
 authorise, r= &{
     GET /authorize?client_id=222222&redirect_uri=http%3A%2F%2Flocalhost%3A9094%2Foauth2&response_type=code&scope=all&state=xyz

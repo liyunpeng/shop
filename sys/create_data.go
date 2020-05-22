@@ -156,18 +156,12 @@ func CreateSystemAdmin(roleId uint) *models.User {
 		RoleIds:  []uint{roleId},
 	}
 
-	if models.IsUserExist(aul.Username) == false {
+	if !models.IsUserExist(aul.Username)  {
 		return models.CreateUser(aul)
 	} else {
 		user := models.UserFindByName(aul.Username)
 		return user
 	}
-	//user := UserFindByName(aul.Username)
-	//if user.ID == 0 {
-	//	return CreateUser(aul)
-	//} else {
-	//	return user
-	//}
 }
 
 func CreateSystemData(app *iris.Application) {
