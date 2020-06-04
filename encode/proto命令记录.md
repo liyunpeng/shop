@@ -27,3 +27,31 @@ encode$ protoc -I ./source/ --go_out=./generate --micro_out=./generate ./source/
         option go_package = ".;user";
 解决办法： 根据提示， 在user.proto中添加：
 option go_package = ".;user";
+
+#### 解决micro生成文件import错误问题
+
+编译报错：
+
+```gotemplate
+# shop/service
+service/micro_service.go:59:45: cannot use service.Server() (type "github.com/micro/go-micro/v2/server".Server) as type "github.com/micro/go-micro/server".Server in argument to user.RegisterUserHandler:
+	"github.com/micro/go-micro/v2/server".Server does not implement "github.com/micro/go-micro/server".Server (wrong type for Handle method)
+		have Handle("github.com/micro/go-micro/v2/server".Handler) error
+		want Handle("github.com/micro/go-micro/server".Handler) error
+```
+原因：
+业务程序用的是micro/v2, 而生成代码还用micro
+
+解决办法：
+将微服务·micro生成文件user.pb.micro.go: 
+import (
+	context "context"
+	client "github.com/micro/go-micro/client"
+	server "github.com/micro/go-micro/server"
+)
+改为
+import (
+	context "context"
+	client "github.com/micro/go-micro/v2/client"
+	server "github.com/micro/go-micro/v2/server"
+)

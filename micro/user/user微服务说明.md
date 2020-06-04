@@ -33,3 +33,37 @@ post http://localhost:8080/user/UserService/Register
 {"code":"200","msg":"注册成功"}
 ```
 
+构建镜像
+```
+user$ docker build . -t user-srv:latest
+Sending build context to Docker daemon     64MB
+Step 1/3 : FROM alpine
+latest: Pulling from library/alpine
+cbdbe7a5bc2a: Pull complete 
+Digest: sha256:9a839e63dad54c3a6d1834e29692c8492d93f90c59c978c1ed79109ea4fb9a54
+Status: Downloaded newer image for alpine:latest
+ ---> f70734b6a266
+Step 2/3 : ADD user-srv /user-srv
+ ---> c5a155480f63
+Step 3/3 : ENTRYPOINT [ "/user-srv" ]
+ ---> Running in 75a87650e2ed
+Removing intermediate container 75a87650e2ed
+ ---> 8b0bd45d8e00
+Successfully built 8b0bd45d8e00
+Successfully tagged user-srv:latest
+```
+
+查看镜像
+```
+hop$ docker images 
+ REPOSITORY                                           TAG                 IMAGE ID            CREATED             SIZE
+ user-srv                                             latest              8b0bd45d8e00        46 minutes ago      47.4MB
+```
+
+
+##### exec user process caused "exec format error"
+容器启动不了的问题：
+user$ sudo docker run -p 8080:8080 -it --name docker1235 user-srv:latest 
+standard_init_linux.go:211: exec user process caused "exec format error"
+
+

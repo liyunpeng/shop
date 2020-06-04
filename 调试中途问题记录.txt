@@ -64,7 +64,7 @@ panic: websockt 向客户端发送数据错误
 原因：浏览器F5刷新，tcp 127.0.0.1:88->127.0.0.1:64632 这个tcp连接就断了。
 
 
-10. kafak容器起不来；
+10. kafka容器起不来；
 docker logs kafka容器id看到：
  Will not attempt to authenticate using SASL Will not attempt to authenticate using SASL
 
@@ -241,3 +241,21 @@ microClient "github.com/micro/go-micro/v2/client"
 解决办法：
 生产代码修改为：
 client "github.com/micro/go-micro/v2/client"
+
+
+21. goroutine 结束的场景有哪些
+
+22。 redis满了如何处理
+
+
+23。 db 写不进去如何处理
+
+24。 最高并发量有多少
+
+25. 高并发时， redis满了， db不能写， 什么方案，
+
+26， 高并发的问题
+
+27 项目中遇到哪些问题
+
+

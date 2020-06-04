@@ -74,7 +74,7 @@ func CallwithGateway(){
 	if err != nil{
 		logger.Error.Println ("failed to call: ", err)
 	}
-	defer res.Body.Close()
+	//defer res.Body.Close()
 	// 获取结果
 	replyData, err := ioutil.ReadAll(res.Body)
 	if err != nil{

@@ -117,7 +117,68 @@ func handleConn1(c net.Conn) {
 	c.Close()
 
 }
+/*
+package main
+import (
+  "fmt"
+)
 
+type State uint8
+type Event uint8
+type Trans struct {
+  sourceState State
+  event Event
+  targetState State
+}
+
+const (
+  opened State = iota
+  closed
+  locked
+  unlocked
+)
+
+const (
+  openDoor Event = iota
+  closeDoor
+  lockDoor
+  unlockDoor
+)
+
+type Door struct {
+  state State
+}
+
+func (d *Door) ChangeState(transArray []Trans, sourceState State, event Event){
+  for _, v := range transArray {
+    if v.sourceState == sourceState && v.event == event {
+      d.state = v.targetState
+      break
+    }
+  }
+}
+
+func main() {
+  transArray := []Trans{
+    {opened,  closeDoor, closed},
+    {closed,  lockDoor, locked},
+    {locked,  unlockDoor, unlocked},
+    {unlocked, openDoor, opened},
+  }
+
+  d :=  &Door{
+    state: opened,
+  }
+
+  d.ChangeState(transArray, opened, closeDoor)
+  fmt.Println("door state is changed to ", d.state)
+
+  d.ChangeState(transArray, closed, lockDoor)
+  fmt.Println("door state is changed to ", d.state)
+
+
+}
+ */
 func ouputToConnection(c net.Conn, data <-chan string) {
 	for v := range data {
 		fmt.Fprintf(c, " %s \r\n", v) //  需要加深理解
