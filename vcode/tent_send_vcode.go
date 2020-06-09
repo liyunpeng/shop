@@ -7,7 +7,7 @@ import (
 	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common/errors"
 	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common/profile"
 	sms "github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/sms/v20190711" //引入sms
-
+	"sync/atomic"
 )
 
 var msgClientTent *sms.Client
@@ -152,4 +152,30 @@ func getTenClient()  error  {
 	return client, nil
 }
 
+func addValue(delta int32) {
+	for {
+		v := atomic.LoadInt32(&value)
+		if atomic.CompareAndSwapInt32(&value, v, (v + delta)) {
+			break
+		}
+	}
+}
+
+func main(){
+	var count uint32
+	fmt.Println( " count 初始值=", count)
+	for {
+		if true {
+			//count++
+			addValue( count, 1 )
+			if count % 100 == 0 {
+				fmt.Println("报警， count=", count)
+			} else if  count > 10000 {
+				break
+			}
+		}
+	}
+
+	//SendSms()
+}
 
