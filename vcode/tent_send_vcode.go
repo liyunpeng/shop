@@ -8,6 +8,7 @@ import (
 	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common/profile"
 	sms "github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/sms/v20190711" //引入sms
 	"sync/atomic"
+	"time"
 )
 
 var msgClientTent *sms.Client
@@ -31,6 +32,8 @@ func TentPhoneCode(phone, code string) (string, bool) {
 	b, _ := json.Marshal(response.Response)
 	// 打印返回的 JSON 字符串
 	fmt.Printf("%s", b)
+
+	return string(b), err == nil
 }
 
 
@@ -106,13 +109,29 @@ func getTentRequest(phone, vcode string) *sms.SendSmsRequest {
 }
 
 
-func initTenClient()  error  {
 
-	msgClientTent = getTenClient()
+func Setup() error {
+	// var err error
+	// if err = initLoging(); err != nil {
+	// 	return err
+	// }
+	//return initAlibaba()
+	if err := initAlibaba(); err != nil {
+		if err = initTenClient() ; err != nil {
+			err = SetTentSmsTemplate()
+			return err
+		}
+	}else{
+		return err
+	}
+}
+func initTenClient_1()  error  {
+
+	initTenClient()
 	SetTentSmsTemplate()
 }
 
-func getTenClient()  error  {
+func initTenClient()  error  {
 	/* 必要步骤：
 	 * 实例化一个认证对象，入参需要传入腾讯云账户密钥对 secretId 和 secretKey
 	 * 本示例采用从环境变量读取的方式，需要预先在环境变量中设置这两个值
@@ -149,7 +168,7 @@ func getTenClient()  error  {
 		log.Fatal("init alibaba phone msg client failed, message:%s\n", err.Error())
 	}
 
-	return client, nil
+	return nil
 }
 
 func addValue(delta int32) {
@@ -160,6 +179,25 @@ func addValue(delta int32) {
 		}
 	}
 }
+
+func test2() {
+	var wg sync.WaitGroup
+	count := int64(0)
+	t := time.Now()
+	for i := 0; i < 50000; i++ {
+		wg.Add(1)
+		go func(wg *sync.WaitGroup, i int) {
+			atomic.AddInt64(&count, 1) //原子操作
+			wg.Done()
+		}(&wg, i)
+	}
+
+	wg.Wait()
+	fmt.Println(time.Now().Sub(t))
+	fmt.Println("count====>", count) //count的值为50000
+	fmt.Println("exit")
+}
+
 
 func main(){
 	var count uint32
