@@ -1,9 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	//"strings"
+
 	"github.com/shopspring/decimal"
 )
 
@@ -31,41 +32,170 @@ func main() {
 	baseGroup := r.Group("/")
 	{
 		baseGroup.POST("/arr", CaculateArrangement)
+		baseGroup.POST("/container", CaculateContainerArrangement)
 	}
 
-	r.Run() // listen and serve on 0.0.0.0:8080
+	r.Run()
 }
 
 /*
+最小模型
 {
   "p1num": 8,
   "p1hourtime": 2.166666667,
   "p2hourtime": 2.6,
   "p4hourtime": 2.6
 }
+
+
+{
+  "p1num": 8,
+   amd 总核数：  ->  amd剩余核数 ：
+   P2 32核 时间:
+   p4 32核 时间：
+  "p1hourtime": 2.166666667,
+  "p2hourtime": 2.6,
+  "p4hourtime": 2.6
+}
+
+{
+  "p1num": 8,
+   amd 总核数：  ->  amd剩余核数 ：
+   P2 32核 时间:
+   p4 32核 时间：
+  "p1hourtime": ,
+  "p2hourtime": 1.89,   23核
+  "p4hourtime": 7.5    7.5个/小时  21个核  6个benchy
+}
+
+{
+	"p1hourtime": 2.34,
+	"p1core" : 2,
+	"p2hourtime": 2.15,
+	"p2core" :  23,
+	"p4hourtime": 0.8,
+	"p4core" :  21
+}
+
+
+{
+	"p1num": 8,
+	"p1hourtime": 0.85,
+	"p4hourtime": 7.5
+}
+	"p2hourtime": 1.89,
+
 */
+
+
 type InputParam struct {
-	P1Num      int     `json:"p1num"`
+	P1Num      float32     `json:"p1num"`
 	P1hourtime float32 `json:"p1hourtime"`
+	P1core float32 `json:"p1core"`
 	P2hourtime float32 `json:"p2hourtime"`
+	P2core float32 `json:"p2core"`
 	P4hourtime float32 `json:"p4hourtime"`
+	P4core float32 `json:"p4core"`
+
+
 }
 
 const HOURS =  504 //   24*21  HOURS
+
+/*
+{
+	"p1hourtime": 0.85,
+	"p1core" : 2,
+	"p2hourtime": 1.89,
+	"p2core" :  23
+	"p4hourtime": 7.5
+	"p2core" :  21
+}
+
+ */
+func CaculateContainerArrangement(c *gin.Context) {
+	inputParam := new(InputParam)
+	c.ShouldBindJSON(inputParam)
+
+	p1Speed := 1/ inputParam.P1hourtime
+	p2Speed := 1/ inputParam.P2hourtime
+	p4Speed := 1/ inputParam.P4hourtime
+
+	p1core := inputParam.P1core
+	p2core := inputParam.P2core
+	p4core := inputParam.P4core
+
+	fmt.Println(" p1speed=", p1Speed, "p2speed=", p2Speed, ", p4speed=", p4Speed)
+	fmt.Println(" p1core=", p1core, "p2core=", p2core, ", p4core=", p4core)
+	var n1 float32
+	var n2 float32
+	var n4 float32
+	var coresum int
+
+	var finaln1 int
+	var finaln2 int
+	var finaln4 int
+	var max int
+	max = 0
+	for n1 =2; n1 < 128/p1core; n1 = n1+2{
+
+		n2 = (128 - p1core *n1 - p4core * ( n1 * p1Speed / p4Speed)) /p2core
+		n4 = (128 - p1core *n1 - p2core * ( n1 * p1Speed / p2Speed)) / p4core
+		fmt.Println("n1=", n1, ", n2=", n2, ", n4=", n4, ", count=", n1*p1Speed)
+		if (max < int(n1 * p1Speed) )  && ( n2 > 1 ) && ( n4 > 1 ) {
+			max = int( n1 * p1Speed)
+			finaln1 = int(n1)
+			finaln2 = int(n2)
+			finaln4 = int(n4)
+			coresum = int (p1core) * finaln1 + int (p2core) * finaln2 + int (p4core)  * finaln4
+			fmt.Println("max=", max, ", n1=", n1, ", n2=", n2, ", n4=", n4, ", count=", n1*p1Speed, ", coresum=",coresum)
+		}
+	}
+
+
+	mes := Message{
+		//P1Speed: p1Speed,
+		//P2Speed: p2Speed,
+		//P4Speed: p4Speed,
+
+		P1Machines: finaln1,   //
+		P2Machines: finaln2,
+		P4Machines: finaln4,
+		P1Output:   max,
+		CoreSum: coresum,
+		//OutputPermachine: outputPermachine,
+	}
+
+	JSON(c, "配比数据输出", mes)
+
+}
+
+
 
 func CaculateArrangement(c *gin.Context) {
 	inputParam := new(InputParam)
 	c.ShouldBindJSON(inputParam)
 
 	p1Num := inputParam.P1Num
-	p1Speed := 1/ inputParam.P1hourtime
-	p2Speed := 1/ inputParam.P2hourtime
-	p4Speed := 1/ inputParam.P4hourtime
+	//p1Speed := 1/ inputParam.P1hourtime
+	//p2Speed := 1/ inputParam.P2hourtime
+	//
+	//p4Speed := 1/ inputParam.P4hourtime
 
+
+	p1Speed := inputParam.P1hourtime
+	p2Speed := inputParam.P2hourtime
+
+	p4Speed := inputParam.P4hourtime
+	//p4Core := inputParam.P4core
+	//p1Core := inputParam.P1core
+	//p2Core := inputParam.P2core
 	p1Output := decimal.NewFromFloat(float64(p1Num)).Mul(decimal.NewFromFloat(float64(HOURS))).Mul(decimal.NewFromFloat(float64(p1Speed))).BigInt().Int64()
 	p2Machines  := decimal.NewFromFloat(float64(p1Output)).Div(decimal.NewFromFloat(HOURS).Mul(decimal.NewFromFloat(float64(p2Speed)))).BigInt().Int64()
 	p4Machines  := decimal.NewFromFloat(float64(p1Output)).Div(decimal.NewFromFloat(HOURS).Mul(decimal.NewFromFloat(float64(p4Speed)))).BigInt().Int64()
-	outputPermachine := decimal.NewFromFloat(float64(p1Output)).Div(decimal.NewFromFloat(float64(p2Machines)).Mul(decimal.NewFromFloat(float64(p4Machines)))).BigInt().Int64()
+	outputPermachine := decimal.NewFromFloat(float64(p1Output)).Div(decimal.NewFromFloat(float64(p2Machines)).Add(decimal.NewFromFloat(float64(p4Machines))).Add(decimal.NewFromFloat(1))).BigInt().Int64()
+
+	//cores :=  decimal.NewFromFloat(float64(p1Num)).Mul(decimal.NewFromFloat(float64(HOURS))).Mul(decimal.NewFromFloat(float64(p1Speed))).BigInt().Int64()
 
 	mes := Message{
 		//P1Speed: p1Speed,
@@ -73,9 +203,9 @@ func CaculateArrangement(c *gin.Context) {
 		//P4Speed: p4Speed,
 
 		P1Machines: 1,   //
-		P2Machines: p2Machines,
-		P4Machines: p4Machines,
-		P1Output:   p1Output,
+		P2Machines:  int(p2Machines),
+		P4Machines: int(p4Machines),
+		P1Output:   int(p1Output),
 		OutputPermachine: outputPermachine,
 	}
 
@@ -90,9 +220,10 @@ type Message struct {
 	//P4Speed float32 `json:"p4speed"`
 
 
-	P1Machines int64 `json:"p1machines"`
-	P2Machines int64 `json:"p2machines"`
-	P4Machines int64 `json:"p4machines"`
-	P1Output   int64 `json:"p1output"`
+	P1Machines int `json:"p1machines"`
+	P2Machines int `json:"p2machines"`
+	P4Machines int `json:"p4machines"`
+	P1Output   int `json:"p1output"`
+	CoreSum int `json:"coresum"`
 	OutputPermachine int64 `json:"outputPermachine"`
 }

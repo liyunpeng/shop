@@ -17,6 +17,7 @@ require (
 	github.com/facebookgo/subset v0.0.0-20200203212716-c811ad88dec4 // indirect
 	github.com/fatih/color v1.9.0
 	github.com/garyburd/redigo v1.6.0
+	github.com/gin-gonic/gin v1.6.3
 	github.com/go-macaron/inject v0.0.0-20200308113650-138e5925c53b
 	github.com/go-playground/locales v0.13.0
 	github.com/go-playground/universal-translator v0.17.0
@@ -35,7 +36,6 @@ require (
 	github.com/kataras/golog v0.0.10
 	github.com/kataras/iris/v12 v12.1.8
 	github.com/mattn/go-colorable v0.1.6 // indirect
-	github.com/micro/go-micro v1.18.0
 	github.com/micro/go-micro/v2 v2.4.0
 	github.com/micro/go-plugins/registry/consul/v2 v2.3.0
 	github.com/onsi/ginkgo v1.12.0 // indirect
@@ -44,9 +44,11 @@ require (
 	github.com/rpcx-ecosystem/rpcx-gateway v0.0.0-20191101051611-6011e3464192
 	github.com/sergi/go-diff v1.1.0 // indirect
 	github.com/shiena/ansicolor v0.0.0-20151119151921-a422bbe96644 // indirect
+	github.com/shopspring/decimal v1.2.0
 	github.com/smallnest/rpcx v0.0.0-20200428104205-b633eed00350
 	github.com/smartystreets/goconvey v1.6.4
 	github.com/snowlyg/gotransformer v0.1.0
+	github.com/tencentcloud/tencentcloud-sdk-go v3.0.216+incompatible
 	github.com/valyala/fasthttp v1.9.0 // indirect
 	go.etcd.io/etcd v3.3.18+incompatible
 	go.uber.org/zap v1.14.0
