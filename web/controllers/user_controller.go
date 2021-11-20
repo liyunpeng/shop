@@ -321,7 +321,7 @@ func ApiUserLogin(ctx iris.Context) {
 		return
 	}
 
-	err := validates.Validate.Struct(*aul)
+	err := validates.Validate.Struct(	*aul)
 	if err != nil {
 		errs := err.(validator.ValidationErrors)
 		for _, e := range errs.Translate(validates.ValidateTrans) {

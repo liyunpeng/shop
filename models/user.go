@@ -141,7 +141,7 @@ func CheckLogin(username, password string) (response Token, status bool, msg str
 				"exp": time.Now().Add(time.Hour * time.Duration(1)).Unix(),
 				"iat": time.Now().Unix(),
 			})
-			tokenString, _ := token.SignedString([]byte("HS2JDFKhu7Y1av7b"))
+				tokenString, _ := token.SignedString([]byte("HS2JDFKhu7Y1av7b"))
 			oauthToken := new(OauthToken)
 			oauthToken.Token = tokenString
 			oauthToken.UserId = user.ID

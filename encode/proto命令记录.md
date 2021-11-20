@@ -5,7 +5,7 @@ D:\programe\protoc-3.9.0-win64\bin\protoc.exe
 将其bin目录路径添加到path环境变量中。
 
 ### 用protoc生成go格式文件和micro格式文件 
-在本文件所在目录下运行：
+在本文件所在目录下运行 ：
 ```
 $ protoc -I ./source/ --go_out=./generate --micro_out=./generate ./source/user.proto
 ```
