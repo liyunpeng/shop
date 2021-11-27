@@ -22,7 +22,6 @@ func StartRpcxService() {
 	}else{
 		rpcxServer = server.NewServer()
 		rpcxServer.Register(new(Arith),"")
-
 	}
 	logger.Info.Println("Rpcx 微服务 启动 ")
 	rpcxServer.Serve("tcp",addr)
