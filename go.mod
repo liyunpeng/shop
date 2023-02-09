@@ -17,11 +17,11 @@ require (
 	github.com/facebookgo/subset v0.0.0-20200203212716-c811ad88dec4 // indirect
 	github.com/fatih/color v1.9.0
 	github.com/garyburd/redigo v1.6.0
-	github.com/gin-gonic/gin v1.6.3
+	github.com/gin-gonic/gin v1.7.7
 	github.com/go-macaron/inject v0.0.0-20200308113650-138e5925c53b
 	github.com/go-playground/locales v0.13.0
 	github.com/go-playground/universal-translator v0.17.0
-	github.com/go-playground/validator/v10 v10.2.0
+	github.com/go-playground/validator/v10 v10.4.1
 	github.com/go-session/session v3.1.2+incompatible
 	github.com/golang/mock v1.3.1
 	github.com/golang/protobuf v1.4.0
