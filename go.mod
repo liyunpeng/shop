@@ -4,7 +4,7 @@ go 1.13
 
 require (
 	github.com/Shopify/sarama v1.19.0
-	github.com/astaxie/beego v1.12.1
+	github.com/astaxie/beego v1.12.2
 	github.com/bsm/sarama-cluster v2.1.15+incompatible
 	github.com/casbin/casbin/v2 v2.2.1
 	github.com/casbin/gorm-adapter/v2 v2.0.3
@@ -24,7 +24,7 @@ require (
 	github.com/go-playground/validator/v10 v10.2.0
 	github.com/go-session/session v3.1.2+incompatible
 	github.com/golang/mock v1.3.1
-	github.com/golang/protobuf v1.4.0
+	github.com/golang/protobuf v1.4.2
 	github.com/gorilla/securecookie v1.1.1
 	github.com/grpc-ecosystem/go-grpc-middleware v1.2.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway v1.14.3 // indirect
@@ -38,12 +38,10 @@ require (
 	github.com/mattn/go-colorable v0.1.6 // indirect
 	github.com/micro/go-micro/v2 v2.4.0
 	github.com/micro/go-plugins/registry/consul/v2 v2.3.0
-	github.com/onsi/ginkgo v1.12.0 // indirect
 	github.com/onsi/gomega v1.9.0 // indirect
 	github.com/prashantv/gostub v1.0.0
 	github.com/rpcx-ecosystem/rpcx-gateway v0.0.0-20191101051611-6011e3464192
 	github.com/sergi/go-diff v1.1.0 // indirect
-	github.com/shiena/ansicolor v0.0.0-20151119151921-a422bbe96644 // indirect
 	github.com/shopspring/decimal v1.2.0
 	github.com/smallnest/rpcx v0.0.0-20200428104205-b633eed00350
 	github.com/smartystreets/goconvey v1.6.4
