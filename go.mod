@@ -17,14 +17,14 @@ require (
 	github.com/facebookgo/subset v0.0.0-20200203212716-c811ad88dec4 // indirect
 	github.com/fatih/color v1.9.0
 	github.com/garyburd/redigo v1.6.0
-	github.com/gin-gonic/gin v1.6.3
+	github.com/gin-gonic/gin v1.9.0
 	github.com/go-macaron/inject v0.0.0-20200308113650-138e5925c53b
-	github.com/go-playground/locales v0.13.0
-	github.com/go-playground/universal-translator v0.17.0
-	github.com/go-playground/validator/v10 v10.2.0
+	github.com/go-playground/locales v0.14.1
+	github.com/go-playground/universal-translator v0.18.1
+	github.com/go-playground/validator/v10 v10.11.2
 	github.com/go-session/session v3.1.2+incompatible
 	github.com/golang/mock v1.3.1
-	github.com/golang/protobuf v1.4.0
+	github.com/golang/protobuf v1.5.0
 	github.com/gorilla/securecookie v1.1.1
 	github.com/grpc-ecosystem/go-grpc-middleware v1.2.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway v1.14.3 // indirect
@@ -52,10 +52,10 @@ require (
 	github.com/valyala/fasthttp v1.9.0 // indirect
 	go.etcd.io/etcd v3.3.18+incompatible
 	go.uber.org/zap v1.14.0
-	golang.org/x/net v0.0.0-20200222125558-5a598a2470a0
+	golang.org/x/net v0.7.0
 	golang.org/x/oauth2 v0.0.0-20190604053449-0f29369cfe45
 	google.golang.org/grpc v1.26.0
-	google.golang.org/protobuf v1.23.0
+	google.golang.org/protobuf v1.28.1
 	gopkg.in/macaron.v1 v1.3.6
 	gopkg.in/oauth2.v3 v3.12.0
 	sigs.k8s.io/yaml v1.2.0 // indirect
